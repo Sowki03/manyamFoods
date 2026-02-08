@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manyam Foods | Empowering Farmers, Honoring Tradition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-green: #76e037;
+            --dark-text: #1a1a1a;
+            --accent-orange: #c85a3a;
+            --gray-text: #666;
+            --light-cream: #fdfbf7;
+            --card-bg: #f9fdf7;
+            --dark-footer: #151e13;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            color: var(--dark-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        /* --- Navigation --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: 0.3s;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-green);
+            border-radius: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .btn-shop-nav {
+            background: var(--primary-green);
+            padding: 10px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 60px 0;
+        }
+
+        .hero-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .hero-image { flex: 1; }
+        .hero-image img {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-content { flex: 1; }
+        .badge {
+            background: #f0fdf4;
+            color: #22c55e;
+            padding: 4px 12px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 1px solid #dcfce7;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.1;
+            margin: 20px 0;
+            font-weight: 800;
+        }
+
+        .highlight { color: var(--accent-orange); }
+
+        .hero-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background: var(--primary-green);
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+        }
+
+        .btn-secondary {
+            border: 1px solid #e5e7eb;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 600;
+        }
+
+        /* --- Promise Section --- */
+        .promise { text-align: center; background-color: #fff; }
+        .promise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .promise-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+
+        /* --- Categories Section --- */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+        }
+
+        .category-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .category-card:hover img { transform: scale(1.1); }
+
+        .category-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 25px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+        }
+
+        /* --- Impact/About Section --- */
+        .about-section {
+            background-color: var(--light-cream);
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            padding: 80px 5%;
+        }
+
+        .about-image-wrapper { flex: 1; position: relative; }
+        .about-image-wrapper img { width: 100%; border-radius: 30px; }
+
+        .stats-box {
+            position: absolute; bottom: -30px; right: -20px;
+            background: white; padding: 25px 40px;
+            border-radius: 20px; display: flex; gap: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .stat-number { display: block; font-size: 1.8rem; font-weight: 800; color: var(--accent-orange); }
+        .stat-label { font-size: 0.65rem; font-weight: 700; color: var(--gray-text); text-transform: uppercase; }
+
+        .about-content { flex: 1; }
+        .btn-story {
+            display: inline-block; background: var(--accent-orange);
+            color: white; padding: 16px 35px; border-radius: 50px;
+            text-decoration: none; font-weight: 600; margin-top: 25px;
+        }
+
+        /* --- Testimonials --- */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .testimonial-card {
+            padding: 40px; border-radius: 20px;
+            border: 1px solid #f0f0f0; background: #fff;
+        }
+
+        .stars { color: var(--primary-green); margin-bottom: 15px; }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--dark-footer); color: #fff;
+            padding: 80px 5% 30px;
+        }
+
+        .footer-grid {
+            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+            gap: 40px; margin-bottom: 60px;
+        }
+
+        .footer-links { list-style: none; }
+        .footer-links a { color: #a0a89f; text-decoration: none; font-size: 0.9rem; }
+        
+        .newsletter-form {
+            display: flex; background: rgba(255,255,255,0.05);
+            padding: 5px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .newsletter-form input {
+            background: transparent; border: none; padding: 10px 20px;
+            color: #fff; flex: 1; outline: none;
+        }
+
+        .btn-join {
+            background: var(--primary-green); border: none;
+            padding: 10px 25px; border-radius: 50px; font-weight: 700;
+        }
+
+        @media (max-width: 968px) {
+            .hero-container, .about-section { flex-direction: column; text-align: center; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .stats-box { position: relative; bottom: 0; right: 0; margin-top: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="logo">
+            <div class="logo-icon"></div>
+            Manyam Foods
+        </div>
+        <ul class="nav-links">
+            <li><a href="#story">Our Story</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#impact">Impact</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#" class="btn-shop-nav">Shop Now</a>
+    </nav>
+
+    <div class="container">
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-image">
+                    <img src="images/working lady.png" alt="Artisan">
+                </div>
+                <div class="hero-content">
+                    <span class="badge">AUTHENTIC & PURE</span>
+                    <h1>Empowering Farmers, <br><span class="highlight">Honoring Tradition</span></h1>
+                    <p>Traditional food products handcrafted by rural women artisans, bringing the essence of the farm directly to your plate.</p>
+                    <div class="hero-btns">
+                        <a href="#" class="btn-primary">Explore Products</a>
+                        <a href="#" class="btn-secondary">Our Impact Story</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="promise">
+            <h2>Our Promise: From Farm to Plate</h2>
+            <div class="promise-grid">
+                <div class="promise-card">
+                    <h3>Solar Drying</h3>
+                    <p>Harnessing the sun to lock in nutrients naturally without preservatives.</p>
+                </div>
+                <div class="promise-card">
+                    <h3>Stone Grinding</h3>
+                    <p>Cold-pressed using traditional stone mills to retain essential oils.</p>
+                </div>
+                <div class="promise-card">
+                    <h3>Small-Batch</h3>
+                    <p>Ensuring absolute freshness in every single jar crafted by hand.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="products">
+            <div class="section-header">
+                <h2>Shop by Category</h2>
+                <a href="#" style="color:var(--primary-green); text-decoration:none; font-weight:600;">View All →</a>
+            </div>
+            <div class="category-grid">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1596560548464-f010549b84d7?w=500&auto=format&fit=crop" alt="Snacks">
+                    <div class="category-overlay"><h3>Healthy Snacks</h3><span>12 Products</span></div>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1589135398302-388cd658ca2c?w=500&auto=format&fit=crop" alt="Pickles">
+                    <div class="category-overlay"><h3>Traditional Pickles</h3><span>8 Products</span></div>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&auto=format&fit=crop" alt="Millets">
+                    <div class="category-overlay"><h3>Superfood Millets</h3><span>15 Products</span></div>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1599331043323-5e921be074b9?w=500&auto=format&fit=crop" alt="Powders">
+                    <div class="category-overlay"><h3>Crafted Powders</h3><span>10 Products</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="impact">
+            <div class="about-section">
+                <div class="about-image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=800&auto=format&fit=crop" alt="Farmer">
+                    <div class="stats-box">
+                        <div class="stat-item"><span class="stat-number">500+</span><span class="stat-label">Women Artisans</span></div>
+                        <div class="stat-item"><span class="stat-number">20+</span><span class="stat-label">Village Farms</span></div>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h2>Empowering Rural Communities Through Every Bite</h2>
+                    <p>We bridge the gap between rural farmers and your dining table, ensuring fair wages and sustainable growth.</p>
+                    <a href="#" class="btn-story">Read Our Full Story</a>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2 style="text-align:center; margin-bottom:50px; font-size:2.2rem">What Our Customers Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"The taste of the pickles took me back to my grandmother's home. You can feel the quality!"</p>
+                    <p style="margin-top:20px; font-weight:700">Anita Sharma</p>
+                </div>
+                <div class="testimonial-card">
+                    <div class="stars">★★★★★</div>
+                    <p>"Energizing, healthy, and I love knowing I'm supporting rural women with my purchase."</p>
+                    <p style="margin-top:20px; font-weight:700">Vikram Malhotra</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer id="contact">
+        <div class="footer-grid container">
+            <div class="footer-col">
+                <div class="logo" style="color:#fff; margin-bottom:20px">Manyam Foods</div>
+                <p style="color:#a0a89f; font-size:0.9rem">Cultivating a healthier future through traditional wisdom.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Stay Updated</h4>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Email address">
+                    <button type="submit" class="btn-join">Join</button>
+                </form>
+            </div>
+        </div>
+        <div class="container" style="border-top:1px solid rgba(255,255,255,0.1); padding-top:20px; font-size:0.8rem; color:#666">
+            © 2024 Manyam Foods. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        window.onscroll = function() {
+            const nav = document.getElementById('navbar');
+            if (window.pageYOffset > 50) {
+                nav.style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)";
+                nav.style.padding = "15px 8%";
+            } else {
+                nav.style.boxShadow = "none";
+                nav.style.padding = "20px 8%";
+            }
+        };
+    </script>
+</body>
+</html>
