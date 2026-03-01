@@ -64,7 +64,7 @@
             margin-bottom: 18px;
         }
         .page-banner h1 { font-size: 3rem; font-weight: 800; margin-bottom: 15px; }
-        .page-banner p { color: var(--gray-text); font-size: 1.05rem; max-width: 520px; margin: 0 auto; }
+        .page-banner p { color: var(--gray-text); font-size: 1.05rem; max-width: 820px; margin: 0 auto; }
 
         /* --- TAB NAVIGATION --- */
         .tab-nav {
@@ -387,6 +387,25 @@
         .btn-join { background: var(--primary-green); border: none; padding: 10px 25px; border-radius: 50px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; }
         .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #666; }
         .legal-links a { color: #666; text-decoration: none; margin-left: 20px; }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .cart-nav-btn {
+            position: relative; width: 44px; height: 44px; border-radius: 50%;
+            border: 2px solid var(--border); display: flex; align-items: center;
+            justify-content: center; text-decoration: none; color: var(--dark-text);
+            transition: border-color 0.2s, background 0.2s; flex-shrink: 0;
+        }
+        .cart-nav-badge {
+            position: absolute; top: -5px; right: -5px;
+            background: var(--accent-orange); color: white;
+            font-size: 0.62rem; font-weight: 800; min-width: 18px; height: 18px;
+            border-radius: 50%; display: none; align-items: center; justify-content: center;
+            border: 2px solid white;
+        }
+        .hamburger {
+            display: none; flex-direction: column; gap: 5px;
+            cursor: pointer; padding: 5px; background: none; border: none;
+        }
+        .hamburger span { display: block; width: 24px; height: 2px; background: var(--dark-text); border-radius: 2px; transition: all 0.3s; }
 
         /* Responsive */
         @media (max-width: 868px) {
@@ -404,6 +423,104 @@
             .contact-form-box { padding: 30px 22px; }
             .form-row { grid-template-columns: 1fr; }
         }
+        :root {
+    --primary-green: #76e037;
+    --dark-footer: #151e13; /* The background color */
+    --gray-text: #666;
+}
+/* ===================== FOOTER ===================== */
+footer { 
+    background-color: var(--dark-footer); 
+    color: #fff; 
+    padding: clamp(50px, 7vw, 80px) 5% 30px; 
+    margin-top: 20px; 
+}
+.footer-grid { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    display: grid; 
+    grid-template-columns: 1.5fr 1fr 1fr 1.5fr; 
+    gap: 40px; 
+    margin-bottom: 60px; 
+}
+.footer-logo { 
+    font-weight: 800; 
+    font-size: 1.4rem; 
+    margin-bottom: 20px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+}
+.footer-desc { color: #a0a89f; font-size: 0.9rem; line-height: 1.6; }
+.footer-col h4 { font-size: 1rem; font-weight: 700; margin-bottom: 25px; }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 12px; }
+.footer-links a { color: #a0a89f; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+.footer-links a:hover { color: var(--primary-green); }
+
+.newsletter-text { color: #a0a89f; font-size: 0.9rem; margin-bottom: 20px; }
+.newsletter-form { 
+    display: flex; 
+    background: rgba(255,255,255,0.05); 
+    padding: 5px; 
+    border-radius: 50px; 
+    border: 1px solid rgba(255,255,255,0.1); 
+}
+.newsletter-form input { 
+    background: transparent; 
+    border: none; 
+    padding: 10px 15px; 
+    color: #fff; 
+    flex: 1; 
+    outline: none; 
+    font-family: 'Inter', sans-serif; 
+    min-width: 0; 
+}
+.btn-join { 
+    background: var(--primary-green); 
+    border: none; 
+    padding: 10px 20px; 
+    border-radius: 50px; 
+    font-weight: 700; 
+    cursor: pointer; 
+    font-family: 'Inter', sans-serif; 
+    white-space: nowrap; 
+}
+
+.footer-bottom { 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding-top: 30px; 
+    border-top: 1px solid rgba(255,255,255,0.1); 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    font-size: 0.8rem; 
+    color: #666; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+}
+.legal-links { display: flex; gap: 5px; flex-wrap: wrap; }
+.legal-links a { color: #666; text-decoration: none; margin-left: 15px; }
+/* Tablet Adjustments */
+@media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 36px; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 12px; }
+    .legal-links { justify-content: center; }
+}
+
+/* Small Phone Adjustments */
+@media (max-width: 480px) {
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .newsletter-form { flex-direction: column; border-radius: 14px; gap: 6px; }
+    .btn-join { border-radius: 10px; padding: 12px; }
+}
+   
     </style>
 </head>
 <body>
@@ -416,18 +533,26 @@
         </a>
         <nav>
             <ul class="nav-links">
-                <li><a href="#">Our Story</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">Impact</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="Support.html">Support</a></li>
+                <li><a href="OurStory.html">Our Story</a></li>
             </ul>
         </nav>
-        <a href="https://wa.me/c/919391324411" class="btn-shop">Shop Now</a>
+        <div class="nav-right">
+        <a href="cart.html" class="cart-nav-btn" id="cartNavBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="19" height="19"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-nav-badge" id="cartNavBadge">0</span>
+        </a>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+        <a href="https://wa.me/c/919391324411" class="btn-shop">Shop on WhatsApp</a>
+    </div>
     </header>
 
     <!-- PAGE BANNER -->
     <section class="page-banner">
-        <div class="badge">HELP & SUPPORT</div>
         <h1>How Can We Help You?</h1>
         <p>Everything you need to know about our products, orders, and community.</p>
     </section>
@@ -791,6 +916,17 @@
             document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
             if (!isOpen) item.classList.add('open');
         }
+        function updateNavButtons() {
+        const hamburger = document.getElementById('hamburger');
+        const navShop = document.getElementById('navShop');
+        if (window.innerWidth <= 768) {
+            if(hamburger) hamburger.style.display = 'flex';
+            if(navShop) navShop.style.display = 'none';
+        } else {
+            if(hamburger) hamburger.style.display = 'none';
+            if(navShop) navShop.style.display = 'inline-block';
+        }
+    }
 
         // Navbar scroll shadow
         window.onscroll = function() {

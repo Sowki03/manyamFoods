@@ -886,7 +886,7 @@
     <div class="container" id="products-section">
         <div class="section-header reveal">
             <h2>The Manyam Collection</h2>
-            <a href="https://wa.me/c/919391324411" class="view-all">View All →</a>
+            <a href="products.html" class="view-all">View All →</a>
         </div>
 
         <div class="category-grid reveal-group">
@@ -1034,8 +1034,62 @@
             </div>
         </div>
     </footer>
+    <!-- ORDER SECTION -->
+<div class="container" id="order-section">
+    <h2>Place Your Order</h2>
+
+    <form id="orderForm">
+        <div style="display:grid; gap:15px; max-width:500px;">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="tel" id="phone" placeholder="Phone Number" required>
+
+            <select id="product" required>
+                <option value="">Select Product</option>
+                <option value="Millet Crunch">Millet Crunch</option>
+                <option value="Turmeric Powder">Turmeric Powder</option>
+                <option value="Horse Gram Powder">Horse Gram Powder</option>
+                <option value="Golden Shield">Golden Shield</option>
+            </select>
+
+            <input type="number" id="quantity" placeholder="Quantity" min="1" required>
+
+            <textarea id="address" placeholder="Delivery Address" rows="3" required></textarea>
+
+            <button type="submit" class="btn-primary">Submit Order</button>
+        </div>
+    </form>
+</div>
 
     <script>
+        // ── Order Form to WhatsApp ──
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const product = document.getElementById('product').value;
+            const quantity = document.getElementById('quantity').value;
+            const address = document.getElementById('address').value;
+
+            const message =
+        `🛒 *New Order - Manyam Foods*
+
+        👤 Name: ${name}
+        📞 Phone: ${phone}
+
+        📦 Product: ${product}
+        🔢 Quantity: ${quantity}
+
+        🏠 Address:
+        ${address}
+
+        Please confirm availability and payment details.`;
+
+            const whatsappNumber = "917207021603"; // without +
+            const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+            window.open(url, '_blank');
+        });
         // ── Navbar scroll shadow ──
         window.addEventListener('scroll', function () {
             const nav = document.getElementById('navbar');
