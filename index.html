@@ -233,6 +233,8 @@
         .btn-add:hover { background: #333; transform: translateY(-1px); }
         .btn-add.added { background: var(--primary-green); color: black; }
         .btn-add svg { width: 14px; height: 14px; flex-shrink: 0; }
+        .btn-add:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .grid-msg { grid-column: 1 / -1; text-align: center; color: var(--gray-text); padding: 40px 10px; font-size: 0.9rem; }
 
         /* TOAST */
         .toast {
@@ -416,7 +418,7 @@
     <a href="Support.html" onclick="toggleMenu()">Support</a>
     <a href="#" onclick="toggleMenu()">Contact</a>
     <a href="cart.html" onclick="toggleMenu()">🛒 Cart</a>
-    <a href="https://wa.me/c/919391324411" class="btn-shop-mobile">Shop On Whatsapp</a>
+    <a href="https://wa.me/c/917207021603" class="btn-shop-mobile">Shop On Whatsapp</a>
 </div>
 
 <!-- NAVBAR -->
@@ -441,7 +443,7 @@
         <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
             <span></span><span></span><span></span>
         </button>
-        <a href="https://wa.me/c/919391324411" class="btn-shop" id="navShop">Shop On Whatsapp</a>
+        <a href="https://wa.me/c/917207021603" class="btn-shop" id="navShop">Shop On Whatsapp</a>
     </div>
 </header>
 
@@ -504,135 +506,11 @@
 <div class="container" id="products-section">
     <div class="section-header reveal">
         <h2>The Manyam Collection</h2>
-        <a href="products.html" class="view-all">View All 16 Products →</a>
+        <a href="products.html" class="view-all">View All Products →</a>
     </div>
 
-    <div class="product-grid reveal-group">
-
-        <!-- Millet Crunch -->
-        <div class="product-card reveal">
-            <div class="prod-img-wrap">
-                <img src="images/millet crunch.jpeg" alt="Millet Crunch">
-                <span class="prod-badge hot">Best Seller</span>
-            </div>
-            <div class="prod-info">
-                <div class="prod-name">Millet Crunch</div>
-                <div class="prod-desc">No refined sugar. Just Millet, Jaggery, and Pure Joy.</div>
-                <div class="weight-row">
-                    <select class="w-select" onchange="updatePrice(this)">
-                        <option value="199">250g — ₹199</option>
-                        <option value="349">500g — ₹349</option>
-                        <option value="599">1 kg — ₹599</option>
-                    </select>
-                    <span class="prod-price">₹199</span>
-                </div>
-                <div class="add-row">
-                    <div class="qty-ctrl">
-                        <button class="qty-btn" onclick="chQty(this,-1)">−</button>
-                        <input class="qty-num" value="1" readonly>
-                        <button class="qty-btn" onclick="chQty(this,1)">+</button>
-                    </div>
-                    <button class="btn-add" onclick="addCart(this,'Millet Crunch')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                        Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Turmeric Powder -->
-        <div class="product-card reveal">
-            <div class="prod-img-wrap">
-                <img src="images/turmeric.jpeg" alt="Turmeric Powder">
-                <span class="prod-badge">Pure</span>
-            </div>
-            <div class="prod-info">
-                <div class="prod-name">Turmeric Powder</div>
-                <div class="prod-desc">One pinch, infinite aroma. Taste the stone-ground difference.</div>
-                <div class="weight-row">
-                    <select class="w-select" onchange="updatePrice(this)">
-                        <option value="149">100g — ₹149</option>
-                        <option value="249">250g — ₹249</option>
-                        <option value="449">500g — ₹449</option>
-                    </select>
-                    <span class="prod-price">₹149</span>
-                </div>
-                <div class="add-row">
-                    <div class="qty-ctrl">
-                        <button class="qty-btn" onclick="chQty(this,-1)">−</button>
-                        <input class="qty-num" value="1" readonly>
-                        <button class="qty-btn" onclick="chQty(this,1)">+</button>
-                    </div>
-                    <button class="btn-add" onclick="addCart(this,'Turmeric Powder')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                        Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Horse Gram Powder -->
-        <div class="product-card reveal">
-            <div class="prod-img-wrap">
-                <img src="images/powder.jpeg" alt="Horse Gram Powder">
-                <span class="prod-badge">Protein Rich</span>
-            </div>
-            <div class="prod-info">
-                <div class="prod-name">Horse Gram Powder</div>
-                <div class="prod-desc">The ancient secret to a leaner, fitter you.</div>
-                <div class="weight-row">
-                    <select class="w-select" onchange="updatePrice(this)">
-                        <option value="179">250g — ₹179</option>
-                        <option value="329">500g — ₹329</option>
-                        <option value="579">1 kg — ₹579</option>
-                    </select>
-                    <span class="prod-price">₹179</span>
-                </div>
-                <div class="add-row">
-                    <div class="qty-ctrl">
-                        <button class="qty-btn" onclick="chQty(this,-1)">−</button>
-                        <input class="qty-num" value="1" readonly>
-                        <button class="qty-btn" onclick="chQty(this,1)">+</button>
-                    </div>
-                    <button class="btn-add" onclick="addCart(this,'Horse Gram Powder')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                        Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Golden Shield -->
-        <div class="product-card reveal">
-            <div class="prod-img-wrap">
-                <img src="images/golden.jpeg" alt="Golden Shield">
-                <span class="prod-badge hot">Immunity</span>
-            </div>
-            <div class="prod-info">
-                <div class="prod-name">Golden Shield</div>
-                <div class="prod-desc">Your daily armor in a single spoonful of golden goodness.</div>
-                <div class="weight-row">
-                    <select class="w-select" onchange="updatePrice(this)">
-                        <option value="299">100g — ₹299</option>
-                        <option value="549">200g — ₹549</option>
-                        <option value="999">500g — ₹999</option>
-                    </select>
-                    <span class="prod-price">₹299</span>
-                </div>
-                <div class="add-row">
-                    <div class="qty-ctrl">
-                        <button class="qty-btn" onclick="chQty(this,-1)">−</button>
-                        <input class="qty-num" value="1" readonly>
-                        <button class="qty-btn" onclick="chQty(this,1)">+</button>
-                    </div>
-                    <button class="btn-add" onclick="addCart(this,'Golden Shield')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-                        Add to Cart
-                    </button>
-                </div>
-            </div>
-        </div>
-
+    <div class="product-grid" id="featuredGrid">
+        <div class="grid-msg">Loading products…</div>
     </div>
 
     <!-- ABOUT / IMPACT -->
@@ -710,7 +588,7 @@
             <h4>Quick Links</h4>
             <ul class="footer-links">
                 <li><a href="https://www.instagram.com/manyamfoods?igsh=ZGM1NHpmYjE4dHJq">Instagram</a></li>
-                <li><a href="https://wa.me/c/919391324411">WhatsApp</a></li>
+                <li><a href="https://wa.me/c/917207021603">WhatsApp</a></li>
                 <li><a href="https://www.youtube.com/@manyamfoods?si=5k703m_ByN-hLhiD">YouTube</a></li>
             </ul>
         </div>
@@ -735,59 +613,16 @@
     <div class="footer-bottom">
         <p>© 2024 Manyam Foods. All rights reserved. Handcrafted with care.</p>
         <div class="legal-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
         </div>
     </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
 <script>
-    // ── Cart utilities (shared with products.html & cart.html) ──
-    function getCart(){ return JSON.parse(localStorage.getItem('manyamCart')||'[]'); }
-    function saveCart(c){ localStorage.setItem('manyamCart', JSON.stringify(c)); }
-
-    function refreshBadge(){
-        const total = getCart().reduce((s,i)=>s+i.qty, 0);
-        const b = document.getElementById('cartNavBadge');
-        b.textContent = total;
-        b.classList.toggle('show', total > 0);
-    }
-
-    function updatePrice(sel){
-        sel.closest('.prod-info').querySelector('.prod-price').textContent = '₹'+sel.value;
-    }
-
-    function chQty(btn, d){
-        const inp = btn.parentElement.querySelector('.qty-num');
-        let v = parseInt(inp.value)+d; if(v<1)v=1; if(v>99)v=99; inp.value=v;
-    }
-
-    function addCart(btn, name){
-        const card = btn.closest('.product-card');
-        const sel = card.querySelector('.w-select');
-        const variant = sel.options[sel.selectedIndex].text;
-        const price = parseInt(sel.value);
-        const qty = parseInt(card.querySelector('.qty-num').value);
-        const img = card.querySelector('img').src;
-
-        const cart = getCart();
-        const key = name+'|'+variant;
-        const ex = cart.find(i=>i.key===key);
-        if(ex) ex.qty += qty; else cart.push({key,name,variant,price,qty,img});
-        saveCart(cart); refreshBadge();
-
-        btn.classList.add('added');
-        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Added!`;
-        setTimeout(()=>{
-            btn.classList.remove('added');
-            btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Add to Cart`;
-        }, 1800);
-
-        const t = document.getElementById('toast');
-        document.getElementById('toastMsg').textContent = '🛒 '+name+' added to cart!';
-        t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 2400);
-    }
-
     // ── Navbar scroll shadow ──
     window.addEventListener('scroll', function () {
         const nav = document.getElementById('navbar');
@@ -832,8 +667,22 @@
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Init badge
-    refreshBadge();
+    // ── Featured products from the database ──
+    (async function loadFeatured(){
+        const grid = document.getElementById('featuredGrid');
+        try {
+            const products = await fetchProducts({ featuredOnly: true });
+            if(!products.length){ grid.innerHTML = '<div class="grid-msg">New products coming soon.</div>'; return; }
+            grid.classList.add('reveal-group');
+            grid.innerHTML = products.slice(0, 8).map(p => productCardHTML(p, {
+                card: 'reveal', imgWrap: 'prod-img-wrap', badge: 'prod-badge', info: 'prod-info',
+                name: 'prod-name', desc: 'prod-desc', price: 'prod-price', qty: 'qty-ctrl'
+            })).join('');
+            grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        } catch(e){
+            grid.innerHTML = `<div class="grid-msg">${esc(errMsg(e))}</div>`;
+        }
+    })();
 </script>
 </body>
 </html>

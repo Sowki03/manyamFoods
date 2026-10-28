@@ -255,7 +255,7 @@ footer {
         <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
             <span></span><span></span><span></span>
         </button>
-        <a href="https://wa.me/c/919391324411" class="btn-shop">Shop on WhatsApp</a>
+        <a href="https://wa.me/c/917207021603" class="btn-shop">Shop on WhatsApp</a>
     </div>
 </header>
 
@@ -320,7 +320,7 @@ footer {
                 <h4>Quick Links</h4>
                 <ul class="footer-links">
                     <li><a href="https://www.instagram.com/manyamfoods">Instagram</a></li>
-                    <li><a href="https://wa.me/c/919391324411">WhatsApp</a></li>
+                    <li><a href="https://wa.me/c/917207021603">WhatsApp</a></li>
                     <li><a href="https://www.youtube.com/@manyamfoods">YouTube</a></li>
                 </ul>
             </div>
@@ -345,24 +345,16 @@ footer {
         <div class="footer-bottom">
             <p>© 2024 Manyam Foods. All rights reserved. Handcrafted with care.</p>
             <div class="legal-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
             </div>
         </div>
     </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
 <script>
-    // Shared Cart logic
-    function getCart(){ return JSON.parse(localStorage.getItem('manyamCart')||'[]'); }
-    function refreshBadge(){
-        const total = getCart().reduce((s,i)=>s+i.qty, 0);
-        const b = document.getElementById('cartNavBadge');
-        if(b) {
-            b.textContent = total;
-            b.classList.toggle('show', total > 0);
-        }
-    }
-
     // Scroll Navbar Shadow
     window.addEventListener('scroll', function () {
         const nav = document.getElementById('navbar');
@@ -396,7 +388,6 @@ footer {
 
     updateNavButtons();
     window.addEventListener('resize', updateNavButtons);
-    refreshBadge();
 </script>
 </body>
 </html>

@@ -136,6 +136,8 @@
         .btn-add:hover { background: #333; transform: translateY(-1px); }
         .btn-add.added { background: var(--green); color: black; }
         .btn-add svg { width: 14px; height: 14px; flex-shrink: 0; }
+        .btn-add:disabled { background: #ccc; cursor: not-allowed; transform: none; }
+        .grid-msg { grid-column: 1 / -1; text-align: center; color: var(--gray); padding: 60px 10px; font-size: 0.9rem; }
 
         /* TOAST */
         .toast {
@@ -267,7 +269,7 @@ footer {
     <a href="products.html" onclick="toggleMenu()">Products</a>
     <a href="index.html#impact-section" onclick="toggleMenu()">Our Story</a>
     <a href="cart.html" onclick="toggleMenu()">🛒 Cart</a>
-    <a href="https://wa.me/c/919391324411" class="m-shop" onclick="toggleMenu()">Shop on WhatsApp</a>
+    <a href="https://wa.me/c/917207021603" class="m-shop" onclick="toggleMenu()">Shop on WhatsApp</a>
 </div>
 
 <!-- NAVBAR -->
@@ -287,7 +289,7 @@ footer {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
             <span class="cart-badge" id="cartBadge">0</span>
         </a>
-        <a href="https://wa.me/c/919391324411" class="btn-shop">Shop on WhatsApp</a>
+        <a href="https://wa.me/c/917207021603" class="btn-shop">Shop on WhatsApp</a>
         <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
     </div>
 </header>
@@ -296,347 +298,25 @@ footer {
 <div class="page-header">
     <div class="breadcrumb"><a href="index.html">Home</a> / <span style="color:var(--green);font-weight:600;">All Products</span></div>
     <h1>The Manyam Collection</h1>
-    <p>16 handcrafted products from rural women artisans across tribal heartlands</p>
+    <p>Handcrafted products from rural women artisans across tribal heartlands</p>
 </div>
 
 <!-- FILTER BAR -->
 <div class="filter-bar">
     <span class="filter-label">Filter:</span>
-    <button class="filter-btn active" onclick="filterProducts(this,'all')">All</button>
-    <button class="filter-btn" onclick="filterProducts(this,'powders')">Powders</button>
-    <button class="filter-btn" onclick="filterProducts(this,'millets')">Millets</button>
-    <button class="filter-btn" onclick="filterProducts(this,'oils')">Oils & Ghee</button>
-    <button class="filter-btn" onclick="filterProducts(this,'pickles')">Pickles</button>
-    <button class="filter-btn" onclick="filterProducts(this,'snacks')">Snacks</button>
-    <span class="result-count" id="resultCount">16 products</span>
+    <button class="filter-btn active" data-cat="all" onclick="filterProducts(this,'all')">All</button>
+    <button class="filter-btn" data-cat="powders" onclick="filterProducts(this,'powders')">Powders</button>
+    <button class="filter-btn" data-cat="millets" onclick="filterProducts(this,'millets')">Millets</button>
+    <button class="filter-btn" data-cat="oils" onclick="filterProducts(this,'oils')">Oils & Ghee</button>
+    <button class="filter-btn" data-cat="pickles" onclick="filterProducts(this,'pickles')">Pickles</button>
+    <button class="filter-btn" data-cat="snacks" onclick="filterProducts(this,'snacks')">Snacks</button>
+    <span class="result-count" id="resultCount"></span>
 </div>
 
 <!-- PRODUCTS GRID -->
 <div class="products-wrapper">
 <div class="products-grid" id="productsGrid">
-
-<!-- Helper macro — each card follows same structure -->
-
-<!-- 1 Millet Crunch -->
-<div class="product-card" data-category="snacks">
-  <div class="img-wrap"><img src="images/millet crunch.jpeg" alt="Millet Crunch" loading="lazy"><span class="p-badge hot">Best Seller</span></div>
-  <div class="p-info">
-    <div class="p-name">Millet Crunch</div>
-    <div class="p-desc">No refined sugar. Just Millet, Jaggery, and Pure Joy.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="199">250g — ₹199</option><option value="349">500g — ₹349</option><option value="599">1 kg — ₹599</option></select>
-      <span class="p-price">₹199</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Millet Crunch')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 2 Turmeric Powder -->
-<div class="product-card" data-category="powders">
-  <div class="img-wrap"><img src="images/turmeric.jpeg" alt="Turmeric Powder" loading="lazy"><span class="p-badge">Pure</span></div>
-  <div class="p-info">
-    <div class="p-name">Turmeric Powder</div>
-    <div class="p-desc">One pinch, infinite aroma. The stone-ground difference.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="149">100g — ₹149</option><option value="249">250g — ₹249</option><option value="449">500g — ₹449</option></select>
-      <span class="p-price">₹149</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Turmeric Powder')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 3 Horse Gram Powder -->
-<div class="product-card" data-category="powders">
-  <div class="img-wrap"><img src="images/powder.jpeg" alt="Horse Gram Powder" loading="lazy"><span class="p-badge">Protein Rich</span></div>
-  <div class="p-info">
-    <div class="p-name">Horse Gram Powder</div>
-    <div class="p-desc">The ancient secret to a leaner, fitter you.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="179">250g — ₹179</option><option value="329">500g — ₹329</option><option value="579">1 kg — ₹579</option></select>
-      <span class="p-price">₹179</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Horse Gram Powder')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 4 Golden Shield -->
-<div class="product-card" data-category="powders">
-  <div class="img-wrap"><img src="images/golden.jpeg" alt="Golden Shield" loading="lazy"><span class="p-badge hot">Immunity</span></div>
-  <div class="p-info">
-    <div class="p-name">Golden Shield</div>
-    <div class="p-desc">Your daily armor in a single spoonful of golden goodness.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="299">100g — ₹299</option><option value="549">200g — ₹549</option><option value="999">500g — ₹999</option></select>
-      <span class="p-price">₹299</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Golden Shield')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 5 Foxtail Millet -->
-<div class="product-card" data-category="millets">
-  <div class="img-wrap"><img src="images/millet crunch.jpeg" alt="Foxtail Millet" loading="lazy"><span class="p-badge">Whole Grain</span></div>
-  <div class="p-info">
-    <div class="p-name">Foxtail Millet</div>
-    <div class="p-desc">Nutritious ancient grain, sun-dried and stone-cleaned for purity.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="129">500g — ₹129</option><option value="229">1 kg — ₹229</option><option value="419">2 kg — ₹419</option></select>
-      <span class="p-price">₹129</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Foxtail Millet')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 6 Finger Millet Flour -->
-<div class="product-card" data-category="millets">
-  <div class="img-wrap"><img src="images/millet crunch.jpeg" alt="Ragi Flour" loading="lazy"><span class="p-badge">Calcium Rich</span></div>
-  <div class="p-info">
-    <div class="p-name">Finger Millet Flour (Ragi)</div>
-    <div class="p-desc">Stone-ground ragi flour — the superfood your family needs daily.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="149">500g — ₹149</option><option value="269">1 kg — ₹269</option><option value="499">2 kg — ₹499</option></select>
-      <span class="p-price">₹149</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Finger Millet Flour')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 7 Groundnut Oil -->
-<div class="product-card" data-category="oils">
-  <div class="img-wrap"><img src="images/golden.jpeg" alt="Groundnut Oil" loading="lazy"><span class="p-badge hot">Cold Pressed</span></div>
-  <div class="p-info">
-    <div class="p-name">Cold Pressed Groundnut Oil</div>
-    <div class="p-desc">Wooden-churner extracted — maximum flavor, zero chemicals.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="349">500ml — ₹349</option><option value="649">1 L — ₹649</option><option value="1199">2 L — ₹1199</option></select>
-      <span class="p-price">₹349</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Cold Pressed Groundnut Oil')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 8 A2 Ghee -->
-<div class="product-card" data-category="oils">
-  <div class="img-wrap"><img src="images/golden.jpeg" alt="Pure Cow Ghee" loading="lazy"><span class="p-badge">A2 Ghee</span></div>
-  <div class="p-info">
-    <div class="p-name">Pure Cow Ghee (A2)</div>
-    <div class="p-desc">Bilona-churned from desi cow curd — rich, aromatic, nourishing.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="499">250g — ₹499</option><option value="899">500g — ₹899</option><option value="1699">1 kg — ₹1699</option></select>
-      <span class="p-price">₹499</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Pure Cow Ghee A2')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 9 Mango Pickle -->
-<div class="product-card" data-category="pickles">
-  <div class="img-wrap"><img src="images/turmeric.jpeg" alt="Raw Mango Pickle" loading="lazy"><span class="p-badge hot">Tangy</span></div>
-  <div class="p-info">
-    <div class="p-name">Raw Mango Pickle</div>
-    <div class="p-desc">Sun-pickled in traditional stone jars — grandma's recipe, preserved.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="199">250g — ₹199</option><option value="369">500g — ₹369</option><option value="699">1 kg — ₹699</option></select>
-      <span class="p-price">₹199</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Raw Mango Pickle')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 10 Gongura Pickle -->
-<div class="product-card" data-category="pickles">
-  <div class="img-wrap"><img src="images/turmeric.jpeg" alt="Gongura Pickle" loading="lazy"><span class="p-badge">Andhra Special</span></div>
-  <div class="p-info">
-    <div class="p-name">Gongura Pickle</div>
-    <div class="p-desc">Fiery sorrel leaves slow-cooked with sesame and mustard.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="219">250g — ₹219</option><option value="399">500g — ₹399</option><option value="749">1 kg — ₹749</option></select>
-      <span class="p-price">₹219</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Gongura Pickle')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 11 Red Chilli Powder -->
-<div class="product-card" data-category="powders">
-  <div class="img-wrap"><img src="images/powder.jpeg" alt="Red Chilli Powder" loading="lazy"><span class="p-badge hot">Fiery</span></div>
-  <div class="p-info">
-    <div class="p-name">Red Chilli Powder</div>
-    <div class="p-desc">Sun-dried Guntur chillies, stone-ground for real heat and color.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="129">100g — ₹129</option><option value="229">250g — ₹229</option><option value="399">500g — ₹399</option></select>
-      <span class="p-price">₹129</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Red Chilli Powder')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 12 Coriander Powder -->
-<div class="product-card" data-category="powders">
-  <div class="img-wrap"><img src="images/powder.jpeg" alt="Coriander Powder" loading="lazy"><span class="p-badge">Aromatic</span></div>
-  <div class="p-info">
-    <div class="p-name">Coriander Powder</div>
-    <div class="p-desc">Slow-roasted and freshly ground — brightens every curry.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="99">100g — ₹99</option><option value="179">250g — ₹179</option><option value="329">500g — ₹329</option></select>
-      <span class="p-price">₹99</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Coriander Powder')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 13 Millet Laddoo -->
-<div class="product-card" data-category="snacks">
-  <div class="img-wrap"><img src="images/millet crunch.jpeg" alt="Jaggery Millet Laddoo" loading="lazy"><span class="p-badge">No Preservatives</span></div>
-  <div class="p-info">
-    <div class="p-name">Jaggery Millet Laddoo</div>
-    <div class="p-desc">Hand-rolled energy balls with millets and forest jaggery.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="249">250g — ₹249</option><option value="459">500g — ₹459</option><option value="849">1 kg — ₹849</option></select>
-      <span class="p-price">₹249</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Jaggery Millet Laddoo')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 14 Pearl Millet Flour -->
-<div class="product-card" data-category="millets">
-  <div class="img-wrap"><img src="images/millet crunch.jpeg" alt="Pearl Millet Flour" loading="lazy"><span class="p-badge">Bajra</span></div>
-  <div class="p-info">
-    <div class="p-name">Pearl Millet (Bajra) Flour</div>
-    <div class="p-desc">Iron-rich bajra flour, stone-ground fresh — perfect for rotis.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="119">500g — ₹119</option><option value="219">1 kg — ₹219</option><option value="399">2 kg — ₹399</option></select>
-      <span class="p-price">₹119</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Pearl Millet Flour')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 15 Sesame Oil -->
-<div class="product-card" data-category="oils">
-  <div class="img-wrap"><img src="images/golden.jpeg" alt="Sesame Oil" loading="lazy"><span class="p-badge">Cold Pressed</span></div>
-  <div class="p-info">
-    <div class="p-name">Cold Pressed Sesame Oil</div>
-    <div class="p-desc">Gingelly oil with deep nutty aroma — traditional south Indian goodness.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="299">250ml — ₹299</option><option value="549">500ml — ₹549</option><option value="999">1 L — ₹999</option></select>
-      <span class="p-price">₹299</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Cold Pressed Sesame Oil')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- 16 Tamarind Paste -->
-<div class="product-card" data-category="pickles">
-  <div class="img-wrap"><img src="images/turmeric.jpeg" alt="Tamarind Paste" loading="lazy"><span class="p-badge">No Additives</span></div>
-  <div class="p-info">
-    <div class="p-name">Tamarind Paste</div>
-    <div class="p-desc">Pure tamarind pulp, hand-processed from forest-harvested pods.</div>
-    <div class="weight-row">
-      <select class="w-select" onchange="updatePrice(this)"><option value="149">200g — ₹149</option><option value="279">400g — ₹279</option><option value="499">800g — ₹499</option></select>
-      <span class="p-price">₹149</span>
-    </div>
-    <div class="add-row">
-      <div class="qty"><button class="qty-btn" onclick="chQty(this,-1)">−</button><input class="qty-num" value="1" readonly><button class="qty-btn" onclick="chQty(this,1)">+</button></div>
-      <button class="btn-add" onclick="addCart(this,'Tamarind Paste')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Add to Cart
-      </button>
-    </div>
-  </div>
-</div>
-
+  <div class="grid-msg">Loading products…</div>
 </div><!-- /products-grid -->
 </div><!-- /products-wrapper -->
 
@@ -657,7 +337,7 @@ footer {
                 <h4>Quick Links</h4>
                 <ul class="footer-links">
                     <li><a href="https://www.instagram.com/manyamfoods">Instagram</a></li>
-                    <li><a href="https://wa.me/c/919391324411">WhatsApp</a></li>
+                    <li><a href="https://wa.me/c/917207021603">WhatsApp</a></li>
                     <li><a href="https://www.youtube.com/@manyamfoods">YouTube</a></li>
                 </ul>
             </div>
@@ -682,61 +362,22 @@ footer {
         <div class="footer-bottom">
             <p>© 2024 Manyam Foods. All rights reserved. Handcrafted with care.</p>
             <div class="legal-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
             </div>
         </div>
     </footer>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
 <script>
-// Cart utilities
-function getCart(){ return JSON.parse(localStorage.getItem('manyamCart')||'[]'); }
-function saveCart(c){ localStorage.setItem('manyamCart', JSON.stringify(c)); }
-function refreshBadge(){
-    const total = getCart().reduce((s,i)=>s+i.qty,0);
-    const b = document.getElementById('cartBadge');
-    b.textContent = total; b.classList.toggle('show', total>0);
-}
-
-function updatePrice(sel){
-    sel.closest('.p-info').querySelector('.p-price').textContent = '₹'+sel.value;
-}
-function chQty(btn, d){
-    const inp = btn.parentElement.querySelector('.qty-num');
-    let v = parseInt(inp.value)+d; if(v<1)v=1; if(v>99)v=99; inp.value=v;
-}
-function addCart(btn, name){
-    const card = btn.closest('.product-card');
-    const sel = card.querySelector('.w-select');
-    const variant = sel.options[sel.selectedIndex].text;
-    const price = parseInt(sel.value);
-    const qty = parseInt(card.querySelector('.qty-num').value);
-    const img = card.querySelector('img').src;
-
-    const cart = getCart();
-    const key = name+'|'+variant;
-    const ex = cart.find(i=>i.key===key);
-    if(ex) ex.qty += qty; else cart.push({key,name,variant,price,qty,img});
-    saveCart(cart); refreshBadge();
-
-    btn.classList.add('added');
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Added!`;
-    setTimeout(()=>{
-        btn.classList.remove('added');
-        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg> Add to Cart`;
-    }, 1800);
-
-    const t = document.getElementById('toast');
-    document.getElementById('toastMsg').textContent = '🛒 '+name+' added to cart!';
-    t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400);
-}
-
 function filterProducts(btn, cat){
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     let count=0;
-    document.querySelectorAll('.product-card').forEach(c=>{
+    document.querySelectorAll('#productsGrid .product-card').forEach(c=>{
         const show = cat==='all' || c.dataset.category===cat;
         c.style.display = show?'':'none'; if(show)count++;
     });
@@ -755,7 +396,23 @@ function updateNav(){
     else{h.style.display='none';if(s)s.style.display='inline-block';}
 }
 updateNav(); window.addEventListener('resize',updateNav);
-refreshBadge();
+
+// ── All products from the database ──
+(async function loadProducts(){
+    const grid = document.getElementById('productsGrid');
+    try {
+        const products = await fetchProducts();
+        if(!products.length){ grid.innerHTML = '<div class="grid-msg">New products coming soon.</div>'; return; }
+        grid.innerHTML = products.map(p => productCardHTML(p, {
+            imgWrap: 'img-wrap', badge: 'p-badge', info: 'p-info',
+            name: 'p-name', desc: 'p-desc', price: 'p-price', qty: 'qty'
+        })).join('');
+        filterProducts(document.querySelector('.filter-btn.active'), document.querySelector('.filter-btn.active').dataset.cat || 'all');
+    } catch(e){
+        grid.innerHTML = `<div class="grid-msg">${esc(errMsg(e))}</div>`;
+        document.getElementById('resultCount').textContent = '';
+    }
+})();
 </script>
 </body>
 </html>

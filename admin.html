@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Manyam Foods | Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #76e037;
+            --green-dark: #4c9a1f;
+            --orange: #c85a3a;
+            --dark: #1a1a1a;
+            --gray: #666;
+            --border: #e5ebe2;
+            --bg: #f4f7f2;
+            --card: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--dark); font-size: 14px; }
+        button, input, select, textarea { font-family: inherit; font-size: inherit; }
+        a { color: inherit; }
+
+        /* TOP BAR */
+        .topbar { background: #151e13; color: white; display: flex; align-items: center; justify-content: space-between; padding: 12px 24px; gap: 12px; position: sticky; top: 0; z-index: 50; }
+        .brand { font-weight: 800; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+        .brand .dot { width: 18px; height: 18px; background: var(--green); border-radius: 4px; }
+        .brand small { font-weight: 600; color: var(--green); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; }
+        .top-right { display: flex; align-items: center; gap: 14px; font-size: 0.8rem; color: #a0a89f; }
+        .top-right a, .top-right button { color: white; background: none; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 6px 12px; cursor: pointer; text-decoration: none; font-size: 0.78rem; font-weight: 600; }
+        .top-right .email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+
+        /* TABS */
+        .tabs { display: flex; gap: 4px; padding: 0 24px; background: white; border-bottom: 1px solid var(--border); overflow-x: auto; }
+        .tab { padding: 14px 16px; border: none; background: none; cursor: pointer; font-weight: 600; color: var(--gray); border-bottom: 2.5px solid transparent; white-space: nowrap; }
+        .tab.active { color: var(--dark); border-bottom-color: var(--green); }
+        .tab .count { background: var(--orange); color: white; border-radius: 50px; font-size: 0.65rem; padding: 1px 7px; margin-left: 4px; }
+
+        main { max-width: 1200px; margin: 0 auto; padding: 24px; }
+        .panel { display: none; }
+        .panel.active { display: block; }
+        .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+        .panel-head h2 { font-size: 1.25rem; font-weight: 800; }
+
+        /* BUTTONS + FIELDS */
+        .btn { padding: 9px 16px; border-radius: 10px; border: 1.5px solid var(--border); background: white; cursor: pointer; font-weight: 700; font-size: 0.82rem; color: var(--dark); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+        .btn:hover { border-color: var(--green); }
+        .btn.primary { background: var(--green); border-color: var(--green); color: black; }
+        .btn.dark { background: var(--dark); border-color: var(--dark); color: white; }
+        .btn.danger { color: var(--orange); }
+        .btn.wa { background: #25D366; border-color: #25D366; color: white; }
+        .btn:disabled { opacity: 0.5; cursor: wait; }
+        .btn.sm { padding: 6px 10px; font-size: 0.75rem; }
+        .field { display: flex; flex-direction: column; gap: 5px; }
+        .field label { font-size: 0.75rem; font-weight: 700; color: var(--gray); }
+        .field input, .field select, .field textarea, .inp {
+            padding: 9px 12px; border-radius: 9px; border: 1.5px solid var(--border); background: white; outline: none; width: 100%;
+        }
+        .field input:focus, .field select:focus, .field textarea:focus, .inp:focus { border-color: var(--green); }
+        .field textarea { resize: vertical; min-height: 70px; }
+        .check { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .coupon-grid { display: grid; grid-template-columns: 1.2fr 1fr 0.8fr 0.8fr 1fr auto; gap: 12px; align-items: end; }
+
+        /* CARDS */
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 24px; }
+        .stat { padding: 18px; cursor: pointer; transition: border-color 0.2s; }
+        .stat:hover { border-color: var(--green); }
+        .stat .num { font-size: 1.8rem; font-weight: 800; }
+        .stat .lbl { font-size: 0.78rem; color: var(--gray); font-weight: 600; margin-top: 2px; }
+        .stat.alert .num { color: var(--orange); }
+
+        /* TABLE */
+        .table-wrap { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); padding: 12px 14px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+        tr.clickable { cursor: pointer; }
+        tr.clickable:hover td { background: #f9fdf7; }
+        tr:last-child td { border-bottom: none; }
+        .muted { color: var(--gray); font-size: 0.78rem; }
+        .empty { padding: 40px; text-align: center; color: var(--gray); }
+        .pill { display: inline-block; font-size: 0.66rem; font-weight: 700; padding: 3px 9px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap; }
+        .pill.ok { background: #dcfce7; color: #15803d; }
+        .pill.wait { background: #fef3c7; color: #a16207; }
+        .pill.bad { background: #fee2e2; color: #b91c1c; }
+        .pill.info { background: #e0f2fe; color: #0369a1; }
+        .pill.gray { background: #f1f1f1; color: #555; }
+
+        .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+        .filters .inp { width: auto; min-width: 200px; }
+
+        /* PRODUCTS */
+        .prod-thumb { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; background: #f1f1f1; display: block; }
+        .switch { position: relative; width: 38px; height: 22px; display: inline-block; }
+        .switch input { display: none; }
+        .switch span { position: absolute; inset: 0; background: #ddd; border-radius: 22px; cursor: pointer; transition: background 0.2s; }
+        .switch span::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: transform 0.2s; }
+        .switch input:checked + span { background: var(--green); }
+        .switch input:checked + span::after { transform: translateX(16px); }
+
+        /* MODAL */
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: none; align-items: flex-start; justify-content: center; padding: 30px 16px; overflow-y: auto; }
+        .overlay.open { display: flex; }
+        .modal { background: white; border-radius: 18px; width: 100%; max-width: 640px; padding: 24px; position: relative; }
+        .modal h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
+        .modal .sub { color: var(--gray); font-size: 0.8rem; margin-bottom: 18px; }
+        .modal .close { position: absolute; top: 14px; right: 16px; border: none; background: none; font-size: 1.4rem; cursor: pointer; color: var(--gray); }
+        .modal section { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 16px; }
+        .modal section h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--gray); margin-bottom: 10px; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+        .line { display: flex; justify-content: space-between; gap: 10px; padding: 6px 0; font-size: 0.85rem; }
+        .line.total { font-weight: 800; font-size: 1rem; border-top: 1px solid var(--border); margin-top: 6px; padding-top: 10px; }
+        .utr-box { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px; font-size: 0.85rem; }
+        .utr-box code { font-size: 1rem; font-weight: 800; letter-spacing: 0.5px; }
+        .variant-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr auto auto; gap: 8px; align-items: center; margin-bottom: 8px; }
+        .img-preview { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; background: #f1f1f1; border: 1px solid var(--border); }
+        .form-err { color: var(--orange); font-weight: 600; font-size: 0.82rem; margin-top: 10px; }
+        .form-err:empty { display: none; }
+
+        /* GATE */
+        .gate { max-width: 420px; margin: 80px auto; text-align: center; padding: 40px 28px; }
+        .gate h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+        .gate p { color: var(--gray); margin-bottom: 22px; line-height: 1.6; }
+        .btn-google { display: inline-flex; align-items: center; gap: 10px; background: white; border: 1.5px solid #dadce0; border-radius: 50px; padding: 11px 24px; font-weight: 600; cursor: pointer; color: #3c4043; }
+        .btn-google svg { width: 18px; height: 18px; }
+
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: var(--dark); color: white; padding: 11px 22px; border-radius: 50px; font-weight: 600; z-index: 300; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .toast.show { opacity: 1; }
+
+        @media (max-width: 700px) {
+            .topbar { padding: 10px 14px; }
+            .top-right .email { display: none; }
+            .tabs { padding: 0 8px; }
+            main { padding: 16px 12px; }
+            .grid2, .grid3, .coupon-grid { grid-template-columns: 1fr; }
+            .variant-row { grid-template-columns: 1fr 1fr; }
+            .hide-sm { display: none; }
+            .filters .inp { min-width: 0; flex: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <div class="brand"><span class="dot"></span>Manyam Foods <small>Admin</small></div>
+    <div class="top-right">
+        <span class="email" id="adminEmail"></span>
+        <a href="index.html" target="_blank">View store</a>
+        <button id="signOutBtn" hidden onclick="signOut()">Sign out</button>
+    </div>
+</div>
+
+<!-- Shown until we know the visitor is an admin -->
+<div id="gate" class="card gate"><p>Loading…</p></div>
+
+<div id="app" hidden>
+    <nav class="tabs">
+        <button class="tab active" data-tab="dashboard">Dashboard</button>
+        <button class="tab" data-tab="orders">Orders <span class="count" id="actionCount" hidden></span></button>
+        <button class="tab" data-tab="products">Products</button>
+        <button class="tab" data-tab="coupons">Coupons</button>
+        <button class="tab" data-tab="settings">Settings</button>
+    </nav>
+
+    <main>
+        <!-- DASHBOARD -->
+        <section class="panel active" id="panel-dashboard">
+            <div class="panel-head"><h2>Dashboard</h2><button class="btn" onclick="reloadAll()">↻ Refresh</button></div>
+            <div class="stats" id="stats"></div>
+            <div class="card">
+                <div class="panel-head" style="padding:16px 16px 0"><h2 style="font-size:1rem">Latest orders</h2></div>
+                <div class="table-wrap" id="latestOrders"></div>
+            </div>
+        </section>
+
+        <!-- ORDERS -->
+        <section class="panel" id="panel-orders">
+            <div class="panel-head"><h2>Orders</h2><button class="btn" onclick="reloadAll()">↻ Refresh</button></div>
+            <div class="filters">
+                <select class="inp" id="orderFilter">
+                    <option value="action">Needs action</option>
+                    <option value="verify">Payment to verify</option>
+                    <option value="unpaid">Awaiting UPI payment</option>
+                    <option value="all">All orders</option>
+                    <option value="placed">Placed</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="packed">Packed</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+                <input class="inp" id="orderSearch" placeholder="Search order no, name, phone…">
+            </div>
+            <div class="card table-wrap" id="ordersTable"></div>
+        </section>
+
+        <!-- PRODUCTS -->
+        <section class="panel" id="panel-products">
+            <div class="panel-head"><h2>Products</h2><button class="btn primary" onclick="openProduct(null)">+ Add product</button></div>
+            <div class="card table-wrap" id="productsTable"></div>
+        </section>
+
+        <!-- COUPONS -->
+        <section class="panel" id="panel-coupons">
+            <div class="panel-head"><h2>Coupons</h2></div>
+            <div class="card" style="padding:16px; margin-bottom:16px">
+                <div class="coupon-grid" id="couponForm">
+                    <div class="field"><label>Code</label><input id="cCode" placeholder="DIWALI20" style="text-transform:uppercase"></div>
+                    <div class="field"><label>Type</label><select id="cKind"><option value="percent">% off</option><option value="flat">₹ off</option></select></div>
+                    <div class="field"><label>Value</label><input id="cValue" type="number" min="1" placeholder="20"></div>
+                    <div class="field"><label>Min order ₹</label><input id="cMin" type="number" min="0" value="0"></div>
+                    <div class="field"><label>Expires (optional)</label><input id="cExpires" type="date"></div>
+                    <button class="btn primary" onclick="addCoupon()">Add</button>
+                </div>
+                <div class="form-err" id="couponErr"></div>
+            </div>
+            <div class="card table-wrap" id="couponsTable"></div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="panel" id="panel-settings">
+            <div class="panel-head"><h2>Shop settings</h2></div>
+            <div class="card" style="padding:20px; max-width:640px">
+                <div class="grid2">
+                    <div class="field"><label>UPI ID (payments go here)</label><input id="sUpi" placeholder="name@okicici"></div>
+                    <div class="field"><label>Name shown in UPI apps</label><input id="sPayee"></div>
+                    <div class="field"><label>WhatsApp number (with 91, no +)</label><input id="sWa" placeholder="917207021603"></div>
+                    <div></div>
+                    <div class="field"><label>Delivery fee ₹</label><input id="sFee" type="number" min="0"></div>
+                    <div class="field"><label>Free delivery when subtotal is at least ₹</label><input id="sFree" type="number" min="0"></div>
+                </div>
+                <div class="form-err" id="settingsErr"></div>
+                <div class="modal-actions"><button class="btn primary" onclick="saveSettings(this)">Save settings</button></div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- ORDER DETAIL -->
+<div class="overlay" id="orderModal"><div class="modal" id="orderModalBody"></div></div>
+
+<!-- PRODUCT EDITOR -->
+<div class="overlay" id="productModal">
+    <div class="modal">
+        <button class="close" onclick="closeModal('productModal')">✕</button>
+        <h3 id="pmTitle">Add product</h3>
+        <div class="sub">Customers see changes immediately.</div>
+
+        <div class="grid2">
+            <div class="field" style="grid-column:1/-1"><label>Name</label><input id="pName"></div>
+            <div class="field" style="grid-column:1/-1"><label>Short description</label><textarea id="pDesc" rows="2"></textarea></div>
+            <div class="field"><label>Category</label><input id="pCat" list="catList" placeholder="powders"><datalist id="catList"></datalist></div>
+            <div class="field"><label>Display order (lower shows first)</label><input id="pSort" type="number"></div>
+            <div class="field"><label>Badge text (optional)</label><input id="pBadge" placeholder="Best Seller"></div>
+            <div class="field" style="justify-content:flex-end"><label class="check"><input type="checkbox" id="pHot"> Orange "hot" badge</label></div>
+        </div>
+
+        <section>
+            <h4>Photo</h4>
+            <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap">
+                <img id="pImgPreview" class="img-preview" alt="">
+                <div style="flex:1; min-width:200px" class="field">
+                    <input type="file" id="pImgFile" accept="image/*">
+                    <input id="pImgUrl" placeholder="…or image URL / path" style="margin-top:6px">
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h4>Sizes &amp; prices</h4>
+            <div class="variant-row muted" style="font-size:0.72rem; font-weight:700"><span>Size / label</span><span>Price ₹</span><span>Stock (blank = unlimited)</span><span>On</span><span></span></div>
+            <div id="variantRows"></div>
+            <button class="btn sm" onclick="addVariantRow()">+ Add size</button>
+        </section>
+
+        <section>
+            <h4>Visibility</h4>
+            <div style="display:flex; gap:24px; flex-wrap:wrap">
+                <label class="check"><input type="checkbox" id="pActive"> Visible in store</label>
+                <label class="check"><input type="checkbox" id="pFeatured"> Show on home page</label>
+            </div>
+        </section>
+
+        <div class="form-err" id="productErr"></div>
+        <div class="modal-actions">
+            <button class="btn danger" id="pDeleteBtn" onclick="deleteProduct()">Delete</button>
+            <span style="flex:1"></span>
+            <button class="btn" onclick="closeModal('productModal')">Cancel</button>
+            <button class="btn primary" id="pSaveBtn" onclick="saveProduct()">Save product</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

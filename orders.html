@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manyam Foods | My Orders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #76e037;
+            --orange: #c85a3a;
+            --dark: #1a1a1a;
+            --gray: #666;
+            --border: #e8f0e5;
+            --card-bg: #f9fdf7;
+            --footer-bg: #151e13;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f5f9f3; color: var(--dark); min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* NAVBAR */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 6%; background: white; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+        }
+        .logo { font-weight: 800; font-size: 1.25rem; color: var(--dark); display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .logo-icon { width: 20px; height: 20px; background: var(--green); border-radius: 4px; flex-shrink: 0; }
+        .nav-links { display: flex; list-style: none; gap: 26px; }
+        .nav-links a { text-decoration: none; color: var(--dark); font-size: 0.88rem; font-weight: 500; }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .cart-icon {
+            position: relative; width: 42px; height: 42px; border-radius: 50%;
+            border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+            text-decoration: none; color: var(--dark);
+        }
+        .cart-icon svg { width: 18px; height: 18px; }
+        .cart-badge {
+            position: absolute; top: -5px; right: -5px; background: var(--orange); color: white;
+            font-size: 0.62rem; font-weight: 800; min-width: 18px; height: 18px; border-radius: 50%;
+            display: none; align-items: center; justify-content: center; border: 2px solid white;
+        }
+        .cart-badge.show { display: flex; }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+        .hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
+        .mobile-nav {
+            display: none; position: fixed; inset: 0; background: white; z-index: 999;
+            flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+            transform: translateX(100%); transition: transform 0.3s;
+        }
+        .mobile-nav.open { transform: translateX(0); }
+        .mobile-nav a { font-size: 1.4rem; font-weight: 800; text-decoration: none; color: var(--dark); }
+        .mobile-nav .close-btn { position: absolute; top: 20px; right: 22px; font-size: 1.8rem; background: none; border: none; cursor: pointer; }
+
+        /* PAGE */
+        .page-header { background: white; padding: 28px 6% 22px; border-bottom: 1px solid var(--border); }
+        .breadcrumb { font-size: 0.78rem; color: #aaa; margin-bottom: 8px; }
+        .breadcrumb a { color: #aaa; text-decoration: none; }
+        .header-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .page-header h1 { font-size: 1.7rem; font-weight: 800; }
+        .who { font-size: 0.8rem; color: var(--gray); overflow-wrap: anywhere; }
+        .who a { color: var(--orange); font-weight: 600; text-decoration: none; margin-left: 6px; }
+
+        main { flex: 1; max-width: 900px; width: 100%; margin: 0 auto; padding: 28px 6% 40px; }
+        .msg-box { background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 60px 24px; text-align: center; }
+        .msg-box .icon { font-size: 3rem; margin-bottom: 12px; }
+        .msg-box h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 8px; }
+        .msg-box p { color: var(--gray); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.6; }
+        .btn-green { display: inline-block; background: var(--green); padding: 12px 28px; border-radius: 50px; text-decoration: none; color: black; font-weight: 700; font-size: 0.9rem; border: none; cursor: pointer; font-family: inherit; }
+        .btn-google {
+            display: inline-flex; align-items: center; gap: 10px; background: white; border: 1.5px solid #dadce0; border-radius: 50px;
+            padding: 11px 24px; font-size: 0.9rem; font-weight: 600; font-family: inherit; cursor: pointer; color: #3c4043;
+        }
+        .btn-google:hover { background: #f8faff; }
+        .btn-google svg { width: 18px; height: 18px; }
+
+        /* ORDER CARD */
+        .orders { display: flex; flex-direction: column; gap: 16px; }
+        .order { background: white; border: 1.5px solid var(--border); border-radius: 18px; overflow: hidden; }
+        .order-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 18px 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .order-no { font-weight: 800; font-size: 1rem; }
+        .order-date { font-size: 0.78rem; color: var(--gray); margin-top: 2px; }
+        .order-total { font-weight: 800; color: var(--orange); font-size: 1.1rem; text-align: right; }
+        .pill { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.4px; margin-top: 4px; }
+        .pill.ok { background: #dcfce7; color: #15803d; }
+        .pill.wait { background: #fef3c7; color: #a16207; }
+        .pill.bad { background: #fee2e2; color: #b91c1c; }
+        .pill.info { background: #e0f2fe; color: #0369a1; }
+
+        .order-body { padding: 16px 20px; }
+        .items { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+        .item { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; }
+        .item img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; background: var(--card-bg); flex-shrink: 0; }
+        .item .nm { flex: 1; }
+        .item .nm small { display: block; color: var(--gray); font-size: 0.75rem; }
+        .item .amt { font-weight: 700; white-space: nowrap; }
+
+        /* Status timeline */
+        .steps { display: flex; margin: 18px 0 6px; }
+        .step { flex: 1; text-align: center; position: relative; font-size: 0.68rem; color: #aaa; font-weight: 600; }
+        .step::before { content: ''; display: block; width: 14px; height: 14px; border-radius: 50%; background: #e5e7eb; margin: 0 auto 6px; position: relative; z-index: 1; border: 3px solid white; box-shadow: 0 0 0 1.5px #e5e7eb; }
+        .step::after { content: ''; position: absolute; top: 7px; left: -50%; width: 100%; height: 2px; background: #e5e7eb; }
+        .step:first-child::after { display: none; }
+        .step.done { color: var(--dark); }
+        .step.done::before { background: var(--green); box-shadow: 0 0 0 1.5px var(--green); }
+        .step.done::after { background: var(--green); }
+        .step small { display: block; font-weight: 500; color: #999; font-size: 0.62rem; margin-top: 2px; }
+
+        .meta { font-size: 0.8rem; color: var(--gray); line-height: 1.7; margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border); }
+        .meta strong { color: var(--dark); }
+        .tracking { background: #f0fdf4; border: 1px solid #dcfce7; border-radius: 10px; padding: 10px 12px; font-size: 0.82rem; margin-top: 12px; }
+        .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+        .btn-sm { padding: 9px 16px; border-radius: 10px; font-size: 0.8rem; font-weight: 700; cursor: pointer; font-family: inherit; border: 1.5px solid var(--border); background: white; color: var(--dark); text-decoration: none; }
+        .btn-sm.primary { background: var(--green); border-color: var(--green); color: black; }
+        .btn-sm.danger { color: var(--orange); }
+        .btn-sm:hover { border-color: var(--green); }
+
+        footer { background: var(--footer-bg); color: #666; padding: 26px 6%; font-size: 0.78rem; text-align: center; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .mobile-nav { display: flex; }
+            main { padding: 18px 4% 30px; }
+            .step { font-size: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="mobile-nav" id="mobileNav">
+    <button class="close-btn" onclick="toggleMenu()">✕</button>
+    <a href="index.html" onclick="toggleMenu()">Home</a>
+    <a href="products.html" onclick="toggleMenu()">Products</a>
+    <a href="OurStory.html" onclick="toggleMenu()">Our Story</a>
+    <a href="cart.html" onclick="toggleMenu()">🛒 Cart</a>
+</div>
+
+<header class="navbar">
+    <a href="index.html" class="logo"><div class="logo-icon"></div>Manyam Foods</a>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="products.html">Products</a></li>
+            <li><a href="Support.html">Support</a></li>
+            <li><a href="OurStory.html">Our Story</a></li>
+        </ul>
+    </nav>
+    <div class="nav-right">
+        <a href="cart.html" class="cart-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </a>
+        <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    </div>
+</header>
+
+<div class="page-header">
+    <div class="breadcrumb"><a href="index.html">Home</a> / <span style="color:var(--green);font-weight:600;">My Orders</span></div>
+    <div class="header-row">
+        <h1>My Orders</h1>
+        <div class="who" id="who"></div>
+    </div>
+</div>
+
+<main>
+    <div id="ordersRoot"><div class="msg-box"><p>Loading…</p></div></div>
+</main>
+
+<footer>© 2024 Manyam Foods. Handcrafted with care. · <a href="privacy.html" style="color:#888">Privacy Policy</a> · <a href="terms.html" style="color:#888">Terms</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/upi-pay.js"></script>
+<script>
+const STEPS = [
+    ['placed', 'Placed'],
+    ['confirmed', 'Confirmed'],
+    ['packed', 'Packed'],
+    ['shipped', 'Shipped'],
+    ['delivered', 'Delivered']
+];
+let orders = [];
+
+const GOOGLE_SVG = '<svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
+
+function fmtDate(iso, withTime){
+    const d = new Date(iso);
+    const opts = withTime ? { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' } : { day: 'numeric', month: 'short', year: 'numeric' };
+    return d.toLocaleString('en-IN', opts);
+}
+
+function paymentPill(o){
+    if(o.status === 'cancelled') return '<span class="pill bad">Cancelled</span>';
+    if(o.payment_status === 'verified') return '<span class="pill ok">Paid</span>';
+    if(o.payment_status === 'failed') return '<span class="pill bad">Payment failed</span>';
+    if(o.payment_method === 'UPI' && !o.utr) return '<span class="pill wait">Awaiting payment</span>';
+    if(o.payment_method === 'UPI') return '<span class="pill info">Verifying payment</span>';
+    return '<span class="pill info">Pay later</span>';
+}
+
+function timelineHTML(o){
+    const reached = {};
+    (o.order_events || []).filter(e => e.kind === 'status').forEach(e => { reached[e.value] = e.created_at; });
+    const curIdx = STEPS.findIndex(s => s[0] === o.status);
+    return '<div class="steps">' + STEPS.map(([key, label], i) => {
+        const done = i <= curIdx;
+        const when = reached[key] ? `<small>${fmtDate(reached[key], true)}</small>` : '';
+        return `<div class="step${done ? ' done' : ''}">${label}${done ? when : ''}</div>`;
+    }).join('') + '</div>';
+}
+
+function orderHTML(o){
+    const items = (o.order_items || []).map(i => `
+        <div class="item">
+            <img src="${esc(i.image_url)}" alt="" onerror="this.style.visibility='hidden'">
+            <div class="nm">${esc(i.product_name)}<small>${esc(i.variant_label)} × ${i.qty}</small></div>
+            <div class="amt">${rupees(i.line_total)}</div>
+        </div>`).join('');
+
+    const needsPay = o.payment_method === 'UPI' && o.status !== 'cancelled' && o.payment_status !== 'verified' && (!o.utr || o.payment_status === 'failed');
+    const canCancel = o.status === 'placed' && o.payment_status !== 'verified';
+
+    return `
+    <div class="order">
+        <div class="order-head">
+            <div>
+                <div class="order-no">${esc(o.order_no)}</div>
+                <div class="order-date">${fmtDate(o.created_at)}</div>
+            </div>
+            <div>
+                <div class="order-total">${rupees(o.total)}</div>
+                <div style="text-align:right">${paymentPill(o)}</div>
+            </div>
+        </div>
+        <div class="order-body">
+            <div class="items">${items}</div>
+            ${o.status === 'cancelled' ? '' : timelineHTML(o)}
+            ${o.tracking_info ? `<div class="tracking">🚚 <strong>Tracking:</strong> ${esc(o.tracking_info)}</div>` : ''}
+            <div class="meta">
+                Subtotal ${rupees(o.subtotal)}${o.discount ? ` · Discount −${rupees(o.discount)}` : ''} · Delivery ${o.delivery_fee ? rupees(o.delivery_fee) : 'FREE'}<br>
+                Deliver to: <strong>${esc(o.customer_name)}</strong>, ${esc(o.phone)}<br>${esc(o.address)}
+                ${o.utr ? `<br>UPI Ref: ${esc(o.utr)}` : ''}
+            </div>
+            ${(needsPay || canCancel) ? `<div class="actions">
+                ${needsPay ? `<button class="btn-sm primary" onclick="payNow('${esc(o.order_no)}')">Pay now ${rupees(o.total)}</button>` : ''}
+                ${canCancel ? `<button class="btn-sm danger" onclick="cancelOrder('${esc(o.order_no)}')">Cancel order</button>` : ''}
+            </div>` : ''}
+        </div>
+    </div>`;
+}
+
+async function loadOrders(){
+    const root = document.getElementById('ordersRoot');
+    const who = document.getElementById('who');
+    if(!sb){ root.innerHTML = `<div class="msg-box"><p>${esc(NOT_CONNECTED_MSG)}</p></div>`; return; }
+
+    const session = await getSession();
+    if(!session){
+        who.innerHTML = '';
+        root.innerHTML = `
+            <div class="msg-box">
+                <div class="icon">📦</div>
+                <h3>Sign in to see your orders</h3>
+                <p>Track deliveries, finish payments and see your order history.</p>
+                <button class="btn-google" onclick="signInWithGoogle('orders.html')">${GOOGLE_SVG} Sign in with Google</button>
+            </div>`;
+        return;
+    }
+    who.innerHTML = `${esc(session.user.email)}<a href="#" onclick="signOut(); return false;">Sign out</a>`;
+
+    const { data, error } = await sb.from('orders')
+        .select('*, order_items(*), order_events(kind,value,created_at)')
+        .order('created_at', { ascending: false });
+    if(error){ root.innerHTML = `<div class="msg-box"><p>${esc(errMsg(error))}</p></div>`; return; }
+
+    orders = data;
+    if(!orders.length){
+        root.innerHTML = `
+            <div class="msg-box">
+                <div class="icon">🛍️</div>
+                <h3>No orders yet</h3>
+                <p>When you place an order, it will show up here.</p>
+                <a href="products.html" class="btn-green">Browse Products</a>
+            </div>`;
+        return;
+    }
+    root.innerHTML = '<div class="orders">' + orders.map(orderHTML).join('') + '</div>';
+}
+
+function payNow(orderNo){
+    const o = orders.find(x => x.order_no === orderNo);
+    if(!o) return;
+    openUpiPay({ orderNo, amount: o.total, onPaid: () => loadOrders() });
+}
+
+async function cancelOrder(orderNo){
+    if(!confirm('Cancel order ' + orderNo + '?')) return;
+    const { error } = await sb.rpc('cancel_my_order', { p_order_no: orderNo });
+    if(error){ alert(errMsg(error)); return; }
+    loadOrders();
+}
+
+function toggleMenu(){
+    const n=document.getElementById('mobileNav');
+    n.classList.toggle('open');
+    document.body.style.overflow = n.classList.contains('open')?'hidden':'';
+}
+
+loadOrders();
+if(sb) sb.auth.onAuthStateChange((event) => { if(event === 'SIGNED_IN' || event === 'SIGNED_OUT') loadOrders(); });
+</script>
+</body>
+</html>
