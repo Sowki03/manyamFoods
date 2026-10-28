@@ -21,7 +21,7 @@
     const grid = document.getElementById('featuredGrid');
     const viewAll = document.getElementById('viewAll');
     const CARD_CLASSES = { imgWrap: 'prod-img-wrap', badge: 'prod-badge', info: 'prod-info',
-                           name: 'prod-name', desc: 'prod-desc', price: 'prod-price', qty: 'qty-ctrl' };
+                           name: 'prod-name', desc: 'prod-desc', price: 'prod-price' };
     let allProducts = [];
 
     function productsFor(cat){

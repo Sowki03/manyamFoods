@@ -119,6 +119,11 @@ h1, h2, h3 { font-family: var(--serif); letter-spacing: -0.02em; }
 .mf-grid .btn-add.added { background: var(--leaf); }
 .mf-grid .btn-add:disabled { background: #ccc; cursor: not-allowed; }
 .mf-grid .btn-add svg { width: 14px; height: 14px; flex-shrink: 0; }
+/* after adding, the button becomes a − qty + stepper (like Two Brothers) */
+.mf-grid .cart-stepper { flex: 1; display: flex; align-items: center; justify-content: space-between; background: var(--leaf); color: var(--cream); border-radius: 10px; min-height: 38px; overflow: hidden; }
+.mf-grid .cart-stepper .qty-btn { width: 42px; height: 38px; color: var(--cream); font-size: 1.15rem; background: none; border: none; cursor: pointer; transition: background-color 150ms ease; }
+@media (hover: hover) and (pointer: fine) { .mf-grid .cart-stepper .qty-btn:hover { background: rgba(255, 255, 255, 0.14); } }
+.mf-grid .cart-stepper .qty-num { font: 700 0.92rem/1 var(--sans); min-width: 24px; width: auto; height: auto; border: none; text-align: center; }
 
 /* ============ CART DRAWER ============ */
 .mf-cart-overlay { position: fixed; inset: 0; background: rgba(31, 26, 20, 0.45); z-index: 1200; opacity: 0; visibility: hidden; transition: opacity 200ms ease, visibility 0s linear 200ms; }

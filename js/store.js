@@ -14,17 +14,6 @@ function esc(s){
 function rupees(n){ return '₹' + Number(n || 0).toLocaleString('en-IN'); }
 function errMsg(e){ return (e && (e.message || e.error_description)) || String(e); }
 
-function showToast(text){
-    const t = document.getElementById('toast');
-    if(!t) return;
-    const m = document.getElementById('toastMsg') || t;
-    m.textContent = text;
-    t.classList.add('show');
-    t.style.opacity = '1';
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(()=>{ t.classList.remove('show'); t.style.opacity = ''; }, 2400);
-}
-
 // ── Cart (kept in this browser; prices are re-checked by the server at checkout) ──
 const CART_KEY = 'manyamCart2';
 localStorage.removeItem('manyamCart'); // old format without variant ids
@@ -35,12 +24,15 @@ function getCart(){
 function saveCart(c){ localStorage.setItem(CART_KEY, JSON.stringify(c)); }
 function clearCartStorage(){ localStorage.removeItem(CART_KEY); }
 
+// Called after every cart change: updates the header count and every product card's button/stepper
 function refreshBadge(){
-    const total = getCart().reduce((s,i)=>s+i.qty, 0);
+    const cart = getCart();
+    const total = cart.reduce((s,i)=>s+i.qty, 0);
     document.querySelectorAll('#cartNavBadge, #cartBadge').forEach(b=>{
         b.textContent = total;
         b.classList.toggle('show', total > 0);
     });
+    document.querySelectorAll('.product-card').forEach(card => syncCard(card, cart));
 }
 
 // ── Settings (UPI ID, WhatsApp number, delivery fee) ──
@@ -70,12 +62,35 @@ async function fetchProducts({ featuredOnly = false } = {}){
 
 const CART_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>';
 
+// The card's action area: "Add to cart" until that size is in the cart, then a − qty + stepper
+function cartActionHTML(variantId, soldOut, cart){
+    if(soldOut) return '<button class="btn-add" disabled>Sold out</button>';
+    const item = cart.find(i => i.variant_id === variantId);
+    if(!item) return `<button class="btn-add" onclick="addCart(this)">${CART_ICON} Add to cart</button>`;
+    return `<div class="cart-stepper" role="group" aria-label="Quantity in cart">
+        <button class="qty-btn" onclick="cardQty(this,-1)" aria-label="Remove one">−</button>
+        <span class="qty-num" aria-live="polite">${item.qty}</span>
+        <button class="qty-btn" onclick="cardQty(this,1)" aria-label="Add one">+</button>
+    </div>`;
+}
+
+function syncCard(card, cart){
+    const row = card.querySelector('.add-row');
+    const opt = card.querySelector('.w-select')?.selectedOptions[0];
+    if(!row || !opt) return;
+    const item = cart.find(i => i.variant_id === opt.value);
+    const key = opt.value + ':' + (opt.disabled ? 'x' : item ? item.qty : 0);
+    if(row.dataset.key === key) return;
+    row.dataset.key = key;
+    row.innerHTML = cartActionHTML(opt.value, opt.disabled, cart);
+}
+
 // cls lets index.html and products.html keep their own CSS class names
 function productCardHTML(p, cls){
     const first = p.variants.find(v => v.stock === null || v.stock > 0) || p.variants[0];
     const options = p.variants.map(v => {
         const soldOut = v.stock !== null && v.stock <= 0;
-        return `<option value="${esc(v.id)}" data-price="${v.price}" data-label="${esc(v.label)}"${soldOut ? ' disabled' : ''}${v.id === first.id ? ' selected' : ''}>${esc(v.label)} — ${rupees(v.price)}${soldOut ? ' (sold out)' : ''}</option>`;
+        return `<option value="${esc(v.id)}" data-price="${v.price}" data-label="${esc(v.label)}"${soldOut ? ' disabled' : ''}${v.id === first.id ? ' selected' : ''}>${esc(v.label)}${soldOut ? ' (sold out)' : ''}</option>`;
     }).join('');
     const allSoldOut = p.variants.every(v => v.stock !== null && v.stock <= 0);
     return `
@@ -91,54 +106,46 @@ function productCardHTML(p, cls){
                 <select class="w-select" onchange="updatePrice(this)">${options}</select>
                 <span class="${cls.price}" data-role="price">${rupees(first.price)}</span>
             </div>
-            <div class="add-row">
-                <div class="${cls.qty}">
-                    <button class="qty-btn" onclick="chQty(this,-1)">−</button>
-                    <input class="qty-num" value="1" readonly>
-                    <button class="qty-btn" onclick="chQty(this,1)">+</button>
-                </div>
-                <button class="btn-add" onclick="addCart(this)"${allSoldOut ? ' disabled' : ''}>${CART_ICON} ${allSoldOut ? 'Sold Out' : 'Add to Cart'}</button>
-            </div>
+            <div class="add-row" data-key="${esc(first.id)}:${allSoldOut ? 'x' : (getCart().find(i => i.variant_id === first.id)?.qty || 0)}">${cartActionHTML(first.id, allSoldOut, getCart())}</div>
         </div>
     </div>`;
 }
 
+// Size changed: show that size's price and its cart state
 function updatePrice(sel){
     const opt = sel.selectedOptions[0];
-    sel.closest('.product-card').querySelector('[data-role="price"]').textContent = rupees(opt.dataset.price);
+    const card = sel.closest('.product-card');
+    card.querySelector('[data-role="price"]').textContent = rupees(opt.dataset.price);
+    syncCard(card, getCart());
 }
 
-function chQty(btn, d){
-    const inp = btn.parentElement.querySelector('.qty-num');
-    let v = parseInt(inp.value) + d; if(v < 1) v = 1; if(v > 99) v = 99; inp.value = v;
-}
-
-function addCart(btn){
+// Change the cart quantity of the card's selected size by d (removes it at 0)
+function cardQty(btn, d){
     const card = btn.closest('.product-card');
     const opt = card.querySelector('.w-select').selectedOptions[0];
     if(!opt || opt.disabled) return;
-    const name = card.dataset.name;
-    const qty = parseInt(card.querySelector('.qty-num').value);
-
     const cart = getCart();
-    const ex = cart.find(i => i.variant_id === opt.value);
-    if(ex) ex.qty = Math.min(99, ex.qty + qty);
-    else cart.push({
-        variant_id: opt.value,
-        product_id: card.dataset.id,
-        name,
-        variant: opt.dataset.label,
-        price: parseInt(opt.dataset.price),
-        qty,
-        img: card.querySelector('img').getAttribute('src')
-    });
-    saveCart(cart); refreshBadge();
-
-    btn.classList.add('added');
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg> Added!`;
-    setTimeout(()=>{ btn.classList.remove('added'); btn.innerHTML = `${CART_ICON} Add to Cart`; }, 1800);
-    showToast('🛒 ' + name + ' added to cart!');
+    const i = cart.findIndex(x => x.variant_id === opt.value);
+    if(i === -1){
+        if(d <= 0) return;
+        cart.push({
+            variant_id: opt.value,
+            product_id: card.dataset.id,
+            name: card.dataset.name,
+            variant: opt.dataset.label,
+            price: parseInt(opt.dataset.price),
+            qty: Math.min(99, d),
+            img: card.querySelector('img').getAttribute('src')
+        });
+    } else {
+        cart[i].qty = Math.min(99, cart[i].qty + d);
+        if(cart[i].qty <= 0) cart.splice(i, 1);
+    }
+    saveCart(cart);
+    refreshBadge();
 }
+
+function addCart(btn){ cardQty(btn, 1); }
 
 // ── Google sign-in ──
 async function getSession(){

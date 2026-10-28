@@ -214,16 +214,6 @@
     // keep tabs in sync
     addEventListener('storage', e => { if(e.key === CART_KEY) cartChanged(); });
 
-    // Adding a product opens the drawer (like most D2C stores)
-    if(typeof window.addCart === 'function'){
-        const baseAddCart = window.addCart;
-        window.addCart = function(btn){
-            baseAddCart(btn);
-            renderCart();
-            if(!noDrawer) setTimeout(openCart, 250); // let the "Added!" state register first
-        };
-    }
-
     // ── Shared grid entrance: used when category filters swap products in place ──
     window.animateCards = function(cards){
         if(!cards.length || !cards[0].animate) return;
