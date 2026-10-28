@@ -3,686 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manyam Foods | Empowering Farmers</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>Manyam Foods | Empowering Farmers, Honoring Tradition</title>
+    <meta name="description" content="Traditional foods handcrafted by rural women artisans. Sun-dried, stone-ground, small-batch millets, powders, pickles and oils from the Manyam hills.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preload" as="image" href="images/working-lady.webp">
+    <script>
+        // Hide the hero until GSAP animates it in; reveal anyway if scripts never run
+        document.documentElement.classList.add('js');
+        window.__animFallback = setTimeout(function(){ document.documentElement.classList.add('anim-fallback'); }, 3000);
+    </script>
     <style>
-        :root {
-            --primary-green: #76e037;
-            --dark-text: #1a1a1a;
-            --accent-orange: #c85a3a;
-            --light-bg: #ffffff;
-            --card-bg: #f9fdf7;
-            --light-cream: #fdfbf7;
-            --gray-text: #666;
-            --dark-footer: #151e13;
-            --star-color: #76e037;
-            --border: #e8f0e5;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-x: clip; }
+        body { line-height: 1.6; overflow-x: hidden; }
         img { max-width: 100%; display: block; }
+        a { color: inherit; }
+        .wrap { max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+        .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--terracotta); }
+        .eyebrow::before { content: ''; width: 18px; height: 1.5px; background: currentColor; }
+        h1, h2, h3 { font-weight: 600; line-height: 1.05; }
+        h2 { font-size: clamp(2rem, 4.4vw, 3.4rem); }
+        h1 em, h2 em { color: var(--leaf); font-weight: 500; }
+        .lead { color: var(--muted); font-size: clamp(1rem, 1.3vw, 1.12rem); max-width: 520px; }
+        .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+        .section-head.center { flex-direction: column; align-items: center; text-align: center; gap: 12px; }
+        .view-all { font-weight: 600; text-decoration: none; border-bottom: 1.5px solid var(--ink); padding-bottom: 3px; white-space: nowrap; }
 
-        /* ===================== NAVBAR ===================== */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 8%;
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: box-shadow 0.3s, padding 0.3s;
+        /* HERO */
+        .hero { position: relative; padding: clamp(36px, 6vw, 72px) 0 clamp(50px, 7vw, 90px); overflow: hidden; }
+        .dust { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.55; pointer-events: none; }
+        .dust.d1 { width: 420px; height: 420px; background: var(--turmeric-soft); top: -120px; right: -60px; }
+        .dust.d2 { width: 300px; height: 300px; background: var(--leaf-soft); bottom: 0; left: -80px; }
+        .hero-inner { position: relative; display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(28px, 5vw, 72px); align-items: center; }
+        .hero-title { font-size: clamp(2.5rem, 5.2vw, 4.8rem); margin: 16px 0 20px; }
+        .hero-title .line { padding-bottom: 0.06em; }
+        .hero-sub { margin-bottom: 28px; }
+        .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+        .hero-btns .mf-btn { padding: 16px 26px; }
+        .hero-btns .mf-btn svg { width: 18px; height: 18px; }
+        .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+        .chip { font-size: 0.76rem; font-weight: 600; padding: 6px 12px; border-radius: 50px; background: rgba(255,255,255,0.7); border: 1px solid var(--line); color: var(--muted); }
+        .hero-visual { position: relative; }
+        .hero-img { border-radius: 28px; overflow: hidden; aspect-ratio: 1100 / 856; box-shadow: 0 40px 80px -30px rgba(35, 70, 31, 0.45); }
+        .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+        .float-card { position: absolute; bottom: 7%; right: -4%; background: white; border-radius: 16px; padding: 12px 16px; display: flex; align-items: center; gap: 10px; box-shadow: 0 18px 40px -16px rgba(31, 26, 20, 0.35); font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+        .float-card small { display: block; font-weight: 500; color: var(--muted); font-size: 0.7rem; }
+        .float-card .ic { width: 34px; height: 34px; border-radius: 10px; background: var(--leaf-soft); display: flex; align-items: center; justify-content: center; }
+        .js [data-hero], .js [data-hero-img], .js [data-float] { visibility: hidden; }
+        .anim-fallback [data-hero], .anim-fallback [data-hero-img], .anim-fallback [data-float] { visibility: visible; }
+
+        /* TRUST STRIP */
+        .strip { background: var(--terracotta); color: var(--cream); overflow: hidden; padding: 12px 0; }
+        .strip-track { display: flex; width: max-content; animation: strip 38s linear infinite; }
+        @media (hover: hover) { .strip:hover .strip-track { animation-play-state: paused; } }
+        .strip-item { display: flex; align-items: center; gap: 24px; padding-right: 24px; font: italic 500 clamp(1rem, 1.8vw, 1.3rem)/1.3 var(--serif); white-space: nowrap; }
+        .strip-item i { width: 7px; height: 7px; border-radius: 50%; background: var(--turmeric); }
+        @keyframes strip { to { transform: translateX(-50%); } }
+
+        /* SHOP (category tiles filter the grid in place) */
+        .shop { padding: clamp(50px, 7vw, 90px) 0; scroll-margin-top: 110px; }
+        .cat-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; margin-bottom: 34px; }
+        .cat { display: flex; flex-direction: column; align-items: center; gap: 10px; background: none; border: none; cursor: pointer; font-family: var(--sans); color: var(--ink); padding: 0; }
+        .cat-ic { width: 100%; max-width: 128px; aspect-ratio: 1; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2.5px solid transparent; box-shadow: 0 0 0 0 var(--ink); transition: transform 250ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms ease; }
+        .cat-ic svg { width: 50%; height: 50%; }
+        .cat-name { font-weight: 600; font-size: 0.92rem; }
+        .cat[aria-pressed="true"] .cat-ic { border-color: var(--ink); }
+        .cat[aria-pressed="true"] .cat-name { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; }
+        @media (hover: hover) and (pointer: fine) { .cat:hover .cat-ic { transform: translateY(-3px); } }
+        .shop-foot { text-align: center; margin-top: 34px; }
+
+        /* WHY */
+        .why { padding: 0 0 clamp(70px, 9vw, 120px); }
+        .why-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .step { background: white; border: 1px solid var(--line); border-radius: 24px; padding: 18px 18px 24px; display: flex; flex-direction: column; gap: 10px; }
+        .step-art { height: 150px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+        .step-art svg { width: 110px; height: 110px; overflow: visible; }
+        .step h3 { font-size: 1.45rem; }
+        .step p { color: var(--muted); font-size: 0.9rem; }
+
+        /* MAKERS */
+        .makers { padding: 0 0 clamp(70px, 9vw, 120px); }
+        .makers-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(30px, 6vw, 90px); align-items: center; }
+        .makers-img { border-radius: 28px; overflow: hidden; aspect-ratio: 4 / 5; }
+        .makers-img img { width: 100%; height: 100%; object-fit: cover; }
+        .makers-copy h2 { margin-top: 14px; }
+        .makers-copy p { color: var(--muted); margin-top: 18px; }
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; margin: 30px 0; }
+        .stat { background: var(--cream); padding: 22px; }
+        .stat-number { font: 600 clamp(2rem, 4vw, 3rem)/1 var(--serif); color: var(--terracotta); }
+        .stat-label { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+        .mf-btn.terra { background: var(--terracotta); color: white; }
+
+        /* GIFTING */
+        .gifting { padding: 0 0 clamp(70px, 9vw, 120px); scroll-margin-top: 110px; }
+        .gift-card { background: var(--leaf-dark); color: var(--cream); border-radius: 32px; padding: clamp(32px, 5vw, 64px); display: grid; grid-template-columns: 1.3fr 1fr; gap: 30px; align-items: center; }
+        .gift-card h2 { margin: 14px 0 16px; }
+        .gift-card h2 em { color: var(--turmeric); }
+        .gift-card p { color: #c9d6c3; max-width: 480px; margin-bottom: 26px; }
+        .gift-card .eyebrow { color: var(--turmeric); }
+        .mf-btn.gold { background: var(--turmeric); color: var(--ink); }
+        @media (hover: hover) and (pointer: fine) { .mf-btn.gold:hover { background: #f0b32c; } }
+        .gift-art svg { width: 100%; max-width: 280px; margin: 0 auto; display: block; overflow: visible; }
+
+        /* FAQ */
+        .faq { padding: 0 0 clamp(70px, 9vw, 120px); }
+        .faq-inner { display: grid; grid-template-columns: 1fr 1.3fr; gap: clamp(30px, 6vw, 80px); align-items: start; }
+        .faq-inner .lead { margin-top: 14px; }
+        .faq-inner .lead a { color: var(--leaf); font-weight: 600; }
+        .faq-list { display: flex; flex-direction: column; gap: 12px; }
+        .faq-list details { background: white; border: 1px solid var(--line); border-radius: 18px; padding: 0 22px; }
+        .faq-list summary { cursor: pointer; list-style: none; padding: 20px 0; font-weight: 600; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+        .faq-list summary::-webkit-details-marker { display: none; }
+        .faq-list summary::after { content: '+'; font-size: 1.4rem; font-weight: 400; color: var(--terracotta); transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); flex-shrink: 0; }
+        .faq-list details[open] summary::after { transform: rotate(45deg); }
+        .faq-list details p { color: var(--muted); padding-bottom: 20px; font-size: 0.95rem; }
+
+        /* CTA */
+        .cta { background: var(--cream-2); padding: clamp(70px, 10vw, 130px) 0; text-align: center; }
+        .cta h2 { font-size: clamp(2.6rem, 7vw, 5.6rem); margin-bottom: 18px; }
+        .cta p { color: var(--muted); margin-bottom: 30px; }
+
+        @media (max-width: 900px) {
+            .hero-inner, .makers-grid, .faq-inner, .gift-card { grid-template-columns: 1fr; }
+            .hero-visual { max-width: 560px; }
+            .why-grid { grid-template-columns: repeat(2, 1fr); }
+            .makers-img { aspect-ratio: 4 / 3; }
+            .gift-art { order: -1; max-width: 200px; }
         }
-
-        .logo {
-            font-weight: 800; font-size: 1.4rem; color: #1a1a1a;
-            display: flex; align-items: center; gap: 8px;
-            text-decoration: none; flex-shrink: 0;
-        }
-        .logo-icon { width: 24px; height: 24px; background: var(--primary-green); border-radius: 4px; flex-shrink: 0; }
-
-        .nav-links { display: flex; list-style: none; gap: 30px; }
-        .nav-links a {
-            text-decoration: none; color: var(--dark-text);
-            font-size: 0.9rem; font-weight: 500; white-space: nowrap;
-            position: relative;
-        }
-        .nav-links a::after {
-            content: ''; position: absolute; bottom: -3px; left: 0;
-            width: 0; height: 2px; background: var(--primary-green);
-            transition: width 0.28s ease; border-radius: 2px;
-        }
-        .nav-links a:hover::after { width: 100%; }
-
-        .nav-right { display: flex; align-items: center; gap: 12px; }
-
-        .btn-shop {
-            background: var(--primary-green); padding: 10px 25px; border-radius: 50px;
-            text-decoration: none; color: black; font-weight: 600; font-size: 0.9rem;
-            white-space: nowrap; flex-shrink: 0;
-        }
-
-        /* Cart Icon */
-        .cart-nav-btn {
-            position: relative; width: 44px; height: 44px; border-radius: 50%;
-            border: 2px solid var(--border); display: flex; align-items: center;
-            justify-content: center; text-decoration: none; color: var(--dark-text);
-            transition: border-color 0.2s, background 0.2s; flex-shrink: 0;
-        }
-        .cart-nav-btn:hover { border-color: var(--primary-green); background: #f0fdf4; }
-        .cart-nav-btn svg { width: 19px; height: 19px; }
-        .cart-nav-badge {
-            position: absolute; top: -5px; right: -5px;
-            background: var(--accent-orange); color: white;
-            font-size: 0.62rem; font-weight: 800; min-width: 18px; height: 18px;
-            border-radius: 50%; display: none; align-items: center; justify-content: center;
-            border: 2px solid white;
-        }
-        .cart-nav-badge.show { display: flex; }
-
-        /* Hamburger */
-        .hamburger {
-            display: none; flex-direction: column; gap: 5px;
-            cursor: pointer; padding: 5px; background: none; border: none;
-        }
-        .hamburger span { display: block; width: 24px; height: 2px; background: var(--dark-text); border-radius: 2px; transition: all 0.3s; }
-
-        /* Mobile nav drawer */
-        .mobile-nav {
-            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: white; z-index: 999; flex-direction: column;
-            align-items: center; justify-content: center; gap: 35px;
-            transform: translateX(100%); transition: transform 0.35s ease;
-        }
-        .mobile-nav.open { transform: translateX(0); }
-        .mobile-nav a { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark-text); }
-        .mobile-nav .close-btn { position: absolute; top: 25px; right: 25px; font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--dark-text); }
-        .mobile-nav .btn-shop-mobile { background: var(--primary-green); padding: 14px 40px; border-radius: 50px; color: black; font-weight: 700; font-size: 1rem; }
-
-        /* ===================== HERO ===================== */
-        .hero { padding: 60px 8%; display: flex; align-items: center; justify-content: center; }
-        .hero-container { display: flex; align-items: center; gap: 60px; max-width: 1200px; width: 100%; }
-        .hero-image { flex: 1; }
-        .hero-image img { width: 100%; border-radius: 30px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); }
-        .hero-content { flex: 1; }
-
-        .badge {
-            display: inline-block; background: #f0fdf4; color: #22c55e;
-            padding: 4px 12px; border-radius: 10px; font-size: 0.7rem;
-            font-weight: 700; letter-spacing: 0.5px; border: 1px solid #dcfce7;
-        }
-
-        .hero-content h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; margin: 20px 0; font-weight: 800; }
-        .highlight { color: var(--accent-orange); }
-        .hero-content p { font-size: 1.05rem; color: var(--gray-text); margin-bottom: 35px; max-width: 480px; }
-
-        .hero-btns { display: flex; gap: 15px; flex-wrap: wrap; }
-
-        .btn-primary {
-            background: var(--primary-green); padding: 16px 32px; border-radius: 50px;
-            text-decoration: none; color: black; font-weight: 600;
-            box-shadow: 0 10px 15px -3px rgba(118,224,55,0.3); white-space: nowrap;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 28px -4px rgba(118, 224, 55, 0.42); }
-
-        .btn-secondary {
-            border: 1px solid #e5e7eb; padding: 16px 32px; border-radius: 50px;
-            text-decoration: none; color: var(--dark-text); font-weight: 600; white-space: nowrap;
-        }
-
-        /* ===================== PROMISE ===================== */
-        .promise { text-align: center; padding: clamp(60px, 8vw, 100px) 8%; }
-        .promise h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 15px; }
-        .subtitle { color: var(--gray-text); margin-bottom: 60px; max-width: 600px; margin-inline: auto; font-size: 1rem; }
-
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; max-width: 1200px; margin: 0 auto; }
-        .card {
-            background: var(--card-bg); padding: clamp(30px, 4vw, 50px) 30px;
-            border-radius: 24px; transition: all 0.3s ease;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05); }
-        .icon-box { width: 50px; height: 50px; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; }
-        .card h3 { font-size: 1.2rem; margin-bottom: 15px; font-weight: 700; }
-        .card p { font-size: 0.9rem; color: var(--gray-text); max-width: 250px; }
-
-        /* ===================== CONTAINER ===================== */
-        .container { max-width: 1200px; margin: 0 auto; padding: clamp(40px, 6vw, 80px) 5%; }
-
-        /* ===================== PRODUCTS (enhanced) ===================== */
-        .section-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 30px; flex-wrap: wrap; gap: 10px;
-        }
-        .section-header h2 { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 800; }
-        .view-all { color: var(--primary-green); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 5px; font-size: 0.9rem; }
-
-        /* NEW: product card grid */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 22px;
-            margin-bottom: clamp(50px, 8vw, 100px);
-        }
-
-        .product-card {
-            background: white; border-radius: 20px; overflow: hidden;
-            border: 1.5px solid var(--border);
-            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s ease;
-            display: flex; flex-direction: column;
-        }
-        .product-card:hover { transform: translateY(-6px); box-shadow: 0 24px 40px rgba(0,0,0,0.11); }
-
-        .prod-img-wrap { position: relative; aspect-ratio: 1/1; background: var(--card-bg); overflow: hidden; }
-        .prod-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .product-card:hover .prod-img-wrap img { transform: scale(1.06); }
-
-        .prod-badge {
-            position: absolute; top: 12px; left: 12px;
-            background: var(--primary-green); color: black;
-            font-size: 0.63rem; font-weight: 700; padding: 3px 10px;
-            border-radius: 50px; text-transform: uppercase; letter-spacing: 0.4px;
-        }
-        .prod-badge.hot { background: var(--accent-orange); color: white; }
-
-        .prod-info { padding: 16px; display: flex; flex-direction: column; gap: 11px; flex: 1; }
-        .prod-name { font-size: 0.97rem; font-weight: 700; line-height: 1.3; }
-        .prod-desc { font-size: 0.78rem; color: var(--gray-text); line-height: 1.5; }
-
-        .weight-row { display: flex; align-items: center; gap: 8px; }
-        .w-select {
-            flex: 1; padding: 7px 10px; border-radius: 9px; border: 1.5px solid var(--border);
-            background: var(--card-bg); font-size: 0.8rem; font-weight: 600;
-            font-family: 'Inter', sans-serif; cursor: pointer; outline: none;
-            transition: border-color 0.2s;
-        }
-        .w-select:focus { border-color: var(--primary-green); }
-        .prod-price { font-size: 1.05rem; font-weight: 800; color: var(--accent-orange); white-space: nowrap; }
-
-        .add-row { display: flex; align-items: center; gap: 8px; margin-top: auto; }
-        .qty-ctrl { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
-        .qty-btn {
-            width: 32px; height: 32px; background: none; border: none;
-            font-size: 1rem; font-weight: 700; cursor: pointer; color: var(--dark-text);
-            transition: background 0.15s; display: flex; align-items: center; justify-content: center;
-        }
-        .qty-btn:hover { background: var(--card-bg); }
-        .qty-num {
-            width: 32px; text-align: center; font-size: 0.85rem; font-weight: 700;
-            border: none; border-left: 1.5px solid var(--border); border-right: 1.5px solid var(--border);
-            background: none; outline: none; font-family: 'Inter', sans-serif;
-        }
-        .btn-add {
-            flex: 1; background: var(--dark-text); color: white; border: none;
-            padding: 9px 12px; border-radius: 10px; font-size: 0.8rem; font-weight: 700;
-            cursor: pointer; transition: background 0.2s, transform 0.15s;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-add:hover { background: #333; transform: translateY(-1px); }
-        .btn-add.added { background: var(--primary-green); color: black; }
-        .btn-add svg { width: 14px; height: 14px; flex-shrink: 0; }
-        .btn-add:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-        .grid-msg { grid-column: 1 / -1; text-align: center; color: var(--gray-text); padding: 40px 10px; font-size: 0.9rem; }
-
-        /* TOAST */
-        .toast {
-            position: fixed; bottom: 28px; left: 50%;
-            transform: translateX(-50%) translateY(16px);
-            background: var(--dark-text); color: white;
-            padding: 11px 22px; border-radius: 50px;
-            font-size: 0.85rem; font-weight: 600; z-index: 9999; opacity: 0;
-            transition: all 0.3s; pointer-events: none; white-space: nowrap;
-        }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast em { color: var(--primary-green); font-style: normal; }
-
-        /* ===================== ABOUT ===================== */
-        .about-section {
-            background-color: var(--light-cream); border-radius: 40px;
-            padding: clamp(40px, 6vw, 80px) 5%;
-            display: flex; align-items: center; gap: 60px;
-        }
-        .about-image-wrapper { flex: 1; position: relative; padding-bottom: 40px; }
-        .about-image-wrapper img { width: 100%; border-radius: 30px; }
-        .stats-box {
-            position: absolute; bottom: 0; right: -15px;
-            background: white; padding: 20px 30px; border-radius: 20px;
-            display: flex; gap: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-        .stat-item { text-align: center; }
-        .stat-number { display: block; font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 800; color: var(--accent-orange); }
-        .stat-label { font-size: 0.62rem; font-weight: 700; color: var(--gray-text); text-transform: uppercase; letter-spacing: 1px; }
-        .about-content { flex: 1; }
-        .about-content h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); line-height: 1.2; margin-bottom: 25px; font-weight: 800; }
-        .about-content p { color: var(--gray-text); margin-bottom: 20px; font-size: 1rem; }
-        .btn-story {
-            display: inline-block; margin-top: 20px; background-color: var(--accent-orange);
-            color: white; padding: 16px 35px; border-radius: 50px; text-decoration: none;
-            font-weight: 600; transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s;
-        }
-        .btn-story:hover { transform: translateY(-2px); box-shadow: 0 12px 22px -4px rgba(200, 90, 58, 0.38); opacity: 1; }
-
-        /* ===================== TESTIMONIALS ===================== */
-        .testimonials-heading { text-align: center; font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 50px; }
-        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .testimonial-card { background: #fff; padding: clamp(25px, 4vw, 40px); border-radius: 20px; border: 1px solid #f0f0f0; display: flex; flex-direction: column; justify-content: space-between; }
-        .stars { color: var(--star-color); font-size: 1.2rem; margin-bottom: 20px; }
-        .quote { font-style: italic; color: var(--gray-text); margin-bottom: 30px; line-height: 1.65; font-size: 0.95rem; }
-        .user-info { display: flex; align-items: center; gap: 15px; }
-        .avatar { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; background: #eee; flex-shrink: 0; }
-        .user-details h4 { font-size: 0.95rem; font-weight: 700; }
-        .user-details p { font-size: 0.8rem; color: #999; }
-
-        /* ===================== FOOTER ===================== */
-        footer { background-color: var(--dark-footer); color: #fff; padding: clamp(50px, 7vw, 80px) 5% 30px; margin-top: 20px; }
-        .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.5fr; gap: 40px; margin-bottom: 60px; }
-        .footer-logo { font-weight: 800; font-size: 1.4rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .footer-desc { color: #a0a89f; font-size: 0.9rem; line-height: 1.6; }
-        .footer-col h4 { font-size: 1rem; font-weight: 700; margin-bottom: 25px; }
-        .footer-links { list-style: none; }
-        .footer-links li { margin-bottom: 12px; }
-        .footer-links a { color: #a0a89f; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
-        .footer-links a:hover { color: var(--primary-green); }
-        .newsletter-text { color: #a0a89f; font-size: 0.9rem; margin-bottom: 20px; }
-        .newsletter-form { display: flex; background: rgba(255,255,255,0.05); padding: 5px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); }
-        .newsletter-form input { background: transparent; border: none; padding: 10px 15px; color: #fff; flex: 1; outline: none; font-family: 'Inter', sans-serif; min-width: 0; }
-        .btn-join { background: var(--primary-green); border: none; padding: 10px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; white-space: nowrap; }
-        .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #666; flex-wrap: wrap; gap: 15px; }
-        .legal-links { display: flex; gap: 5px; flex-wrap: wrap; }
-        .legal-links a { color: #666; text-decoration: none; margin-left: 15px; }
-
-        /* ===================== SCROLL ANIMATIONS ===================== */
-        .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.72s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.72s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: opacity, transform; }
-        .reveal.from-left  { transform: translateX(-36px); }
-        .reveal.from-right { transform: translateX(36px); }
-        .reveal.scale-in   { transform: scale(0.95) translateY(14px); }
-        .reveal.visible    { opacity: 1; transform: none; }
-        .reveal-group .reveal:nth-child(1) { transition-delay: 0s; }
-        .reveal-group .reveal:nth-child(2) { transition-delay: 0.13s; }
-        .reveal-group .reveal:nth-child(3) { transition-delay: 0.26s; }
-        .reveal-group .reveal:nth-child(4) { transition-delay: 0.39s; }
-
-        @keyframes heroFadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
-        .hero-image   { animation: heroFadeUp 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.1s both; }
-        .hero-content { animation: heroFadeUp 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s both; }
-
-        /* ===================== RESPONSIVE ===================== */
-        @media (max-width: 1024px) {
-            .navbar { padding: 18px 5%; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
-        }
-
         @media (max-width: 768px) {
-            .navbar { padding: 14px 5%; }
-            .nav-links { display: none; }
-            .hamburger { display: flex; }
-            .mobile-nav { display: flex; }
-            .btn-shop { display: none; }
-
-            .hero { padding: 28px 5% 36px; }
-            .hero-container { flex-direction: column; text-align: center; gap: 28px; }
-            .hero-image { width: 85%; max-width: 320px; margin: 0 auto; }
-            .hero-image img { border-radius: 20px; }
-            .hero-content h1 { font-size: 2rem; line-height: 1.15; margin: 12px 0 14px; }
-            .hero-content p { font-size: 0.93rem; margin-inline: auto; margin-bottom: 24px; max-width: 340px; }
-            .badge { display: inline-block; margin: 0 auto; }
-            .hero-btns { flex-direction: row; justify-content: center; gap: 10px; }
-            .btn-primary, .btn-secondary { width: auto; max-width: none; text-align: center; padding: 12px 18px; font-size: 0.82rem; }
-
-            .section-header { flex-wrap: nowrap; align-items: center; }
-            .section-header h2 { font-size: 1.3rem; }
-            .view-all { font-size: 0.82rem; white-space: nowrap; }
-
-            .promise { padding: 40px 5% 44px; }
-            .promise h2 { font-size: 1.5rem; }
-            .subtitle { font-size: 0.88rem; margin-bottom: 28px; }
-            .card-grid { grid-template-columns: 1fr; gap: 12px; max-width: 480px; margin-inline: auto; }
-            .card { flex-direction: row; align-items: center; text-align: left; padding: 18px 20px; gap: 16px; border-radius: 16px; }
-            .icon-box { width: 40px; height: 40px; margin-bottom: 0; flex-shrink: 0; }
-            .icon-box svg { width: 30px; height: 30px; }
-            .card-text { flex: 1; }
-            .card h3 { font-size: 0.95rem; margin-bottom: 4px; }
-            .card p { font-size: 0.8rem; line-height: 1.5; max-width: 100%; }
-
-            .container { padding: 36px 4%; }
-            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 36px; }
-            .prod-info { padding: 12px; gap: 8px; }
-            .prod-name { font-size: 0.85rem; }
-            .prod-desc { display: none; }
-            .weight-row { flex-direction: column; align-items: stretch; gap: 6px; }
-            .prod-price { font-size: 0.95rem; }
-
-            .about-section { flex-direction: row; align-items: flex-start; gap: 20px; padding: 28px 4%; border-radius: 24px; }
-            .about-image-wrapper { flex: 0 0 40%; padding-bottom: 52px; }
-            .about-image-wrapper img { border-radius: 16px; }
-            .about-content h2 { font-size: 1.05rem; line-height: 1.3; margin-bottom: 10px; }
-            .about-content p { font-size: 0.78rem; line-height: 1.6; margin-bottom: 8px; }
-            .btn-story { padding: 10px 20px; font-size: 0.8rem; margin-top: 8px; }
-            .stats-box { right: 0; padding: 10px 14px; gap: 14px; border-radius: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
-            .stat-number { font-size: 1.1rem; }
-            .stat-label  { font-size: 0.52rem; letter-spacing: 0.5px; }
-
-            .testimonials-heading { font-size: 1.5rem; margin-bottom: 28px; }
-            .testimonials-grid { grid-template-columns: 1fr; gap: 16px; }
-            .testimonial-card { padding: 24px; }
-            .quote { font-size: 0.88rem; margin-bottom: 20px; }
-
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 36px; }
-            .footer-bottom { flex-direction: column; text-align: center; gap: 12px; }
-            .legal-links { justify-content: center; }
-        }
-
-        @media (max-width: 480px) {
-            .hero-image { width: 78%; }
-            .hero-content h1 { font-size: 1.75rem; }
-            .about-content p:last-of-type { display: none; }
-            .about-content p:first-of-type { font-size: 0.74rem; }
-            .footer-grid { grid-template-columns: 1fr; gap: 24px; }
-            .newsletter-form { flex-direction: column; border-radius: 14px; gap: 6px; }
-            .btn-join { border-radius: 10px; padding: 12px; }
-        }
-
-        @media (max-width: 375px) {
-            .logo { font-size: 1.1rem; }
-            .hero-content h1 { font-size: 1.6rem; }
-            .about-section { gap: 14px; padding: 22px 3.5%; }
-            .about-image-wrapper { flex: 0 0 42%; padding-bottom: 46px; }
-            .about-content h2 { font-size: 0.95rem; }
-            .stats-box { padding: 8px 10px; gap: 10px; }
-            .stat-number { font-size: 0.95rem; }
+            .cat-row { display: flex; overflow-x: auto; gap: 12px; margin: 0 calc(-1 * clamp(16px, 4vw, 40px)) 24px; padding: 4px clamp(16px, 4vw, 40px) 6px; scrollbar-width: none; }
+            .cat-row::-webkit-scrollbar { display: none; }
+            .cat { flex: 0 0 84px; }
+            .cat-name { font-size: 0.8rem; }
+            .float-card { right: 8px; bottom: 12px; padding: 9px 12px; font-size: 0.72rem; }
+            .why-grid { gap: 12px; }
+            .step { padding: 12px 12px 18px; }
+            .step-art { height: 110px; }
+            .step-art svg { width: 80px; height: 80px; }
+            .step h3 { font-size: 1.15rem; }
+            .step p { font-size: 0.8rem; }
+            .stat { padding: 16px; }
         }
     </style>
+    <link rel="stylesheet" href="css/site.css?v=3">
+    <link rel="stylesheet" href="css/motion.css?v=3">
 </head>
 <body>
 
-<!-- TOAST -->
-<div class="toast" id="toast"><em id="toastMsg"></em></div>
-
-<!-- Mobile Nav Drawer -->
-<div class="mobile-nav" id="mobileNav">
-    <button class="close-btn" onclick="toggleMenu()" aria-label="Close menu">✕</button>
-    <a href="#" onclick="toggleMenu()">Our Story</a>
-    <a href="#products-section" onclick="toggleMenu()">Products</a>
-    <a href="Support.html" onclick="toggleMenu()">Support</a>
-    <a href="#" onclick="toggleMenu()">Contact</a>
-    <a href="cart.html" onclick="toggleMenu()">🛒 Cart</a>
-    <a href="https://wa.me/c/917207021603" class="btn-shop-mobile">Shop On Whatsapp</a>
-</div>
-
-<!-- NAVBAR -->
-<header class="navbar" id="navbar">
-    <a href="#" class="logo">
-        <div class="logo-icon"></div>
-        Manyam Foods
-    </a>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">Products</a></li>
-            <li><a href="Support.html">Support</a></li>
-            <li><a href="OurStory.html">Our Story</a></li>
-        </ul>
-    </nav>
-    <div class="nav-right">
-        <a href="cart.html" class="cart-nav-btn" id="cartNavBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-            <span class="cart-nav-badge" id="cartNavBadge">0</span>
-        </a>
-        <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
-            <span></span><span></span><span></span>
-        </button>
-        <a href="https://wa.me/c/917207021603" class="btn-shop" id="navShop">Shop On Whatsapp</a>
-    </div>
-</header>
-
-<!-- HERO -->
 <main>
+    <!-- HERO -->
     <section class="hero">
-        <div class="hero-container">
-            <div class="hero-image">
-                <img src="images/working lady.png" alt="Rural Woman Artisan">
+        <span class="dust d1" aria-hidden="true"></span>
+        <span class="dust d2" aria-hidden="true"></span>
+        <div class="wrap hero-inner">
+            <div>
+                <span class="eyebrow" data-hero>Authentic &amp; pure · From the Manyam hills</span>
+                <h1 class="hero-title" data-hero id="heroTitle">Empowering farmers, <em>honoring tradition.</em></h1>
+                <p class="lead hero-sub" data-hero>Millets, powders, pickles and oils handcrafted by rural women artisans: sun-dried, stone-ground and made in small batches.</p>
+                <div class="hero-btns" data-hero>
+                    <a href="#shop" class="mf-btn green">Shop now
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </a>
+                    <a href="OurStory.html" class="mf-btn ghost">Our story</a>
+                </div>
+                <div class="chips" data-hero>
+                    <span class="chip">No preservatives</span>
+                    <span class="chip">No refined sugar</span>
+                    <span class="chip">Women-made</span>
+                </div>
             </div>
-            <div class="hero-content">
-                <span class="badge">AUTHENTIC & PURE</span>
-                <h1>Empowering Farmers, <br><span class="highlight">Honoring Tradition</span></h1>
-                <p>Traditional food products handcrafted by rural women artisans, bringing the essence of the farm directly to your plate.</p>
-                <div class="hero-btns">
-                    <a href="#products-section" class="btn-primary">Explore Our Products</a>
-                    <a href="#impact-section" class="btn-secondary">Our Impact Story</a>
+            <div class="hero-visual">
+                <div class="hero-img" data-hero-img>
+                    <img src="images/working-lady.webp" alt="Rural woman artisan preparing traditional food" width="1100" height="856" fetchpriority="high">
+                </div>
+                <div class="float-card" data-float>
+                    <span class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3e7a37" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></span>
+                    <span>500+ women artisans<small>across 20+ villages</small></span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- PROMISE -->
-    <section class="promise">
-        <h2 class="reveal">Our Promise: From Farm to Plate</h2>
-        <p class="subtitle reveal">We preserve traditional wisdom through sustainable and healthy processing methods that respect the earth.</p>
-        <div class="card-grid reveal-group">
-            <div class="card reveal scale-in">
-                <div class="icon-box">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#76e037" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    <!-- TRUST STRIP -->
+    <section class="strip" aria-label="Our promise">
+        <div class="strip-track">
+            <div class="strip-item">Sun-dried <i></i> Stone-ground <i></i> No preservatives <i></i> Made by women artisans <i></i> Small batch <i></i></div>
+            <div class="strip-item" aria-hidden="true">Sun-dried <i></i> Stone-ground <i></i> No preservatives <i></i> Made by women artisans <i></i> Small batch <i></i></div>
+        </div>
+    </section>
+
+    <!-- SHOP: tiles filter the grid on this page -->
+    <section class="shop" id="shop">
+        <div class="wrap">
+            <div class="section-head">
+                <h2 data-split>Shop <em>by category</em></h2>
+                <a href="products.html" class="view-all" id="viewAll">View all products →</a>
+            </div>
+            <div class="cat-row" role="group" aria-label="Filter products by category">
+                <button class="cat" data-cat="best" aria-pressed="true">
+                    <span class="cat-ic" style="background:#fdeccb"><svg viewBox="0 0 64 64"><path d="M32 8l7 15 16 2-12 11 3 16-14-8-14 8 3-16L9 25l16-2z" fill="#e3a018"/></svg></span>
+                    <span class="cat-name">Bestsellers</span>
+                </button>
+                <button class="cat" data-cat="powders" aria-pressed="false">
+                    <span class="cat-ic" style="background:#fbe7b5"><svg viewBox="0 0 64 64"><path d="M10 36h44c0 12-10 20-22 20S10 48 10 36z" fill="#c0532c"/><path d="M18 36c2-9 8-14 14-14s12 5 14 14z" fill="#e3a018"/></svg></span>
+                    <span class="cat-name">Powders</span>
+                </button>
+                <button class="cat" data-cat="millets" aria-pressed="false">
+                    <span class="cat-ic" style="background:#efe3d0"><svg viewBox="0 0 64 64" fill="none" stroke="#8b6b3d" stroke-width="3" stroke-linecap="round"><path d="M32 58V14"/><g fill="#c9a46a" stroke="none"><ellipse cx="25" cy="20" rx="5" ry="8" transform="rotate(-30 25 20)"/><ellipse cx="39" cy="20" rx="5" ry="8" transform="rotate(30 39 20)"/><ellipse cx="24" cy="33" rx="5" ry="8" transform="rotate(-30 24 33)"/><ellipse cx="40" cy="33" rx="5" ry="8" transform="rotate(30 40 33)"/><ellipse cx="32" cy="11" rx="4.5" ry="7.5"/></g></svg></span>
+                    <span class="cat-name">Millets</span>
+                </button>
+                <button class="cat" data-cat="oils" aria-pressed="false">
+                    <span class="cat-ic" style="background:#fdf0c8"><svg viewBox="0 0 64 64"><rect x="26" y="8" width="12" height="8" rx="2" fill="#3e7a37"/><path d="M24 18h16v6l4 6v24a4 4 0 01-4 4H24a4 4 0 01-4-4V30l4-6z" fill="#e3a018"/><path d="M32 36c3 4 4 6 4 8a4 4 0 01-8 0c0-2 1-4 4-8z" fill="#fbf6ec"/></svg></span>
+                    <span class="cat-name">Oils &amp; Ghee</span>
+                </button>
+                <button class="cat" data-cat="pickles" aria-pressed="false">
+                    <span class="cat-ic" style="background:#f6d9cc"><svg viewBox="0 0 64 64"><rect x="20" y="8" width="24" height="8" rx="2" fill="#3e7a37"/><path d="M18 18h28v32a8 8 0 01-8 8H26a8 8 0 01-8-8z" fill="#fff" stroke="#c0532c" stroke-width="2.5"/><path d="M20 30h24v20a6 6 0 01-6 6H26a6 6 0 01-6-6z" fill="#c0532c"/><circle cx="27" cy="38" r="2.5" fill="#e3a018"/><circle cx="36" cy="44" r="2.5" fill="#e3a018"/></svg></span>
+                    <span class="cat-name">Pickles</span>
+                </button>
+                <button class="cat" data-cat="snacks" aria-pressed="false">
+                    <span class="cat-ic" style="background:#e5efd9"><svg viewBox="0 0 64 64"><circle cx="24" cy="40" r="11" fill="#c98a3c"/><circle cx="41" cy="40" r="11" fill="#b8792f"/><circle cx="32" cy="26" r="11" fill="#d99a48"/></svg></span>
+                    <span class="cat-name">Snacks</span>
+                </button>
+            </div>
+            <div class="mf-grid" id="featuredGrid" aria-live="polite">
+                <div class="grid-msg">Loading products…</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHY MANYAM -->
+    <section class="why">
+        <div class="wrap">
+            <div class="section-head center">
+                <span class="eyebrow" data-reveal>From farm to plate, the old way</span>
+                <h2 data-split>Why <em>Manyam?</em></h2>
+            </div>
+            <div class="why-grid" data-stagger>
+                <article class="step">
+                    <div class="step-art" style="background:#fbe7b5"><svg viewBox="0 0 120 120"><g class="sun-rays" stroke="#e3a018" stroke-width="5" stroke-linecap="round"><path d="M60 8v14M60 98v14M8 60h14M98 60h14M23 23l10 10M87 87l10 10M23 97l10-10M87 33l10-10"/></g><circle cx="60" cy="60" r="24" fill="#e3a018"/></svg></div>
+                    <h3>Sun-dried</h3>
+                    <p>Dried slowly under the open sun to lock in nutrients, with no artificial preservatives.</p>
+                </article>
+                <article class="step">
+                    <div class="step-art" style="background:#efe3d0"><svg viewBox="0 0 120 120"><ellipse cx="60" cy="88" rx="44" ry="12" fill="#c9b08a"/><rect x="16" y="66" width="88" height="22" fill="#c9b08a"/><ellipse cx="60" cy="66" rx="44" ry="12" fill="#ddc9a7"/><ellipse cx="60" cy="54" rx="36" ry="10" fill="#8b7355"/><rect x="24" y="44" width="72" height="10" fill="#8b7355"/><ellipse cx="60" cy="44" rx="36" ry="10" fill="#a68b66"/><rect class="stone-handle" x="80" y="14" width="7" height="32" rx="3.5" fill="#5c4a35"/></svg></div>
+                    <h3>Stone-ground</h3>
+                    <p>Ground cold on stone mills, so aroma, oils and minerals stay in every pinch.</p>
+                </article>
+                <article class="step">
+                    <div class="step-art" style="background:#e5efd9"><svg viewBox="0 0 120 120"><rect x="38" y="14" width="44" height="12" rx="4" fill="#3e7a37"/><path d="M34 30h52v66a10 10 0 01-10 10H44a10 10 0 01-10-10V30z" fill="#fff" stroke="#3e7a37" stroke-width="3"/><clipPath id="jarClip"><path d="M36 32h48v64a8 8 0 01-8 8H44a8 8 0 01-8-8V32z"/></clipPath><g clip-path="url(#jarClip)"><rect class="jar-fill" x="30" y="40" width="60" height="70" fill="#e3a018"/></g><rect x="44" y="56" width="32" height="18" rx="3" fill="#fbf6ec" opacity="0.9"/></svg></div>
+                    <h3>Small batch</h3>
+                    <p>Made by hand in small batches for freshness, quality and hygiene in every jar.</p>
+                </article>
+                <article class="step">
+                    <div class="step-art" style="background:#f6d9cc"><svg viewBox="0 0 120 120"><g fill="#c0532c"><circle cx="40" cy="38" r="12"/><circle cx="80" cy="38" r="12"/><circle cx="60" cy="30" r="13"/></g><path d="M18 100c0-18 10-30 22-30s16 6 20 6 8-6 20-6 22 12 22 30z" fill="#e3a018"/></svg></div>
+                    <h3>Women-made</h3>
+                    <p>Every product supports fair wages for women's cooperatives in the Manyam hills.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- MEET THE MAKERS -->
+    <section class="makers">
+        <div class="wrap makers-grid">
+            <!-- TODO: replace with a real photo of the Manyam women artisans -->
+            <div class="makers-img" data-clip><img src="images/crop-lady.webp" alt="Woman farmer in the field" width="736" height="980" loading="lazy"></div>
+            <div class="makers-copy">
+                <span class="eyebrow" data-reveal>Meet the makers</span>
+                <h2 data-split>Every jar supports <em>a rural family.</em></h2>
+                <p data-reveal>We partner directly with women's cooperatives in the tribal heartlands, so recipes passed down for generations reach your table and fair wages reach theirs.</p>
+                <div class="stats" data-reveal>
+                    <div class="stat"><div class="stat-number" data-count="500" data-suffix="+">500+</div><div class="stat-label">Women artisans</div></div>
+                    <div class="stat"><div class="stat-number" data-count="20" data-suffix="+">20+</div><div class="stat-label">Village farms</div></div>
                 </div>
-                <div class="card-text">
-                    <h3>Solar Drying</h3>
-                    <p>Harnessing the sun to lock in nutrients naturally without artificial preservatives.</p>
+                <a href="OurStory.html" class="mf-btn terra" data-reveal>Read our story →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- DIWALI GIFTING -->
+    <section class="gifting" id="gifting">
+        <div class="wrap">
+            <div class="gift-card" data-reveal>
+                <div>
+                    <span class="eyebrow">Diwali 2026</span>
+                    <h2>Gift <em>tradition</em> this Diwali.</h2>
+                    <p>Build a custom hamper of millets, powders, pickles and ghee with a handwritten note. Great for family, friends and corporate gifting.</p>
+                    <a class="mf-btn gold" href="https://wa.me/917207021603?text=Hi%20Manyam%20Foods%2C%20I%27d%20like%20to%20order%20a%20Diwali%20gift%20hamper." target="_blank" rel="noopener">Ask about hampers on WhatsApp</a>
+                </div>
+                <div class="gift-art" aria-hidden="true">
+                    <svg viewBox="0 0 200 180"><rect x="30" y="70" width="140" height="96" rx="10" fill="#c0532c"/><rect x="22" y="52" width="156" height="30" rx="8" fill="#a8441f"/><rect x="92" y="52" width="16" height="114" fill="#e3a018"/><path class="bow" d="M100 52c-20-30-50-22-40-4 6 10 30 6 40 4zm0 0c20-30 50-22 40-4-6 10-30 6-40 4z" fill="#e3a018"/><path class="diya" d="M150 40c0-8 6-14 6-20 0 6 6 12 6 20a6 6 0 01-12 0z" fill="#f7c948"/></svg>
                 </div>
             </div>
-            <div class="card reveal scale-in">
-                <div class="icon-box">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#76e037" stroke-width="2"><path d="M12 3v18M3 12h18M5 5l14 14M19 5L5 14"/></svg>
-                </div>
-                <div class="card-text">
-                    <h3>Stone Grinding</h3>
-                    <p>Cold-pressed and ground using traditional stone mills to retain essential oils and minerals.</p>
-                </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+        <div class="wrap faq-inner">
+            <div>
+                <span class="eyebrow" data-reveal>Good to know</span>
+                <h2 data-split>Questions, <em>answered.</em></h2>
+                <p class="lead" data-reveal>Can't find your answer? <a href="https://wa.me/917207021603" target="_blank" rel="noopener">Message us on WhatsApp</a>.</p>
             </div>
-            <div class="card reveal scale-in">
-                <div class="icon-box">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#76e037" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                </div>
-                <div class="card-text">
-                    <h3>Small-Batch</h3>
-                    <p>Ensuring quality, hygiene, and absolute freshness in every single jar crafted by hand.</p>
-                </div>
+            <div class="faq-list" data-stagger>
+                <details><summary>Are your products really preservative-free?</summary><p>Yes. No artificial preservatives, no refined sugar and no additives. Sun-drying and stone-grinding keep food fresh and nutritious naturally.</p></details>
+                <details><summary>How long do they stay fresh?</summary><p>Powders last 6–12 months in a cool, dry place. Millet snacks are best within 3 months. Every pack has a "best before" date.</p></details>
+                <details><summary>How long does delivery take?</summary><p>4–7 business days across India. Delivery is free on orders above ₹499, otherwise a flat ₹60.</p></details>
+                <details><summary>How do I pay?</summary><p>Pay instantly by UPI (scan the QR at checkout) or place your order and pay later. We confirm every order on WhatsApp.</p></details>
             </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="wrap">
+            <h2 data-split>Taste the <em>tradition.</em></h2>
+            <p data-reveal>Handmade in the Manyam hills, delivered across India.</p>
+            <a href="products.html" class="mf-btn dark" data-reveal>Shop all products →</a>
         </div>
     </section>
 </main>
 
-<!-- PRODUCTS -->
-<div class="container" id="products-section">
-    <div class="section-header reveal">
-        <h2>The Manyam Collection</h2>
-        <a href="products.html" class="view-all">View All Products →</a>
-    </div>
-
-    <div class="product-grid" id="featuredGrid">
-        <div class="grid-msg">Loading products…</div>
-    </div>
-
-    <!-- ABOUT / IMPACT -->
-    <section class="about-section" id="impact-section">
-        <div class="about-image-wrapper reveal from-left">
-            <img src="images/crop lady.jpg" alt="Woman in field">
-            <div class="stats-box">
-                <div class="stat-item">
-                    <span class="stat-number">500+</span>
-                    <span class="stat-label">Women Artisans</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">20+</span>
-                    <span class="stat-label">Village Farms</span>
-                </div>
-            </div>
-        </div>
-        <div class="about-content reveal from-right">
-            <h2>Empowering Rural Communities Through Every Bite</h2>
-            <p>Manyam Foods was born from a desire to bridge the gap between rural farmers and your dining table. By partnering directly with local women's cooperatives, we ensure fair wages and sustainable growth for the heart of our agriculture.</p>
-            <p>Our journey started in the tribal heartlands, where we discovered traditional recipes passed down for generations. Today, we bring those nutrient-rich secrets to the modern world while preserving the social fabric of the countryside.</p>
-            <a href="#" class="btn-story">Read Our Full Story</a>
-        </div>
-    </section>
-</div>
-
-<!-- TESTIMONIALS -->
-<div class="container">
-    <h2 class="testimonials-heading reveal">What Our Customers Say</h2>
-    <div class="testimonials-grid reveal-group">
-        <div class="testimonial-card reveal">
-            <div>
-                <div class="stars">★★★★★</div>
-                <p class="quote">"The taste of the pickles took me back to my grandmother's home. You can really feel the quality and the love that goes into these small batches."</p>
-            </div>
-            <div class="user-info">
-                <img src="https://i.pravatar.cc/150?u=anita" alt="Anita" class="avatar">
-                <div class="user-details"><h4>Anita Sharma</h4><p>Verified Buyer</p></div>
-            </div>
-        </div>
-        <div class="testimonial-card reveal">
-            <div>
-                <div class="stars">★★★★★</div>
-                <p class="quote">"I've switched to Manyam's millets for my morning breakfast. It's energizing, healthy, and I love knowing that I'm supporting rural women with my purchase."</p>
-            </div>
-            <div class="user-info">
-                <img src="https://i.pravatar.cc/150?u=vikram" alt="Vikram" class="avatar">
-                <div class="user-details"><h4>Vikram Malhotra</h4><p>Healthy Living Advocate</p></div>
-            </div>
-        </div>
-        <div class="testimonial-card reveal">
-            <div>
-                <div class="stars">★★★★★</div>
-                <p class="quote">"Their turmeric powder has such a vibrant color and aroma, unlike anything from the supermarket. The stone-grinding process clearly makes a huge difference."</p>
-            </div>
-            <div class="user-info">
-                <img src="https://i.pravatar.cc/150?u=savitri" alt="Savitri" class="avatar">
-                <div class="user-details"><h4>Savitri G.</h4><p>Nutritionist</p></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-    <div class="footer-grid">
-        <div class="footer-col">
-            <div class="footer-logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="#76e037"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z"/></svg>
-                Manyam Foods
-            </div>
-            <p class="footer-desc">Cultivating a healthier future through traditional wisdom and women-led rural empowerment.</p>
-        </div>
-        <div class="footer-col">
-            <h4>Quick Links</h4>
-            <ul class="footer-links">
-                <li><a href="https://www.instagram.com/manyamfoods?igsh=ZGM1NHpmYjE4dHJq">Instagram</a></li>
-                <li><a href="https://wa.me/c/917207021603">WhatsApp</a></li>
-                <li><a href="https://www.youtube.com/@manyamfoods?si=5k703m_ByN-hLhiD">YouTube</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>Support</h4>
-            <ul class="footer-links">
-                <li><a href="manyam-pages.html#contact">Contact Us</a></li>
-                <li><a href="manyam-pages.html#shipping">Shipping Policy</a></li>
-                <li><a href="manyam-pages.html#returns">Returns & Refunds</a></li>
-                <li><a href="manyam-pages.html#faq">FAQs</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h4>Stay Updated</h4>
-            <p class="newsletter-text">Join our community for seasonal harvests and impact updates.</p>
-            <form class="newsletter-form" onsubmit="return false">
-                <input type="email" placeholder="Email address">
-                <button type="submit" class="btn-join">Join</button>
-            </form>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>© 2024 Manyam Foods. All rights reserved. Handcrafted with care.</p>
-        <div class="legal-links">
-            <a href="privacy.html">Privacy Policy</a>
-            <a href="terms.html">Terms of Service</a>
-        </div>
-    </div>
-</footer>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/store.js"></script>
-<script>
-    // ── Navbar scroll shadow ──
-    window.addEventListener('scroll', function () {
-        const nav = document.getElementById('navbar');
-        if (window.pageYOffset > 50) {
-            nav.style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)";
-            nav.style.padding = "15px 5%";
-        } else {
-            nav.style.boxShadow = "none";
-            nav.style.padding = "20px 8%";
-        }
-    });
-
-    // ── Show/hide hamburger vs shop button ──
-    function updateNavButtons() {
-        const hamburger = document.getElementById('hamburger');
-        const navShop = document.getElementById('navShop');
-        if (window.innerWidth <= 768) {
-            hamburger.style.display = 'flex';
-            navShop.style.display = 'none';
-        } else {
-            hamburger.style.display = 'none';
-            navShop.style.display = 'inline-block';
-        }
-    }
-    updateNavButtons();
-    window.addEventListener('resize', updateNavButtons);
-
-    // ── Mobile menu toggle ──
-    function toggleMenu() {
-        const nav = document.getElementById('mobileNav');
-        nav.classList.toggle('open');
-        document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
-    }
-
-    // ── Scroll animations ──
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) { entry.target.classList.add('visible'); }
-            else { entry.target.classList.remove('visible'); }
-        });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // ── Featured products from the database ──
-    (async function loadFeatured(){
-        const grid = document.getElementById('featuredGrid');
-        try {
-            const products = await fetchProducts({ featuredOnly: true });
-            if(!products.length){ grid.innerHTML = '<div class="grid-msg">New products coming soon.</div>'; return; }
-            grid.classList.add('reveal-group');
-            grid.innerHTML = products.slice(0, 8).map(p => productCardHTML(p, {
-                card: 'reveal', imgWrap: 'prod-img-wrap', badge: 'prod-badge', info: 'prod-info',
-                name: 'prod-name', desc: 'prod-desc', price: 'prod-price', qty: 'qty-ctrl'
-            })).join('');
-            grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-        } catch(e){
-            grid.innerHTML = `<div class="grid-msg">${esc(errMsg(e))}</div>`;
-        }
-    })();
-</script>
+<script src="js/config.js?v=3"></script>
+<script src="js/store.js?v=3"></script>
+<script src="js/layout.js?v=4"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="js/home.js?v=3"></script>
 </body>
 </html>

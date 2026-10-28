@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manyam Foods | Your Cart</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Checkout | Manyam Foods</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --green: #76e037;
@@ -199,47 +199,18 @@
         @media (max-width: 480px) {
             .item-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
         }
+        .mf-page-head h1 .item-count { font-family: var(--sans); font-size: 0.85rem; vertical-align: middle; margin-left: 8px; }
+        .cart-wrapper { padding-top: 10px; }
     </style>
+    <link rel="stylesheet" href="css/site.css?v=3">
+    <link rel="stylesheet" href="css/motion.css?v=3">
 </head>
-<body>
-
-<!-- Mobile Nav -->
-<div class="mobile-nav" id="mobileNav">
-    <button class="close-btn" onclick="toggleMenu()">✕</button>
-    <a href="index.html" onclick="toggleMenu()">Home</a>
-    <a href="products.html" onclick="toggleMenu()">Products</a>
-    <a href="index.html#impact-section" onclick="toggleMenu()">Our Story</a>
-    <a href="cart.html" onclick="toggleMenu()">🛒 Cart</a>
-</div>
-
-<!-- NAVBAR -->
-<header class="navbar">
-    <a href="index.html" class="logo"><div class="logo-icon"></div>Manyam Foods</a>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">Products</a></li>
-            <li><a href="Support.html">Support</a></li>
-            <li><a href="index.html#impact-section">Our Story</a></li>
-        </ul>
-    </nav>
-    <div class="nav-right">
-        <a href="products.html" class="btn-back">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-            <span>Continue Shopping</span>
-        </a>
-        <a href="cart.html" class="cart-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-            <span class="cart-badge show" id="cartBadge">0</span>
-        </a>
-        <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
-    </div>
-</header>
+<body data-no-drawer>
 
 <!-- PAGE HEADER -->
-<div class="page-header">
-    <div class="breadcrumb"><a href="index.html">Home</a> / <a href="products.html">Products</a> / <span style="color:var(--green);font-weight:600;">Cart</span></div>
-    <h1>Your Cart <span class="item-count" id="itemCountBadge">0 items</span></h1>
+<div class="mf-page-head">
+    <div class="mf-crumb"><a href="index.html">Home</a> / <a href="products.html">Shop</a> / Checkout</div>
+    <h1>Checkout <span class="item-count" id="itemCountBadge">0 items</span></h1>
 </div>
 
 <!-- CART BODY -->
@@ -301,24 +272,13 @@
     </div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-    <div class="f-logo">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="#76e037"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z"/></svg>
-        Manyam Foods
-    </div>
-    <p class="f-desc">Cultivating a healthier future through traditional wisdom and women-led rural empowerment.</p>
-    <div class="f-bottom">
-        <p>© 2024 Manyam Foods. All rights reserved.</p>
-        <div><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms</a></div>
-    </div>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/store.js"></script>
-<script src="js/upi-pay.js"></script>
+<script src="js/config.js?v=3"></script>
+<script src="js/store.js?v=3"></script>
+<script src="js/layout.js?v=4"></script>
+<script src="js/upi-pay.js?v=3"></script>
 <script>
 const FALLBACK_WA_NUMBER = "917207021603";
 
@@ -569,16 +529,6 @@ async function showSuccess(order, method, utr){
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function toggleMenu(){
-    const n=document.getElementById('mobileNav');
-    n.classList.toggle('open');
-    document.body.style.overflow = n.classList.contains('open')?'hidden':'';
-}
-function updateNav(){
-    const h=document.querySelector('.hamburger');
-    h.style.display = window.innerWidth<=768 ? 'flex' : 'none';
-}
-updateNav(); window.addEventListener('resize',updateNav);
 
 // Init
 renderItems();

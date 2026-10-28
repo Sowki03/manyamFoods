@@ -3,414 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manyam Foods | All Products</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Shop | Manyam Foods</title>
+    <meta name="description" content="Shop handmade millets, stone-ground powders, pickles, cold-pressed oils and ghee from rural women artisans.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --green: #76e037;
-            --orange: #c85a3a;
-            --dark: #1a1a1a;
-            --gray: #666;
-            --border: #e8f0e5;
-            --card-bg: #f9fdf7;
-            --footer-bg: #151e13;
-        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f5f9f3; color: var(--dark); }
-
-        /* NAVBAR */
-        .navbar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 16px 6%; background: white; position: sticky; top: 0; z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.07);
-        }
-        .logo { font-weight: 800; font-size: 1.25rem; color: var(--dark); display: flex; align-items: center; gap: 8px; text-decoration: none; }
-        .logo-icon { width: 20px; height: 20px; background: var(--green); border-radius: 4px; flex-shrink: 0; }
-        .nav-links { display: flex; list-style: none; gap: 26px; }
-        .nav-links a { text-decoration: none; color: var(--dark); font-size: 0.88rem; font-weight: 500; }
-        .nav-right { display: flex; align-items: center; gap: 12px; }
-        .btn-shop { background: var(--green); padding: 9px 20px; border-radius: 50px; text-decoration: none; color: black; font-weight: 700; font-size: 0.85rem; }
-        .cart-icon {
-            position: relative; width: 42px; height: 42px; border-radius: 50%;
-            border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
-            text-decoration: none; color: var(--dark); transition: all 0.2s;
-        }
-        .cart-icon:hover { border-color: var(--green); background: #f0fdf4; }
-        .cart-icon svg { width: 18px; height: 18px; }
-        .cart-badge {
-            position: absolute; top: -5px; right: -5px; background: var(--orange); color: white;
-            font-size: 0.62rem; font-weight: 800; min-width: 18px; height: 18px; border-radius: 50%;
-            display: none; align-items: center; justify-content: center; border: 2px solid white;
-        }
-        .cart-badge.show { display: flex; }
-        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
-        .hamburger span { display: block; width: 22px; height: 2px; background: var(--dark); border-radius: 2px; }
-
-        /* MOBILE NAV */
-        .mobile-nav {
-            display: none; position: fixed; inset: 0; background: white; z-index: 999;
-            flex-direction: column; align-items: center; justify-content: center; gap: 30px;
-            transform: translateX(100%); transition: transform 0.3s;
-        }
-        .mobile-nav.open { transform: translateX(0); }
-        .mobile-nav a { font-size: 1.4rem; font-weight: 800; text-decoration: none; color: var(--dark); }
-        .mobile-nav .close-btn { position: absolute; top: 20px; right: 22px; font-size: 1.8rem; background: none; border: none; cursor: pointer; }
-        .mobile-nav .m-shop { background: var(--green); padding: 12px 36px; border-radius: 50px; color: black; font-weight: 700; }
-
-        /* PAGE HEADER */
-        .page-header { background: white; padding: 36px 6% 26px; border-bottom: 1px solid var(--border); }
-        .breadcrumb { font-size: 0.78rem; color: #aaa; margin-bottom: 8px; }
-        .breadcrumb a { color: #aaa; text-decoration: none; }
-        .breadcrumb a:hover { color: var(--green); }
-        .page-header h1 { font-size: 1.9rem; font-weight: 800; }
-        .page-header p { color: var(--gray); margin-top: 5px; font-size: 0.92rem; }
-
-        /* FILTERS */
-        .filter-bar {
-            display: flex; align-items: center; gap: 10px; padding: 16px 6%;
-            background: white; border-bottom: 1px solid var(--border); flex-wrap: wrap;
-        }
-        .filter-label { font-size: 0.78rem; font-weight: 700; color: #aaa; }
-        .filter-btn {
-            padding: 6px 15px; border-radius: 50px; border: 1.5px solid var(--border);
-            background: white; font-size: 0.8rem; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; color: var(--dark); font-family: 'Inter', sans-serif;
-        }
-        .filter-btn.active, .filter-btn:hover { background: var(--green); border-color: var(--green); color: black; }
-        .result-count { margin-left: auto; font-size: 0.8rem; color: #aaa; font-weight: 600; }
-
-        /* GRID */
-        .products-wrapper { padding: 28px 6%; max-width: 1400px; margin: 0 auto; }
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 22px; }
-
-        /* CARD */
-        .product-card {
-            background: white; border-radius: 18px; overflow: hidden;
-            border: 1.5px solid var(--border); display: flex; flex-direction: column;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .img-wrap { position: relative; aspect-ratio: 1/1; background: var(--card-bg); overflow: hidden; }
-        .img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .product-card:hover .img-wrap img { transform: scale(1.06); }
-        .p-badge {
-            position: absolute; top: 10px; left: 10px; background: var(--green); color: black;
-            font-size: 0.63rem; font-weight: 700; padding: 3px 9px; border-radius: 50px;
-            text-transform: uppercase; letter-spacing: 0.4px;
-        }
-        .p-badge.hot { background: var(--orange); color: white; }
-
-        .p-info { padding: 16px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-        .p-name { font-size: 0.95rem; font-weight: 700; line-height: 1.3; }
-        .p-desc { font-size: 0.78rem; color: var(--gray); line-height: 1.5; }
-
-        .weight-row { display: flex; align-items: center; gap: 8px; }
-        .w-select {
-            flex: 1; padding: 7px 10px; border-radius: 9px; border: 1.5px solid var(--border);
-            background: var(--card-bg); font-size: 0.8rem; font-weight: 600;
-            font-family: 'Inter', sans-serif; cursor: pointer; outline: none;
-        }
-        .w-select:focus { border-color: var(--green); }
-        .p-price { font-size: 1.05rem; font-weight: 800; color: var(--orange); white-space: nowrap; }
-
-        .add-row { display: flex; align-items: center; gap: 8px; margin-top: auto; }
-        .qty { display: flex; align-items: center; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
-        .qty-btn {
-            width: 32px; height: 32px; background: none; border: none; font-size: 1rem;
-            font-weight: 700; cursor: pointer; color: var(--dark); transition: background 0.15s;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .qty-btn:hover { background: var(--card-bg); }
-        .qty-num {
-            width: 32px; text-align: center; font-size: 0.85rem; font-weight: 700;
-            border: none; border-left: 1.5px solid var(--border); border-right: 1.5px solid var(--border);
-            background: none; outline: none; font-family: 'Inter', sans-serif;
-        }
-        .btn-add {
-            flex: 1; background: var(--dark); color: white; border: none;
-            padding: 9px 12px; border-radius: 10px; font-size: 0.8rem; font-weight: 700;
-            cursor: pointer; transition: background 0.2s, transform 0.15s;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-add:hover { background: #333; transform: translateY(-1px); }
-        .btn-add.added { background: var(--green); color: black; }
-        .btn-add svg { width: 14px; height: 14px; flex-shrink: 0; }
-        .btn-add:disabled { background: #ccc; cursor: not-allowed; transform: none; }
-        .grid-msg { grid-column: 1 / -1; text-align: center; color: var(--gray); padding: 60px 10px; font-size: 0.9rem; }
-
-        /* TOAST */
-        .toast {
-            position: fixed; bottom: 28px; left: 50%;
-            transform: translateX(-50%) translateY(16px);
-            background: var(--dark); color: white; padding: 11px 22px; border-radius: 50px;
-            font-size: 0.85rem; font-weight: 600; z-index: 9999; opacity: 0;
-            transition: all 0.3s; pointer-events: none; white-space: nowrap;
-        }
-        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-        .toast em { color: var(--green); font-style: normal; }
-
-        /* FOOTER */
-        footer { background: var(--footer-bg); color: white; padding: 44px 6% 26px; margin-top: 40px; }
-        .f-logo { font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-        .f-desc { color: #a0a89f; font-size: 0.88rem; line-height: 1.6; max-width: 320px; }
-        .f-bottom {
-            margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08);
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.78rem; color: #666; flex-wrap: wrap; gap: 10px;
-        }
-        .f-bottom a { color: #666; text-decoration: none; margin-left: 14px; }
-
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .nav-links, .btn-shop { display: none; }
-            .hamburger { display: flex; }
-            .mobile-nav { display: flex; }
-            .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-            .products-wrapper { padding: 18px 4%; }
-            .p-info { padding: 12px; }
-            .page-header { padding: 26px 4% 18px; }
-            .filter-bar { padding: 12px 4%; }
-        }
-        @media (max-width: 420px) {
-            .products-grid { gap: 8px; }
-            .p-name { font-size: 0.82rem; }
-            .p-desc { display: none; }
-            .weight-row { flex-direction: column; align-items: stretch; }
-            .p-price { font-size: 0.95rem; }
-        }
-        :root {
-    --primary-green: #76e037;
-    --dark-footer: #151e13; /* The background color */
-    --gray-text: #666;
-}
-/* ===================== FOOTER ===================== */
-footer { 
-    background-color: var(--dark-footer); 
-    color: #fff; 
-    padding: clamp(50px, 7vw, 80px) 5% 30px; 
-    margin-top: 20px; 
-}
-.footer-grid { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    display: grid; 
-    grid-template-columns: 1.5fr 1fr 1fr 1.5fr; 
-    gap: 40px; 
-    margin-bottom: 60px; 
-}
-.footer-logo { 
-    font-weight: 800; 
-    font-size: 1.4rem; 
-    margin-bottom: 20px; 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-}
-.footer-desc { color: #a0a89f; font-size: 0.9rem; line-height: 1.6; }
-.footer-col h4 { font-size: 1rem; font-weight: 700; margin-bottom: 25px; }
-.footer-links { list-style: none; }
-.footer-links li { margin-bottom: 12px; }
-.footer-links a { color: #a0a89f; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
-.footer-links a:hover { color: var(--primary-green); }
-
-.newsletter-text { color: #a0a89f; font-size: 0.9rem; margin-bottom: 20px; }
-.newsletter-form { 
-    display: flex; 
-    background: rgba(255,255,255,0.05); 
-    padding: 5px; 
-    border-radius: 50px; 
-    border: 1px solid rgba(255,255,255,0.1); 
-}
-.newsletter-form input { 
-    background: transparent; 
-    border: none; 
-    padding: 10px 15px; 
-    color: #fff; 
-    flex: 1; 
-    outline: none; 
-    font-family: 'Inter', sans-serif; 
-    min-width: 0; 
-}
-.btn-join { 
-    background: var(--primary-green); 
-    border: none; 
-    padding: 10px 20px; 
-    border-radius: 50px; 
-    font-weight: 700; 
-    cursor: pointer; 
-    font-family: 'Inter', sans-serif; 
-    white-space: nowrap; 
-}
-
-.footer-bottom { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding-top: 30px; 
-    border-top: 1px solid rgba(255,255,255,0.1); 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    font-size: 0.8rem; 
-    color: #666; 
-    flex-wrap: wrap; 
-    gap: 15px; 
-}
-.legal-links { display: flex; gap: 5px; flex-wrap: wrap; }
-.legal-links a { color: #666; text-decoration: none; margin-left: 15px; }
+        html { overflow-x: clip; }
+        body { line-height: 1.6; }
+        .shop-bar { position: sticky; top: var(--top-h, 106px); z-index: 50; background: rgba(251, 246, 236, 0.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+        .shop-bar-inner { max-width: 1240px; margin: 0 auto; padding: 12px clamp(16px, 4vw, 40px); display: flex; align-items: center; gap: 16px; }
+        .shop-bar .mf-pills { flex: 1; min-width: 0; }
+        .result-count { font-size: 0.8rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
+        .shop-body { max-width: 1240px; margin: 0 auto; padding: 28px clamp(16px, 4vw, 40px) clamp(60px, 8vw, 100px); }
+        @media (max-width: 520px) { .result-count { display: none; } }
     </style>
+    <link rel="stylesheet" href="css/site.css?v=3">
+    <link rel="stylesheet" href="css/motion.css?v=3">
 </head>
 <body>
 
-<!-- Mobile Nav -->
-<div class="mobile-nav" id="mobileNav">
-    <button class="close-btn" onclick="toggleMenu()">✕</button>
-    <a href="index.html" onclick="toggleMenu()">Home</a>
-    <a href="products.html" onclick="toggleMenu()">Products</a>
-    <a href="index.html#impact-section" onclick="toggleMenu()">Our Story</a>
-    <a href="cart.html" onclick="toggleMenu()">🛒 Cart</a>
-    <a href="https://wa.me/c/917207021603" class="m-shop" onclick="toggleMenu()">Shop on WhatsApp</a>
+<div class="mf-page-head">
+    <div class="mf-crumb"><a href="index.html">Home</a> / Shop</div>
+    <h1>The Manyam <em>collection</em></h1>
+    <p>Handmade by rural women artisans: sun-dried, stone-ground and made in small batches.</p>
 </div>
 
-<!-- NAVBAR -->
-<header class="navbar">
-    <a href="index.html" class="logo"><div class="logo-icon"></div>Manyam Foods</a>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">Products</a></li>
-            <li><a href="Support.html">Support</a></li>
-            <li><a href="OurStory.html">Our Story</a></li>
-        </ul>
-    </nav>
-    <div class="nav-right">
-        
-        <a href="cart.html" class="cart-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-            <span class="cart-badge" id="cartBadge">0</span>
-        </a>
-        <a href="https://wa.me/c/917207021603" class="btn-shop">Shop on WhatsApp</a>
-        <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+<div class="shop-bar">
+    <div class="shop-bar-inner">
+        <div class="mf-pills" role="group" aria-label="Filter by category">
+            <button class="mf-pill active" data-cat="all">All</button>
+            <button class="mf-pill" data-cat="powders">Powders</button>
+            <button class="mf-pill" data-cat="millets">Millets</button>
+            <button class="mf-pill" data-cat="oils">Oils &amp; Ghee</button>
+            <button class="mf-pill" data-cat="pickles">Pickles</button>
+            <button class="mf-pill" data-cat="snacks">Snacks</button>
+        </div>
+        <span class="result-count" id="resultCount"></span>
     </div>
-</header>
-
-<!-- PAGE HEADER -->
-<div class="page-header">
-    <div class="breadcrumb"><a href="index.html">Home</a> / <span style="color:var(--green);font-weight:600;">All Products</span></div>
-    <h1>The Manyam Collection</h1>
-    <p>Handcrafted products from rural women artisans across tribal heartlands</p>
 </div>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-    <span class="filter-label">Filter:</span>
-    <button class="filter-btn active" data-cat="all" onclick="filterProducts(this,'all')">All</button>
-    <button class="filter-btn" data-cat="powders" onclick="filterProducts(this,'powders')">Powders</button>
-    <button class="filter-btn" data-cat="millets" onclick="filterProducts(this,'millets')">Millets</button>
-    <button class="filter-btn" data-cat="oils" onclick="filterProducts(this,'oils')">Oils & Ghee</button>
-    <button class="filter-btn" data-cat="pickles" onclick="filterProducts(this,'pickles')">Pickles</button>
-    <button class="filter-btn" data-cat="snacks" onclick="filterProducts(this,'snacks')">Snacks</button>
-    <span class="result-count" id="resultCount"></span>
-</div>
-
-<!-- PRODUCTS GRID -->
-<div class="products-wrapper">
-<div class="products-grid" id="productsGrid">
-  <div class="grid-msg">Loading products…</div>
-</div><!-- /products-grid -->
-</div><!-- /products-wrapper -->
-
-<!-- TOAST -->
-<div class="toast" id="toast"><em id="toastMsg"></em></div>
-
-<!-- FOOTER -->
-<footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div class="footer-logo">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#76e037"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z"/></svg>
-                    Manyam Foods
-                </div>
-                <p class="footer-desc">Cultivating a healthier future through traditional wisdom and women-led rural empowerment.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="https://www.instagram.com/manyamfoods">Instagram</a></li>
-                    <li><a href="https://wa.me/c/917207021603">WhatsApp</a></li>
-                    <li><a href="https://www.youtube.com/@manyamfoods">YouTube</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Support</h4>
-                <ul class="footer-links">
-                    <li><a href="#" onclick="switchTabByName('contact')">Contact Us</a></li>
-                    <li><a href="#" onclick="switchTabByName('shipping')">Shipping Policy</a></li>
-                    <li><a href="#" onclick="switchTabByName('returns')">Returns & Refunds</a></li>
-                    <li><a href="#" onclick="switchTabByName('faq')">FAQs</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Stay Updated</h4>
-                <p class="newsletter-text">Join our community for seasonal harvests and impact updates.</p>
-                <form class="newsletter-form" onsubmit="return false">
-                    <input type="email" placeholder="Email address">
-                    <button type="submit" class="btn-join">Join</button>
-                </form>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2024 Manyam Foods. All rights reserved. Handcrafted with care.</p>
-            <div class="legal-links">
-                <a href="privacy.html">Privacy Policy</a>
-                <a href="terms.html">Terms of Service</a>
-            </div>
-        </div>
-    </footer>
-
+<main class="shop-body">
+    <div class="mf-grid" id="productsGrid" aria-live="polite">
+        <div class="grid-msg">Loading products…</div>
+    </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/store.js"></script>
+<script src="js/config.js?v=3"></script>
+<script src="js/store.js?v=3"></script>
+<script src="js/layout.js?v=4"></script>
 <script>
-function filterProducts(btn, cat){
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    let count=0;
-    document.querySelectorAll('#productsGrid .product-card').forEach(c=>{
-        const show = cat==='all' || c.dataset.category===cat;
-        c.style.display = show?'':'none'; if(show)count++;
+const CARD_CLASSES = { imgWrap: 'prod-img-wrap', badge: 'prod-badge', info: 'prod-info',
+                       name: 'prod-name', desc: 'prod-desc', price: 'prod-price', qty: 'qty-ctrl' };
+const grid = document.getElementById('productsGrid');
+let allProducts = [];
+
+// keep the category bar just under the sticky header
+const setTop = () => document.documentElement.style.setProperty('--top-h', document.getElementById('siteTop').offsetHeight + 'px');
+setTop(); addEventListener('resize', setTop);
+
+function render(cat, animate){
+    const list = cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat);
+    grid.innerHTML = list.length
+        ? list.map(p => productCardHTML(p, CARD_CLASSES)).join('')
+        : '<div class="grid-msg">New products in this category are coming soon.</div>';
+    document.getElementById('resultCount').textContent = list.length + ' product' + (list.length !== 1 ? 's' : '');
+    document.querySelectorAll('.mf-pill').forEach(b => {
+        b.classList.toggle('active', b.dataset.cat === cat);
+        b.setAttribute('aria-pressed', String(b.dataset.cat === cat));
     });
-    document.getElementById('resultCount').textContent = count+' product'+(count!==1?'s':'');
+    if(animate) animateCards([...grid.querySelectorAll('.product-card')]);
 }
 
-function toggleMenu(){
-    const n=document.getElementById('mobileNav');
-    n.classList.toggle('open');
-    document.body.style.overflow = n.classList.contains('open')?'hidden':'';
-}
+document.querySelectorAll('.mf-pill').forEach(btn => btn.addEventListener('click', () => {
+    if(btn.classList.contains('active')) return;
+    const cat = btn.dataset.cat;
+    history.replaceState(null, '', cat === 'all' ? 'products.html' : 'products.html?cat=' + cat);
+    render(cat, true);
+    btn.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+    // if the shopper has scrolled down, bring the new results into view
+    const headH = document.querySelector('.mf-page-head').offsetHeight;
+    if(scrollY > headH) scrollTo({ top: headH, behavior: 'smooth' });
+}));
 
-function updateNav(){
-    const h=document.querySelector('.hamburger'), s=document.querySelector('.btn-shop');
-    if(window.innerWidth<=768){h.style.display='flex';if(s)s.style.display='none';}
-    else{h.style.display='none';if(s)s.style.display='inline-block';}
-}
-updateNav(); window.addEventListener('resize',updateNav);
-
-// ── All products from the database ──
-(async function loadProducts(){
-    const grid = document.getElementById('productsGrid');
+(async function(){
     try {
-        const products = await fetchProducts();
-        if(!products.length){ grid.innerHTML = '<div class="grid-msg">New products coming soon.</div>'; return; }
-        grid.innerHTML = products.map(p => productCardHTML(p, {
-            imgWrap: 'img-wrap', badge: 'p-badge', info: 'p-info',
-            name: 'p-name', desc: 'p-desc', price: 'p-price', qty: 'qty'
-        })).join('');
-        filterProducts(document.querySelector('.filter-btn.active'), document.querySelector('.filter-btn.active').dataset.cat || 'all');
+        allProducts = await fetchProducts();
+        const wanted = new URLSearchParams(location.search).get('cat');
+        const valid = [...document.querySelectorAll('.mf-pill')].some(b => b.dataset.cat === wanted);
+        render(valid ? wanted : 'all', true);
     } catch(e){
         grid.innerHTML = `<div class="grid-msg">${esc(errMsg(e))}</div>`;
-        document.getElementById('resultCount').textContent = '';
     }
 })();
 </script>

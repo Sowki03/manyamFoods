@@ -215,7 +215,7 @@ function renderAccountNav(session){
         const a = document.createElement('a');
         a.id = 'mobileOrdersLink';
         a.href = 'orders.html';
-        a.textContent = '📦 My Orders';
+        a.textContent = 'My Orders';
         const cartLink = [...drawer.querySelectorAll('a')].find(x => x.getAttribute('href') === 'cart.html');
         drawer.insertBefore(a, cartLink ? cartLink.nextSibling : null);
     }

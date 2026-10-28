@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manyam Foods | My Orders</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --green: #76e037;
@@ -124,38 +124,17 @@
             main { padding: 18px 4% 30px; }
             .step { font-size: 0.6rem; }
         }
+            .mf-page-head .header-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; }
+        .mf-page-head .breadcrumb { font-size: 0.78rem; color: var(--muted); margin-bottom: 10px; }
+        .mf-page-head .breadcrumb a { color: var(--muted); text-decoration: none; }
     </style>
+    <link rel="stylesheet" href="css/site.css?v=3">
+    <link rel="stylesheet" href="css/motion.css?v=3">
 </head>
 <body>
 
-<div class="mobile-nav" id="mobileNav">
-    <button class="close-btn" onclick="toggleMenu()">✕</button>
-    <a href="index.html" onclick="toggleMenu()">Home</a>
-    <a href="products.html" onclick="toggleMenu()">Products</a>
-    <a href="OurStory.html" onclick="toggleMenu()">Our Story</a>
-    <a href="cart.html" onclick="toggleMenu()">🛒 Cart</a>
-</div>
 
-<header class="navbar">
-    <a href="index.html" class="logo"><div class="logo-icon"></div>Manyam Foods</a>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">Products</a></li>
-            <li><a href="Support.html">Support</a></li>
-            <li><a href="OurStory.html">Our Story</a></li>
-        </ul>
-    </nav>
-    <div class="nav-right">
-        <a href="cart.html" class="cart-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-            <span class="cart-badge" id="cartBadge">0</span>
-        </a>
-        <button class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
-    </div>
-</header>
-
-<div class="page-header">
+<div class="mf-page-head">
     <div class="breadcrumb"><a href="index.html">Home</a> / <span style="color:var(--green);font-weight:600;">My Orders</span></div>
     <div class="header-row">
         <h1>My Orders</h1>
@@ -167,13 +146,13 @@
     <div id="ordersRoot"><div class="msg-box"><p>Loading…</p></div></div>
 </main>
 
-<footer>© 2024 Manyam Foods. Handcrafted with care. · <a href="privacy.html" style="color:#888">Privacy Policy</a> · <a href="terms.html" style="color:#888">Terms</a></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/store.js"></script>
-<script src="js/upi-pay.js"></script>
+<script src="js/config.js?v=3"></script>
+<script src="js/store.js?v=3"></script>
+<script src="js/layout.js?v=4"></script>
+<script src="js/upi-pay.js?v=3"></script>
 <script>
 const STEPS = [
     ['placed', 'Placed'],
@@ -303,11 +282,6 @@ async function cancelOrder(orderNo){
     loadOrders();
 }
 
-function toggleMenu(){
-    const n=document.getElementById('mobileNav');
-    n.classList.toggle('open');
-    document.body.style.overflow = n.classList.contains('open')?'hidden':'';
-}
 
 loadOrders();
 if(sb) sb.auth.onAuthStateChange((event) => { if(event === 'SIGNED_IN' || event === 'SIGNED_OUT') loadOrders(); });

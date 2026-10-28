@@ -1,0 +1,45 @@
+/* Shared motion foundation (Emil Kowalski rules): tokens, press feedback,
+   touch-safe hover, reduced motion. Loaded on every page after its own styles. */
+
+:root {
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);        /* entering / UI feedback */
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);    /* on-screen movement */
+    --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);     /* drawers, sheets */
+    --dur-press: 160ms;
+    --dur-fast: 200ms;
+    --dur-ui: 250ms;
+}
+
+/* Press feedback on everything pressable */
+button, .btn-primary, .btn-secondary, .btn-shop, .btn-story, .btn-add, .btn-checkout,
+.btn-whatsapp, .btn-apply, .btn-shop-now, .filter-btn, .qty-btn, .iq-btn, .btn-join,
+.btn-sm, .btn-green, .btn-google, .btn-outline, .cart-nav-btn, .cart-icon, .account-btn {
+    -webkit-tap-highlight-color: transparent;
+}
+button:not(:disabled):active, .btn-primary:active, .btn-secondary:active, .btn-shop:active,
+.btn-story:active, .btn-shop-now:active, .btn-whatsapp:active, .btn-green:active,
+.btn-outline:active, .cart-nav-btn:active, .cart-icon:active, .account-btn:active {
+    transform: scale(0.97) !important;
+    transition: transform var(--dur-press) var(--ease-out) !important;
+}
+
+/* Mobile drawer: iOS-like curve */
+.mobile-nav { transition: transform 400ms var(--ease-drawer) !important; }
+
+/* Touch screens fire hover on tap and leave it stuck: undo hover motion there */
+@media (hover: none) {
+    .product-card:hover, .card:hover, .btn-primary:hover, .btn-story:hover,
+    .btn-add:hover, .btn-checkout:hover, .btn-whatsapp:hover { transform: none !important; }
+    .product-card:hover img { transform: none !important; }
+}
+
+/* Reduced motion: keep fades and colour, drop movement */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-property: opacity, color, background-color, border-color, box-shadow !important;
+        scroll-behavior: auto !important;
+    }
+    .reveal { opacity: 1 !important; transform: none !important; }
+}

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Story | Manyam Foods</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-green: #76e037;
@@ -221,43 +221,12 @@ footer {
             .story-hero { padding: 60px 5% 40px; }
         }
     </style>
+    <link rel="stylesheet" href="css/site.css?v=3">
+    <link rel="stylesheet" href="css/motion.css?v=3">
 </head>
 <body>
 
-<div id="toast" style="position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--dark-text); color: white; padding: 11px 22px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; z-index: 9999; opacity: 0; transition: all 0.3s; pointer-events: none;"></div>
 
-<div class="mobile-nav" id="mobileNav">
-    <button class="close-btn" onclick="toggleMenu()" aria-label="Close menu">✕</button>
-    <a href="index.html" onclick="toggleMenu()">Home</a>
-    <a href="OurStory.html" onclick="toggleMenu()">Our Story</a>
-    <a href="products.html" onclick="toggleMenu()">Products</a>
-    <a href="Support.html" onclick="toggleMenu()">Support</a>
-</div>
-
-<header class="navbar" id="navbar">
-    <a href="index.html" class="logo">
-        <div class="logo-icon"></div>
-        Manyam Foods
-    </a>
-    <nav>
-        <ul class="nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="products.html">Products</a></li>
-            <li><a href="Support.html">Support</a></li>
-            <li><a href="OurStory.html">Our Story</a></li>
-        </ul>
-    </nav>
-    <div class="nav-right">
-        <a href="cart.html" class="cart-nav-btn" id="cartNavBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="19" height="19"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-            <span class="cart-nav-badge" id="cartNavBadge">0</span>
-        </a>
-        <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open menu">
-            <span></span><span></span><span></span>
-        </button>
-        <a href="https://wa.me/c/917207021603" class="btn-shop">Shop on WhatsApp</a>
-    </div>
-</header>
 
 <section class="story-hero">
     <p>Honoring Tradition</p>
@@ -306,88 +275,10 @@ footer {
     </div>
 </section>
 
-<!-- FOOTER -->
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div class="footer-logo">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="#76e037"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z"/></svg>
-                    Manyam Foods
-                </div>
-                <p class="footer-desc">Cultivating a healthier future through traditional wisdom and women-led rural empowerment.</p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="https://www.instagram.com/manyamfoods">Instagram</a></li>
-                    <li><a href="https://wa.me/c/917207021603">WhatsApp</a></li>
-                    <li><a href="https://www.youtube.com/@manyamfoods">YouTube</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Support</h4>
-                <ul class="footer-links">
-                    <li><a href="#" onclick="switchTabByName('contact')">Contact Us</a></li>
-                    <li><a href="#" onclick="switchTabByName('shipping')">Shipping Policy</a></li>
-                    <li><a href="#" onclick="switchTabByName('returns')">Returns & Refunds</a></li>
-                    <li><a href="#" onclick="switchTabByName('faq')">FAQs</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Stay Updated</h4>
-                <p class="newsletter-text">Join our community for seasonal harvests and impact updates.</p>
-                <form class="newsletter-form" onsubmit="return false">
-                    <input type="email" placeholder="Email address">
-                    <button type="submit" class="btn-join">Join</button>
-                </form>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2024 Manyam Foods. All rights reserved. Handcrafted with care.</p>
-            <div class="legal-links">
-                <a href="privacy.html">Privacy Policy</a>
-                <a href="terms.html">Terms of Service</a>
-            </div>
-        </div>
-    </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/store.js"></script>
-<script>
-    // Scroll Navbar Shadow
-    window.addEventListener('scroll', function () {
-        const nav = document.getElementById('navbar');
-        if (window.pageYOffset > 50) {
-            nav.style.boxShadow = "0 10px 30px rgba(0,0,0,0.08)";
-            nav.style.padding = "15px 5%";
-        } else {
-            nav.style.boxShadow = "none";
-            nav.style.padding = "20px 8%";
-        }
-    });
-
-    // Mobile menu toggle
-    function toggleMenu() {
-        const nav = document.getElementById('mobileNav');
-        nav.classList.toggle('open');
-        document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
-    }
-
-    function updateNavButtons() {
-        const hamburger = document.getElementById('hamburger');
-        const navShop = document.getElementById('navShop');
-        if (window.innerWidth <= 768) {
-            if(hamburger) hamburger.style.display = 'flex';
-            if(navShop) navShop.style.display = 'none';
-        } else {
-            if(hamburger) hamburger.style.display = 'none';
-            if(navShop) navShop.style.display = 'inline-block';
-        }
-    }
-
-    updateNavButtons();
-    window.addEventListener('resize', updateNavButtons);
-</script>
+<script src="js/config.js?v=3"></script>
+<script src="js/store.js?v=3"></script>
+<script src="js/layout.js?v=4"></script>
 </body>
 </html>
