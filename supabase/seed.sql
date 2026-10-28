@@ -45,26 +45,26 @@ select pg_temp.add_product('Horse Gram Powder', 'The ancient secret to a leaner,
 select pg_temp.add_product('Golden Shield', 'Your daily armor in a single spoonful of golden goodness.', 'powders', 'Immunity', true,
   'images/golden.jpeg', true, 4, '[["100g",299],["200g",549],["500g",999]]');
 select pg_temp.add_product('Foxtail Millet', 'Nutritious ancient grain, sun-dried and stone-cleaned for purity.', 'millets', 'Whole Grain', false,
-  'images/millet crunch.jpeg', false, 5, '[["500g",129],["1 kg",229],["2 kg",419]]');
+  'images/products/foxtail-millet.webp', false, 5, '[["500g",129],["1 kg",229],["2 kg",419]]');
 select pg_temp.add_product('Finger Millet Flour (Ragi)', 'Stone-ground ragi flour — the superfood your family needs daily.', 'millets', 'Calcium Rich', false,
-  'images/millet crunch.jpeg', false, 6, '[["500g",149],["1 kg",269],["2 kg",499]]');
+  'images/products/ragi-flour.webp', false, 6, '[["500g",149],["1 kg",269],["2 kg",499]]');
 select pg_temp.add_product('Cold Pressed Groundnut Oil', 'Wooden-churner extracted — maximum flavor, zero chemicals.', 'oils', 'Cold Pressed', true,
-  'images/golden.jpeg', false, 7, '[["500ml",349],["1 L",649],["2 L",1199]]');
+  'images/products/groundnut-oil.webp', false, 7, '[["500ml",349],["1 L",649],["2 L",1199]]');
 select pg_temp.add_product('Pure Cow Ghee (A2)', 'Bilona-churned from desi cow curd — rich, aromatic, nourishing.', 'oils', 'A2 Ghee', false,
-  'images/golden.jpeg', false, 8, '[["250g",499],["500g",899],["1 kg",1699]]');
+  'images/products/ghee.webp', false, 8, '[["250g",499],["500g",899],["1 kg",1699]]');
 select pg_temp.add_product('Raw Mango Pickle', 'Sun-pickled in traditional stone jars — grandma''s recipe, preserved.', 'pickles', 'Tangy', true,
-  'images/turmeric.jpeg', false, 9, '[["250g",199],["500g",369],["1 kg",699]]');
+  'images/products/mango-pickle.webp', false, 9, '[["250g",199],["500g",369],["1 kg",699]]');
 select pg_temp.add_product('Gongura Pickle', 'Fiery sorrel leaves slow-cooked with sesame and mustard.', 'pickles', 'Andhra Special', false,
-  'images/turmeric.jpeg', false, 10, '[["250g",219],["500g",399],["1 kg",749]]');
+  'images/products/gongura-pickle.webp', false, 10, '[["250g",219],["500g",399],["1 kg",749]]');
 select pg_temp.add_product('Red Chilli Powder', 'Sun-dried Guntur chillies, stone-ground for real heat and color.', 'powders', 'Fiery', true,
-  'images/powder.jpeg', false, 11, '[["100g",129],["250g",229],["500g",399]]');
+  'images/products/red-chilli-powder.webp', false, 11, '[["100g",129],["250g",229],["500g",399]]');
 select pg_temp.add_product('Coriander Powder', 'Slow-roasted and freshly ground — brightens every curry.', 'powders', 'Aromatic', false,
-  'images/powder.jpeg', false, 12, '[["100g",99],["250g",179],["500g",329]]');
+  'images/products/coriander-powder.webp', false, 12, '[["100g",99],["250g",179],["500g",329]]');
 select pg_temp.add_product('Jaggery Millet Laddoo', 'Hand-rolled energy balls with millets and forest jaggery.', 'snacks', 'No Preservatives', false,
-  'images/millet crunch.jpeg', false, 13, '[["250g",249],["500g",459],["1 kg",849]]');
+  'images/products/millet-laddoo.webp', false, 13, '[["250g",249],["500g",459],["1 kg",849]]');
 select pg_temp.add_product('Pearl Millet (Bajra) Flour', 'Iron-rich bajra flour, stone-ground fresh — perfect for rotis.', 'millets', 'Bajra', false,
-  'images/millet crunch.jpeg', false, 14, '[["500g",119],["1 kg",219],["2 kg",399]]');
+  'images/products/bajra-flour.webp', false, 14, '[["500g",119],["1 kg",219],["2 kg",399]]');
 select pg_temp.add_product('Cold Pressed Sesame Oil', 'Gingelly oil with deep nutty aroma — traditional south Indian goodness.', 'oils', 'Cold Pressed', false,
-  'images/golden.jpeg', false, 15, '[["250ml",299],["500ml",549],["1 L",999]]');
+  'images/products/sesame-oil.webp', false, 15, '[["250ml",299],["500ml",549],["1 L",999]]');
 select pg_temp.add_product('Tamarind Paste', 'Pure tamarind pulp, hand-processed from forest-harvested pods.', 'pickles', 'No Additives', false,
-  'images/turmeric.jpeg', false, 16, '[["200g",149],["400g",279],["800g",499]]');
+  'images/products/tamarind-paste.webp', false, 16, '[["200g",149],["400g",279],["800g",499]]');
