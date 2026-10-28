@@ -14,7 +14,13 @@
     .upi-qr img, .upi-qr canvas { display:block; width:200px; height:200px; }
     .upi-id { font-size:0.82rem; margin-top:12px; }
     .upi-copy { background:none; border:none; color:#5cb82a; font-weight:700; font-size:0.78rem; cursor:pointer; font-family:inherit; margin-left:4px; }
-    .upi-app-btn { display:none; width:100%; margin-top:16px; background:#76e037; color:black; padding:14px; border-radius:14px; font-weight:700; font-size:0.92rem; text-decoration:none; box-sizing:border-box; }
+    .upi-apps { display:none; margin-top:18px; text-align:left; }
+    .upi-apps-label { font-size:0.78rem; font-weight:700; margin-bottom:8px; }
+    .upi-apps-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .upi-app { display:flex; align-items:center; gap:8px; padding:12px; border-radius:12px; border:1.5px solid #e7dcc6; background:white; color:#1f1a14; font-weight:700; font-size:0.85rem; text-decoration:none; box-sizing:border-box; -webkit-tap-highlight-color:transparent; transition:transform 160ms cubic-bezier(0.23,1,0.32,1); }
+    .upi-app:active { transform:scale(0.97); }
+    .upi-app i { width:22px; height:22px; border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; color:white; font-style:normal; font-size:0.7rem; font-weight:800; }
+    .upi-apps-hint { font-size:0.72rem; color:#6b6156; margin-top:8px; }
     .upi-steps { text-align:left; font-size:0.78rem; color:#666; margin:18px 0 12px; padding-left:18px; line-height:1.7; }
     .upi-ref-label { display:block; text-align:left; font-size:0.78rem; font-weight:700; margin-bottom:6px; }
     .upi-ref { width:100%; padding:11px 14px; border-radius:10px; border:1.5px solid #e8f0e5; font-size:0.9rem; font-family:inherit; outline:none; box-sizing:border-box; }
@@ -23,7 +29,7 @@
     .upi-submit:disabled { opacity:0.6; cursor:wait; }
     .upi-err { color:#c85a3a; font-size:0.8rem; font-weight:600; min-height:18px; margin-top:8px; }
     .upi-later { font-size:0.75rem; color:#999; margin-top:12px; }
-    @media (max-width: 768px) { .upi-app-btn { display:block; } }`;
+    @media (max-width: 768px), (pointer: coarse) { .upi-apps { display:block; } }`;
     const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
 
     const wrap = document.createElement('div');
@@ -38,9 +44,18 @@
         <div class="upi-order" id="upiOrderNo"></div>
         <div class="upi-qr" id="upiQr"></div>
         <div class="upi-id">UPI ID: <strong id="upiIdText"></strong><button class="upi-copy" id="upiCopyBtn">Copy</button></div>
-        <a class="upi-app-btn" id="upiAppBtn" href="#">Open UPI App to Pay</a>
+        <div class="upi-apps">
+            <div class="upi-apps-label">Or pay on this phone with</div>
+            <div class="upi-apps-grid">
+                <a class="upi-app" data-app="gpay" href="#"><i style="background:#4285f4">G</i>Google Pay</a>
+                <a class="upi-app" data-app="phonepe" href="#"><i style="background:#5f259f">Pe</i>PhonePe</a>
+                <a class="upi-app" data-app="paytm" href="#"><i style="background:#00baf2">P</i>Paytm</a>
+                <a class="upi-app" data-app="other" href="#"><i style="background:#3e7a37">₹</i>Other UPI app</a>
+            </div>
+            <div class="upi-apps-hint">App didn't open? Copy the UPI ID above and pay the exact amount in any UPI app.</div>
+        </div>
         <ol class="upi-steps">
-            <li>Scan the QR (or tap the button on mobile). The amount is filled in for you.</li>
+            <li>Scan the QR, or tap your UPI app above. The amount is filled in for you.</li>
             <li>Complete the payment in your UPI app.</li>
             <li>Enter the 12-digit UPI transaction ID (UTR) below.</li>
         </ol>
@@ -91,24 +106,44 @@
         if(c.onPaid) c.onPaid(ref);
     });
 
-    // UPI deep link; VPAs are URL-safe and some apps reject an encoded "@"
-    function upiLink(s, amount, orderNo){
-        return 'upi://pay?pa=' + s.upi_id
+    // UPI payment details; VPAs are URL-safe and some apps reject an encoded "@"
+    function upiQuery(s, amount, orderNo){
+        return 'pa=' + s.upi_id
             + '&pn=' + encodeURIComponent(s.upi_payee_name || 'Manyam Foods')
             + '&am=' + Number(amount).toFixed(2)
             + '&cu=INR'
             + '&tn=' + encodeURIComponent('Order ' + orderNo);
     }
 
+    // A plain upi:// link opens whichever app the phone set as default (often WhatsApp),
+    // so each button targets one app: Android intent with the app's package, iOS app scheme.
+    const UPI_APPS = {
+        gpay:    { pkg: 'com.google.android.apps.nbu.paisa.user', ios: 'gpay://upi/pay' },
+        phonepe: { pkg: 'com.phonepe.app',                        ios: 'phonepe://pay' },
+        paytm:   { pkg: 'net.one97.paytm',                        ios: 'paytmmp://pay' }
+    };
+    const ua = navigator.userAgent;
+    const isAndroid = /Android/i.test(ua);
+    const isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    function appLink(app, query){
+        const a = UPI_APPS[app];
+        if(!a) return 'upi://pay?' + query;
+        if(isAndroid) return 'intent://pay?' + query + '#Intent;scheme=upi;package=' + a.pkg + ';end';
+        if(isIOS) return a.ios + '?' + query;
+        return 'upi://pay?' + query;
+    }
+
     window.openUpiPay = async function({ orderNo, amount, onPaid, onClose }){
         const s = await getSettings();
         if(!s.upi_id){ alert('UPI payments are not set up yet. Please contact us on WhatsApp.'); return; }
         current = { orderNo, amount, onPaid, onClose };
-        const link = upiLink(s, amount, orderNo);
+        const query = upiQuery(s, amount, orderNo);
+        const link = 'upi://pay?' + query;
         wrap.querySelector('#upiAmount').textContent = rupees(amount);
         wrap.querySelector('#upiOrderNo').textContent = 'Order ' + orderNo;
         wrap.querySelector('#upiIdText').textContent = s.upi_id;
-        wrap.querySelector('#upiAppBtn').href = link;
+        wrap.querySelectorAll('.upi-app').forEach(a => { a.href = appLink(a.dataset.app, query); });
         wrap.querySelector('#upiRef').value = '';
         wrap.querySelector('#upiErr').textContent = '';
         const qr = wrap.querySelector('#upiQr');
