@@ -407,6 +407,23 @@
         }
         .hamburger span { display: block; width: 24px; height: 2px; background: var(--dark-text); border-radius: 2px; transition: all 0.3s; }
 
+        /* Mobile nav drawer */
+        .mobile-nav {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: white; z-index: 999; flex-direction: column;
+            align-items: center; justify-content: center; gap: 35px;
+            transform: translateX(100%); transition: transform 0.35s ease;
+        }
+        .mobile-nav.open { transform: translateX(0); }
+        .mobile-nav a { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark-text); }
+        .mobile-nav .close-btn { position: absolute; top: 25px; right: 25px; font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--dark-text); }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .mobile-nav { display: flex; }
+            .navbar .btn-shop { display: none; }
+        }
+
         /* Responsive */
         @media (max-width: 868px) {
             .contact-section { grid-template-columns: 1fr; }
@@ -524,6 +541,15 @@ footer {
     </style>
 </head>
 <body>
+
+    <!-- Mobile Nav Drawer -->
+    <div class="mobile-nav" id="mobileNav">
+        <button class="close-btn" onclick="toggleMenu()" aria-label="Close menu">✕</button>
+        <a href="index.html" onclick="toggleMenu()">Home</a>
+        <a href="products.html" onclick="toggleMenu()">Products</a>
+        <a href="OurStory.html" onclick="toggleMenu()">Our Story</a>
+        <a href="cart.html" onclick="toggleMenu()">🛒 Cart</a>
+    </div>
 
     <!-- NAVBAR -->
     <header class="navbar" id="navbar">
@@ -910,6 +936,13 @@ footer {
             const buttons = document.querySelectorAll('.tab-btn');
             const map = { contact: 0, faq: 1, shipping: 2, returns: 3 };
             switchTab(name, buttons[map[name]]);
+        }
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const nav = document.getElementById('mobileNav');
+            nav.classList.toggle('open');
+            document.body.style.overflow = nav.classList.contains('open') ? 'hidden' : '';
         }
 
         // FAQ accordion

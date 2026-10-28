@@ -189,11 +189,11 @@ function openOrder(id){
         <section>
             <h4>Payment</h4>
             ${payBlock}
-            <div class="modal-actions" style="justify-content:flex-start; margin-top:10px">
-                ${o.payment_status !== 'verified' ? `<button class="btn primary" onclick="setPayment('${o.id}','verified', this)">✓ Mark as paid</button>` : ''}
+            ${o.status === 'cancelled' ? '' : `<div class="modal-actions" style="justify-content:flex-start; margin-top:10px">
+                ${o.payment_status !== 'verified' ?`<button class="btn primary" onclick="setPayment('${o.id}','verified', this)">✓ Mark as paid</button>` : ''}
                 ${o.payment_status === 'pending' && o.payment_method === 'UPI' && o.utr ? `<button class="btn danger" onclick="setPayment('${o.id}','failed', this)">✗ Payment not received</button>` : ''}
                 ${o.payment_status !== 'pending' ? `<button class="btn" onclick="setPayment('${o.id}','pending', this)">Reset to pending</button>` : ''}
-            </div>
+            </div>`}
         </section>
 
         <section>

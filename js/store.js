@@ -175,6 +175,9 @@ function displayName(user){
     .account-btn.signed-out { padding:0 14px; }
     .account-btn img, .account-btn .acc-initial { width:28px; height:28px; border-radius:50%; object-fit:cover; flex-shrink:0; }
     .account-btn .acc-initial { background:#76e037; color:#1a1a1a; display:flex; align-items:center; justify-content:center; font-weight:800; }
+    @media (max-width: 1100px) { .account-btn .acc-label { display:none; } .account-btn { padding:0 6px; } .account-btn.signed-out { padding:0 12px; } .logo, .nav-links a { white-space:nowrap; } .nav-links { gap:18px !important; } .btn-back span { display:none; } .btn-shop { padding:9px 14px !important; font-size:0.78rem !important; white-space:nowrap; } .navbar { padding-left:4% !important; padding-right:4% !important; } .nav-right { gap:8px !important; } }
+    @media (min-width: 769px) and (max-width: 900px) { .nav-links { gap:12px !important; } .nav-links a { font-size:0.8rem !important; } .logo { font-size:1.1rem !important; } }
+    @media (max-width: 480px) { .account-btn.signed-out { display:none; } .account-btn { height:38px; padding:0 4px !important; } .nav-right { gap:8px !important; } }
     @media (max-width: 768px) { .account-btn .acc-label { display:none; } .account-btn { padding:0 6px; } .account-btn.signed-out { padding:0 12px; } }`;
     const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
 })();
