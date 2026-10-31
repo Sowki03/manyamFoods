@@ -4,281 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Story | Manyam Foods</title>
+    <meta name="description" content="How Manyam Foods brings traditional recipes from the tribal heartlands to your table while ensuring fair wages for women's cooperatives.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-green: #76e037;
-            --dark-text: #1a1a1a;
-            --accent-orange: #c85a3a;
-            --light-bg: #ffffff;
-            --card-bg: #f9fdf7;
-            --light-cream: #fdfbf7;
-            --gray-text: #666;
-            --dark-footer: #151e13;
-            --star-color: #76e037;
-            --border: #e8f0e5;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { line-height: 1.6; }
+        img { max-width: 100%; display: block; }
+        .wrap { max-width: 1140px; margin: 0 auto; padding: 0 clamp(16px, 4vw, 40px); }
+        .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 0.72rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--terracotta); }
+        .eyebrow::before { content: ''; width: 18px; height: 1.5px; background: currentColor; }
+        h2 { font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 600; line-height: 1.08; margin: 12px 0 16px; }
+        h2 em { color: var(--leaf); font-weight: 500; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        .chapter { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(28px, 6vw, 80px); align-items: center; padding: clamp(30px, 5vw, 60px) 0; }
+        .chapter.flip .chapter-img { order: 2; }
+        .chapter-img { border-radius: 28px; overflow: hidden; aspect-ratio: 4 / 5; box-shadow: 0 30px 60px -30px rgba(35, 70, 31, 0.4); }
+        .chapter-img img { width: 100%; height: 100%; object-fit: cover; }
+        .chapter p { color: var(--muted); font-size: 1.04rem; margin-bottom: 14px; max-width: 520px; }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; margin-top: 22px; max-width: 460px; }
+        .stat { background: var(--cream); padding: 20px; }
+        .stat b { display: block; font: 600 clamp(2rem, 4vw, 2.8rem)/1 var(--serif); color: var(--terracotta); }
+        .stat span { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
 
-        /* ===================== NAVBAR (MATCHES INDEX) ===================== */
-        .navbar {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 8%; background: white; position: sticky; top: 0;
-            z-index: 1000; transition: box-shadow 0.3s, padding 0.3s;
-        }
-        .logo {
-            font-weight: 800; font-size: 1.4rem; color: #1a1a1a;
-            display: flex; align-items: center; gap: 8px;
-            text-decoration: none; flex-shrink: 0;
-        }
-        .logo-icon { width: 24px; height: 24px; background: var(--primary-green); border-radius: 4px; flex-shrink: 0; }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
-        .nav-links a {
-            text-decoration: none; color: var(--dark-text);
-            font-size: 0.9rem; font-weight: 500; white-space: nowrap;
-            position: relative;
-        }
-        .nav-links a::after {
-            content: ''; position: absolute; bottom: -3px; left: 0;
-            width: 0; height: 2px; background: var(--primary-green);
-            transition: width 0.28s ease; border-radius: 2px;
-        }
-        .nav-links a:hover::after { width: 100%; }
-        .nav-right { display: flex; align-items: center; gap: 12px; }
-        
-        .cart-nav-btn {
-            position: relative; width: 44px; height: 44px; border-radius: 50%;
-            border: 2px solid var(--border); display: flex; align-items: center;
-            justify-content: center; text-decoration: none; color: var(--dark-text);
-            transition: border-color 0.2s, background 0.2s; flex-shrink: 0;
-        }
-        .cart-nav-badge {
-            position: absolute; top: -5px; right: -5px;
-            background: var(--accent-orange); color: white;
-            font-size: 0.62rem; font-weight: 800; min-width: 18px; height: 18px;
-            border-radius: 50%; display: none; align-items: center; justify-content: center;
-            border: 2px solid white;
-        }
-        .btn-shop { background: var(--green); padding: 9px 20px; border-radius: 50px; text-decoration: none; color: black; font-weight: 700; font-size: 0.85rem; }
-        
-        
-        .cart-nav-badge.show { display: flex; }
-        .hamburger {
-            display: none; flex-direction: column; gap: 5px;
-            cursor: pointer; padding: 5px; background: none; border: none;
-        }
-        .hamburger span { display: block; width: 24px; height: 2px; background: var(--dark-text); border-radius: 2px; transition: all 0.3s; }
+        .way { background: var(--cream-2); padding: clamp(60px, 8vw, 100px) 0; margin-top: clamp(30px, 5vw, 60px); }
+        .way .head { text-align: center; margin-bottom: 36px; }
+        .way-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+        .way-card { background: white; border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+        .way-card .ic { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+        .way-card .ic svg { width: 28px; height: 28px; }
+        .way-card h3 { font: 600 1.3rem/1.2 var(--serif); margin-bottom: 6px; }
+        .way-card p { color: var(--muted); font-size: 0.9rem; }
 
-        /* Mobile nav drawer */
-        .mobile-nav {
-            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: white; z-index: 999; flex-direction: column;
-            align-items: center; justify-content: center; gap: 35px;
-            transform: translateX(100%); transition: transform 0.35s ease;
-        }
-        .mobile-nav.open { transform: translateX(0); }
-        .mobile-nav a { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark-text); }
-        .mobile-nav .close-btn { position: absolute; top: 25px; right: 25px; font-size: 2rem; background: none; border: none; cursor: pointer; color: var(--dark-text); }
-        
-        /* ===================== STORY CONTENT ===================== */
-        .story-hero {
-            background-color: var(--light-cream);
-            padding: 80px 8% 60px;
-            text-align: center;
-        }
-        .story-hero h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 15px; }
-        .story-hero p { color: var(--accent-orange); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; }
+        .closing { text-align: center; padding: clamp(60px, 9vw, 110px) 0; }
+        .closing p { color: var(--muted); max-width: 520px; margin: 0 auto 26px; }
+        .closing .btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 60px 5%; }
-        
-        .story-flex { display: flex; align-items: center; gap: 60px; margin-bottom: 80px; }
-        .story-flex:nth-child(even) { flex-direction: row-reverse; }
-        .story-image { flex: 1; }
-        .story-image img { width: 100%; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .story-text { flex: 1.2; }
-        .story-text h2 { font-size: 2rem; font-weight: 800; margin-bottom: 20px; }
-        .story-text p { font-size: 1.05rem; color: var(--gray-text); margin-bottom: 20px; }
-
-        .values-section { background: var(--card-bg); padding: 60px 8%; border-radius: 40px; margin: 20px 5%; text-align: center; }
-        .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 40px; }
-        .value-card h3 { color: var(--accent-orange); font-size: 1.2rem; margin-bottom: 12px; font-weight: 800; }
-        :root {
-    --primary-green: #76e037;
-    --green: #76e037;
-    --dark-footer: #151e13; /* The background color */
-    --gray-text: #666;
-}
-/* ===================== FOOTER ===================== */
-footer { 
-    background-color: var(--dark-footer); 
-    color: #fff; 
-    padding: clamp(50px, 7vw, 80px) 5% 30px; 
-    margin-top: 20px; 
-}
-.footer-grid { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    display: grid; 
-    grid-template-columns: 1.5fr 1fr 1fr 1.5fr; 
-    gap: 40px; 
-    margin-bottom: 60px; 
-}
-.footer-logo { 
-    font-weight: 800; 
-    font-size: 1.4rem; 
-    margin-bottom: 20px; 
-    display: flex; 
-    align-items: center; 
-    gap: 10px; 
-}
-.footer-desc { color: #a0a89f; font-size: 0.9rem; line-height: 1.6; }
-.footer-col h4 { font-size: 1rem; font-weight: 700; margin-bottom: 25px; }
-.footer-links { list-style: none; }
-.footer-links li { margin-bottom: 12px; }
-.footer-links a { color: #a0a89f; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
-.footer-links a:hover { color: var(--primary-green); }
-
-.newsletter-text { color: #a0a89f; font-size: 0.9rem; margin-bottom: 20px; }
-.newsletter-form { 
-    display: flex; 
-    background: rgba(255,255,255,0.05); 
-    padding: 5px; 
-    border-radius: 50px; 
-    border: 1px solid rgba(255,255,255,0.1); 
-}
-.newsletter-form input { 
-    background: transparent; 
-    border: none; 
-    padding: 10px 15px; 
-    color: #fff; 
-    flex: 1; 
-    outline: none; 
-    font-family: 'Inter', sans-serif; 
-    min-width: 0; 
-}
-.btn-join { 
-    background: var(--primary-green); 
-    border: none; 
-    padding: 10px 20px; 
-    border-radius: 50px; 
-    font-weight: 700; 
-    cursor: pointer; 
-    font-family: 'Inter', sans-serif; 
-    white-space: nowrap; 
-}
-
-.footer-bottom { 
-    max-width: 1200px; 
-    margin: 0 auto; 
-    padding-top: 30px; 
-    border-top: 1px solid rgba(255,255,255,0.1); 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    font-size: 0.8rem; 
-    color: #666; 
-    flex-wrap: wrap; 
-    gap: 15px; 
-}
-.legal-links { display: flex; gap: 5px; flex-wrap: wrap; }
-.legal-links a { color: #666; text-decoration: none; margin-left: 15px; }
-/* Tablet Adjustments */
-@media (max-width: 1024px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
-}
-
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 36px; }
-    .footer-bottom { flex-direction: column; text-align: center; gap: 12px; }
-    .legal-links { justify-content: center; }
-}
-
-/* Small Phone Adjustments */
-@media (max-width: 480px) {
-    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
-    .newsletter-form { flex-direction: column; border-radius: 14px; gap: 6px; }
-    .btn-join { border-radius: 10px; padding: 12px; }
-}
-        
-        /* ===================== RESPONSIVE ===================== */
-        @media (max-width: 768px) {
-            .navbar { padding: 14px 5%; }
-            .nav-links { display: none; }
-            .hamburger { display: flex; }
-            .mobile-nav { display: flex; }
-            .btn-shop { display: none; }
-            .story-flex { flex-direction: column !important; gap: 30px; text-align: center; }
-            .story-hero { padding: 60px 5% 40px; }
+        @media (max-width: 860px) {
+            .chapter { grid-template-columns: 1fr; }
+            .chapter.flip .chapter-img { order: 0; }
+            .chapter-img { aspect-ratio: 4 / 3; }
+            .way-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .way-card { padding: 16px; }
         }
     </style>
-    <link rel="stylesheet" href="css/site.css?v=5">
+    <link rel="stylesheet" href="css/site.css?v=6">
     <link rel="stylesheet" href="css/motion.css?v=3">
 </head>
 <body>
 
-
-
-<section class="story-hero">
-    <p>Honoring Tradition</p>
-    <h1>Our Story</h1>
-</section>
-
-<div class="container">
-    <div class="story-flex">
-        <div class="story-image">
-            <img src="images/crop lady.jpg" alt="Our Roots">
-        </div>
-        <div class="story-text">
-            <h2>Rooted in the Soil</h2>
-            <p>Manyam Foods was born from a desire to bridge the gap between rural farmers and your dining table. We discovered traditional recipes passed down for generations in the tribal heartlands.</p>
-            <p>Today, we bring those nutrient-rich secrets to the modern world while preserving the social fabric of the countryside.</p>
-        </div>
-    </div>
-
-    <div class="story-flex">
-        <div class="story-image">
-            <img src="images/working lady.png" alt="Empowerment">
-        </div>
-        <div class="story-text">
-            <h2>Empowering Communities</h2>
-            <p>By partnering directly with local women's cooperatives, we ensure fair wages and sustainable growth for the heart of our agriculture.</p>
-            <p>Every bite supports over 500+ women artisans across 20+ village farms, creating a cycle of empowerment and health.</p>
-        </div>
-    </div>
+<div class="mf-page-head">
+    <div class="mf-crumb"><a href="index.html">Home</a> / Our Story</div>
+    <h1>Honoring <em>tradition.</em></h1>
+    <p>From the tribal heartlands of the Manyam hills to your dining table.</p>
 </div>
 
-<section class="values-section">
-    <h2>The Manyam Way</h2>
-    <div class="values-grid">
-        <div class="value-card">
-            <h3>Solar Dried</h3>
-            <p>Harnessing the sun to lock in nutrients naturally without artificial preservatives.</p>
-        </div>
-        <div class="value-card">
-            <h3>Stone Ground</h3>
-            <p>Cold-pressed using traditional stone mills to retain essential oils and minerals.</p>
-        </div>
-        <div class="value-card">
-            <h3>Small Batch</h3>
-            <p>Ensuring quality, hygiene, and absolute freshness in every single jar crafted by hand.</p>
-        </div>
-    </div>
-</section>
+<main>
+    <div class="wrap">
+        <section class="chapter">
+            <div class="chapter-img"><img src="images/crop-lady.webp" alt="Woman farmer smiling in a field of crops" width="736" height="980"></div>
+            <div>
+                <span class="eyebrow">Where we began</span>
+                <h2>Rooted in <em>the soil</em></h2>
+                <p>Manyam Foods was born from a desire to bridge the gap between rural farmers and your dining table. We discovered traditional recipes passed down for generations in the tribal heartlands.</p>
+                <p>Today, we bring those nutrient-rich secrets to the modern world while preserving the social fabric of the countryside.</p>
+            </div>
+        </section>
 
+        <section class="chapter flip">
+            <div class="chapter-img"><img src="images/working-lady.webp" alt="Woman artisan preparing traditional food" width="1100" height="856" loading="lazy"></div>
+            <div>
+                <span class="eyebrow">Who makes our food</span>
+                <h2>Empowering <em>communities</em></h2>
+                <p>By partnering directly with local women's cooperatives, we ensure fair wages and sustainable growth for the heart of our agriculture.</p>
+                <p>Every purchase supports women artisans and village farms, creating a cycle of empowerment and health.</p>
+                <div class="stats">
+                    <div class="stat"><b>500+</b><span>Women artisans</span></div>
+                    <div class="stat"><b>20+</b><span>Village farms</span></div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section class="way">
+        <div class="wrap">
+            <div class="head">
+                <span class="eyebrow">How we make it</span>
+                <h2>The Manyam <em>way</em></h2>
+            </div>
+            <div class="way-grid">
+                <div class="way-card">
+                    <div class="ic" style="background:#fbe7b5"><svg viewBox="0 0 24 24" fill="none" stroke="#c0532c" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg></div>
+                    <h3>Sun-dried</h3>
+                    <p>Harnessing the sun to lock in nutrients naturally, without artificial preservatives.</p>
+                </div>
+                <div class="way-card">
+                    <div class="ic" style="background:#efe3d0"><svg viewBox="0 0 24 24" fill="none" stroke="#8b6b3d" stroke-width="2" stroke-linecap="round"><ellipse cx="12" cy="16" rx="9" ry="3"/><ellipse cx="12" cy="11" rx="7" ry="2.5"/><path d="M16 4v6"/></svg></div>
+                    <h3>Stone-ground</h3>
+                    <p>Ground on traditional stone mills to retain essential oils and minerals.</p>
+                </div>
+                <div class="way-card">
+                    <div class="ic" style="background:var(--leaf-soft)"><svg viewBox="0 0 24 24" fill="none" stroke="#3e7a37" stroke-width="2" stroke-linecap="round"><rect x="7" y="3" width="10" height="3" rx="1"/><path d="M6 7h12v12a2 2 0 01-2 2H8a2 2 0 01-2-2z"/></svg></div>
+                    <h3>Small batch</h3>
+                    <p>Quality, hygiene and freshness in every jar, crafted by hand.</p>
+                </div>
+                <div class="way-card">
+                    <div class="ic" style="background:#f6d9cc"><svg viewBox="0 0 24 24" fill="none" stroke="#c0532c" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+                    <h3>Women-made</h3>
+                    <p>Fair wages for women's cooperatives in the Manyam hills.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="closing wrap">
+        <h2>Taste the <em>tradition.</em></h2>
+        <p>Millets, powders, pickles and oils, handmade in the Manyam hills.</p>
+        <div class="btns">
+            <a class="mf-btn dark" href="products.html">Shop the collection</a>
+            <a class="mf-btn ghost" href="Support.html#contact">Contact us</a>
+        </div>
+    </section>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/config.js?v=3"></script>
-<script src="js/store.js?v=5"></script>
-<script src="js/layout.js?v=5"></script>
+<script src="js/store.js?v=6"></script>
+<script src="js/layout.js?v=6"></script>
 </body>
 </html>

@@ -115,7 +115,7 @@
             + '&tn=' + encodeURIComponent('Order ' + orderNo);
     }
 
-    // A plain upi:// link opens whichever app the phone set as default (often WhatsApp),
+    // A plain upi:// link opens whichever app the phone set as its default UPI app,
     // so each button targets one app: Android intent with the app's package, iOS app scheme.
     const UPI_APPS = {
         gpay:    { pkg: 'com.google.android.apps.nbu.paisa.user', ios: 'gpay://upi/pay' },
@@ -136,7 +136,7 @@
 
     window.openUpiPay = async function({ orderNo, amount, onPaid, onClose }){
         const s = await getSettings();
-        if(!s.upi_id){ alert('UPI payments are not set up yet. Please contact us on WhatsApp.'); return; }
+        if(!s.upi_id){ alert('UPI payments are not set up yet. Please contact us from the Support page.'); return; }
         current = { orderNo, amount, onPaid, onClose };
         const query = upiQuery(s, amount, orderNo);
         const link = 'upi://pay?' + query;

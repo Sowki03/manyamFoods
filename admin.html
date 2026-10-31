@@ -163,6 +163,7 @@
         <button class="tab" data-tab="orders">Orders <span class="count" id="actionCount" hidden></span></button>
         <button class="tab" data-tab="products">Products</button>
         <button class="tab" data-tab="coupons">Coupons</button>
+        <button class="tab" data-tab="messages">Messages <span class="count" id="msgCount" hidden></span></button>
         <button class="tab" data-tab="settings">Settings</button>
     </nav>
 
@@ -221,6 +222,14 @@
             <div class="card table-wrap" id="couponsTable"></div>
         </section>
 
+        <!-- MESSAGES -->
+        <section class="panel" id="panel-messages">
+            <div class="panel-head"><h2>Messages</h2>
+                <select class="inp" id="msgFilter" style="width:auto"><option value="new">New</option><option value="all">All</option><option value="done">Handled</option></select>
+            </div>
+            <div class="card table-wrap" id="messagesTable"></div>
+        </section>
+
         <!-- SETTINGS -->
         <section class="panel" id="panel-settings">
             <div class="panel-head"><h2>Shop settings</h2></div>
@@ -228,7 +237,7 @@
                 <div class="grid2">
                     <div class="field"><label>UPI ID (payments go here)</label><input id="sUpi" placeholder="name@okicici"></div>
                     <div class="field"><label>Name shown in UPI apps</label><input id="sPayee"></div>
-                    <div class="field"><label>WhatsApp number (with 91, no +)</label><input id="sWa" placeholder="917207021603"></div>
+                    <div class="field"><label>Support WhatsApp number (shown on Support page; 91 + 10 digits)</label><input id="sWa" placeholder="917207021603"></div>
                     <div></div>
                     <div class="field"><label>Delivery fee ₹</label><input id="sFee" type="number" min="0"></div>
                     <div class="field"><label>Free delivery when subtotal is at least ₹</label><input id="sFree" type="number" min="0"></div>
@@ -299,7 +308,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/config.js?v=3"></script>
-<script src="js/store.js?v=5"></script>
-<script src="js/admin.js?v=3"></script>
+<script src="js/store.js?v=6"></script>
+<script src="js/admin.js?v=4"></script>
 </body>
 </html>

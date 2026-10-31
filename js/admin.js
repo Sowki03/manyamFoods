@@ -67,7 +67,7 @@ async function boot(){
 }
 
 async function reloadAll(){
-    await Promise.all([loadOrders(), loadProducts(), loadCoupons(), loadSettings()]);
+    await Promise.all([loadOrders(), loadProducts(), loadCoupons(), loadSettings(), loadMessages()]);
 }
 
 // ── Tabs ──
@@ -486,6 +486,62 @@ async function deleteCoupon(code){
 }
 
 // =====================================================================
+// MESSAGES (Support page contact form)
+// =====================================================================
+let messages = [];
+
+async function loadMessages(){
+    const { data, error } = await sb.from('contact_messages').select('*').order('created_at', { ascending: false }).limit(500);
+    const el = document.getElementById('messagesTable');
+    if(error){
+        el.innerHTML = `<div class="empty">${esc(errMsg(error))}<br><span class="muted">If this says the table doesn't exist, run supabase/migrations/002 in the SQL Editor.</span></div>`;
+        return;
+    }
+    messages = data;
+    renderMessages();
+}
+
+function renderMessages(){
+    const f = document.getElementById('msgFilter').value;
+    const fresh = messages.filter(m => !m.handled).length;
+    const badge = document.getElementById('msgCount');
+    badge.textContent = fresh; badge.hidden = !fresh;
+    const list = messages.filter(m => f === 'all' || (f === 'new' ? !m.handled : m.handled));
+    const el = document.getElementById('messagesTable');
+    if(!list.length){ el.innerHTML = `<div class="empty">${f === 'new' ? 'No new messages.' : 'No messages here.'}</div>`; return; }
+    el.innerHTML = `<table>
+        <thead><tr><th>From</th><th>Message</th><th class="hide-sm">Received</th><th></th></tr></thead>
+        <tbody>${list.map(m => `
+            <tr>
+                <td><strong>${esc(m.name)}</strong><div class="muted"><a href="tel:+91${esc(m.phone)}">${esc(m.phone)}</a></div><span class="pill info">${esc(m.topic)}</span></td>
+                <td style="white-space:pre-wrap; max-width:460px">${esc(m.message)}</td>
+                <td class="hide-sm muted">${fmtDate(m.created_at)}</td>
+                <td style="white-space:nowrap">
+                    <button class="btn sm" onclick="setHandled(${m.id}, ${!m.handled})">${m.handled ? 'Mark new' : '✓ Handled'}</button>
+                    <button class="btn sm danger" onclick="deleteMessage(${m.id})" title="Delete">✕</button>
+                </td>
+            </tr>`).join('')}
+        </tbody></table>`;
+}
+document.getElementById('msgFilter').addEventListener('change', renderMessages);
+
+async function setHandled(id, handled){
+    const { error } = await sb.from('contact_messages').update({ handled }).eq('id', id);
+    if(error){ alert(errMsg(error)); return; }
+    messages.find(m => m.id === id).handled = handled;
+    renderMessages();
+    toast(handled ? 'Marked as handled' : 'Marked as new');
+}
+
+async function deleteMessage(id){
+    if(!confirm('Delete this message?')) return;
+    const { error } = await sb.from('contact_messages').delete().eq('id', id);
+    if(error){ alert(errMsg(error)); return; }
+    messages = messages.filter(m => m.id !== id);
+    renderMessages();
+}
+
+// =====================================================================
 // SETTINGS
 // =====================================================================
 async function loadSettings(){
@@ -504,7 +560,7 @@ async function saveSettings(btn){
     const upi = document.getElementById('sUpi').value.trim();
     const wa = document.getElementById('sWa').value.replace(/\D/g, '');
     if(upi && !/^[\w.\-]{2,256}@[a-zA-Z][a-zA-Z0-9.\-]{1,64}$/.test(upi)){ err.textContent = 'That UPI ID does not look right (example: name@okicici).'; return; }
-    if(wa && !/^91[6-9]\d{9}$/.test(wa)){ err.textContent = 'WhatsApp number should be 91 followed by the 10-digit mobile number.'; return; }
+    if(wa && !/^91[6-9]\d{9}$/.test(wa)){ err.textContent = 'Support WhatsApp number should be 91 followed by the 10-digit mobile number.'; return; }
     btn.disabled = true;
     const { error } = await sb.from('settings').update({
         upi_id: upi,

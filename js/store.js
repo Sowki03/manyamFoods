@@ -5,7 +5,8 @@ const sb = (window.supabase && typeof SUPABASE_URL === 'string' && SUPABASE_URL.
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
     : null;
 
-const NOT_CONNECTED_MSG = 'The store is being set up. Please check back soon or order on WhatsApp.';
+const NOT_CONNECTED_MSG = 'The store is being set up. Please check back soon.';
+const LOW_STOCK = 10; // show "Only N left" at or below this many
 
 // ── Helpers ──
 function esc(s){
@@ -35,7 +36,7 @@ function refreshBadge(){
     document.querySelectorAll('.product-card').forEach(card => syncCard(card, cart));
 }
 
-// ── Settings (UPI ID, WhatsApp number, delivery fee) ──
+// ── Settings (UPI ID, support WhatsApp number, delivery fee) ──
 let _settings = null;
 async function getSettings(){
     if(_settings) return _settings;
@@ -57,20 +58,34 @@ async function fetchProducts({ featuredOnly = false } = {}){
     if(error) throw error;
     return data
         .map(p => ({ ...p, variants: (p.product_variants || []).filter(v => v.active).sort((a,b) => a.sort_order - b.sort_order) }))
-        .filter(p => p.variants.length);
+        .filter(p => p.variants.length)
+        .sort((a, b) => isSoldOut(a) - isSoldOut(b)); // sold-out products last (sort is stable)
 }
+
+const isSoldOutVariant = v => v.stock !== null && v.stock <= 0;
+function isSoldOut(p){ return p.variants.every(isSoldOutVariant); }
+
+// Categories that still have products on the site (hidden products are never fetched)
+function categoriesOf(products){ return new Set(products.map(p => p.category)); }
+
+function stockNote(stock){
+    return stock !== null && stock > 0 && stock <= LOW_STOCK ? `Only ${stock} left` : '';
+}
+const optStock = opt => opt.dataset.stock === '' ? null : parseInt(opt.dataset.stock);
 
 const CART_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>';
 
-// The card's action area: "Add to cart" until that size is in the cart, then a − qty + stepper
-function cartActionHTML(variantId, soldOut, cart){
-    if(soldOut) return '<button class="btn-add" disabled>Sold out</button>';
+// The card's action area: "Add to cart" until that size is in the cart, then a − qty + stepper.
+// + stops at the size's stock (stock null = unlimited).
+function cartActionHTML(variantId, soldOut, cart, stock){
+    if(soldOut) return '<button class="btn-add" disabled>Out of stock</button>';
     const item = cart.find(i => i.variant_id === variantId);
     if(!item) return `<button class="btn-add" onclick="addCart(this)">${CART_ICON} Add to cart</button>`;
+    const atMax = item.qty >= Math.min(99, stock ?? 99);
     return `<div class="cart-stepper" role="group" aria-label="Quantity in cart">
         <button class="qty-btn" onclick="cardQty(this,-1)" aria-label="Remove one">−</button>
         <span class="qty-num" aria-live="polite">${item.qty}</span>
-        <button class="qty-btn" onclick="cardQty(this,1)" aria-label="Add one">+</button>
+        <button class="qty-btn" onclick="cardQty(this,1)" aria-label="Add one"${atMax ? ' disabled title="No more in stock"' : ''}>+</button>
     </div>`;
 }
 
@@ -78,40 +93,48 @@ function syncCard(card, cart){
     const row = card.querySelector('.add-row');
     const opt = card.querySelector('.w-select')?.selectedOptions[0];
     if(!row || !opt) return;
+    const stock = optStock(opt);
+    const note = card.querySelector('[data-role="stock"]');
+    if(note) note.textContent = stockNote(stock);
     const item = cart.find(i => i.variant_id === opt.value);
-    const key = opt.value + ':' + (opt.disabled ? 'x' : item ? item.qty : 0);
+    const key = opt.value + ':' + (opt.disabled ? 'x' : item ? item.qty : 0) + ':' + stock;
     if(row.dataset.key === key) return;
     row.dataset.key = key;
-    row.innerHTML = cartActionHTML(opt.value, opt.disabled, cart);
+    row.innerHTML = cartActionHTML(opt.value, opt.disabled, cart, stock);
 }
 
 // cls lets index.html and products.html keep their own CSS class names
 function productCardHTML(p, cls){
-    const first = p.variants.find(v => v.stock === null || v.stock > 0) || p.variants[0];
+    const first = p.variants.find(v => !isSoldOutVariant(v)) || p.variants[0];
     const options = p.variants.map(v => {
-        const soldOut = v.stock !== null && v.stock <= 0;
-        return `<option value="${esc(v.id)}" data-price="${v.price}" data-label="${esc(v.label)}"${soldOut ? ' disabled' : ''}${v.id === first.id ? ' selected' : ''}>${esc(v.label)}${soldOut ? ' (sold out)' : ''}</option>`;
+        const soldOut = isSoldOutVariant(v);
+        return `<option value="${esc(v.id)}" data-price="${v.price}" data-stock="${v.stock ?? ''}" data-label="${esc(v.label)}"${soldOut ? ' disabled' : ''}${v.id === first.id ? ' selected' : ''}>${esc(v.label)}${soldOut ? ' (sold out)' : ''}</option>`;
     }).join('');
-    const allSoldOut = p.variants.every(v => v.stock !== null && v.stock <= 0);
+    const allSoldOut = isSoldOut(p);
+    const cart = getCart();
+    const badge = allSoldOut
+        ? `<span class="${cls.badge} soldout">Out of stock</span>`
+        : p.badge ? `<span class="${cls.badge}${p.badge_hot ? ' hot' : ''}">${esc(p.badge)}</span>` : '';
     return `
-    <div class="product-card ${cls.card || ''}" data-category="${esc(p.category)}" data-id="${esc(p.id)}" data-name="${esc(p.name)}">
+    <div class="product-card ${cls.card || ''}${allSoldOut ? ' is-soldout' : ''}" data-category="${esc(p.category)}" data-id="${esc(p.id)}" data-name="${esc(p.name)}">
         <div class="${cls.imgWrap}">
             <img src="${esc(p.image_url)}" alt="${esc(p.name)}" loading="lazy">
-            ${p.badge ? `<span class="${cls.badge}${p.badge_hot ? ' hot' : ''}">${esc(p.badge)}</span>` : ''}
+            ${badge}
         </div>
         <div class="${cls.info}">
             <div class="${cls.name}">${esc(p.name)}</div>
             <div class="${cls.desc}">${esc(p.description)}</div>
             <div class="weight-row">
-                <select class="w-select" onchange="updatePrice(this)">${options}</select>
+                <select class="w-select" onchange="updatePrice(this)" aria-label="Size"${allSoldOut ? ' disabled' : ''}>${options}</select>
                 <span class="${cls.price}" data-role="price">${rupees(first.price)}</span>
             </div>
-            <div class="add-row" data-key="${esc(first.id)}:${allSoldOut ? 'x' : (getCart().find(i => i.variant_id === first.id)?.qty || 0)}">${cartActionHTML(first.id, allSoldOut, getCart())}</div>
+            <div class="prod-stock" data-role="stock">${allSoldOut ? '' : stockNote(first.stock)}</div>
+            <div class="add-row" data-key="${esc(first.id)}:${allSoldOut ? 'x' : (cart.find(i => i.variant_id === first.id)?.qty || 0)}:${first.stock}">${cartActionHTML(first.id, allSoldOut, cart, first.stock)}</div>
         </div>
     </div>`;
 }
 
-// Size changed: show that size's price and its cart state
+// Size changed: show that size's price, stock note and cart state
 function updatePrice(sel){
     const opt = sel.selectedOptions[0];
     const card = sel.closest('.product-card');
@@ -119,11 +142,13 @@ function updatePrice(sel){
     syncCard(card, getCart());
 }
 
-// Change the cart quantity of the card's selected size by d (removes it at 0)
+// Change the cart quantity of the card's selected size by d (removes it at 0, stops at stock)
 function cardQty(btn, d){
     const card = btn.closest('.product-card');
     const opt = card.querySelector('.w-select').selectedOptions[0];
     if(!opt || opt.disabled) return;
+    const stock = optStock(opt);
+    const max = Math.min(99, stock ?? 99);
     const cart = getCart();
     const i = cart.findIndex(x => x.variant_id === opt.value);
     if(i === -1){
@@ -134,11 +159,13 @@ function cardQty(btn, d){
             name: card.dataset.name,
             variant: opt.dataset.label,
             price: parseInt(opt.dataset.price),
-            qty: Math.min(99, d),
+            qty: Math.min(max, d),
+            stock,
             img: card.querySelector('img').getAttribute('src')
         });
     } else {
-        cart[i].qty = Math.min(99, cart[i].qty + d);
+        cart[i].qty = Math.min(max, cart[i].qty + d);
+        cart[i].stock = stock;
         if(cart[i].qty <= 0) cart.splice(i, 1);
     }
     saveCart(cart);

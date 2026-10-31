@@ -132,15 +132,6 @@
         .btn-checkout:disabled { background: #ccc; cursor: not-allowed; transform: none; }
         .btn-checkout svg { width: 16px; height: 16px; }
 
-        .btn-whatsapp {
-            width: 100%; background: #25D366; color: white; border: none;
-            padding: 14px; border-radius: 14px; font-size: 0.9rem; font-weight: 700;
-            cursor: pointer; transition: background 0.2s, transform 0.15s;
-            font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px;
-            margin-top: 10px; text-decoration: none;
-        }
-        .btn-whatsapp:hover { background: #20ba5a; transform: translateY(-1px); }
-        .wa-icon { width: 18px; height: 18px; }
 
         .secure-note { text-align: center; font-size: 0.74rem; color: #aaa; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 5px; }
         .secure-note svg { width: 12px; height: 12px; }
@@ -163,7 +154,8 @@
         .details-form textarea { height: 80px; padding: 10px 14px; resize: none; }
         .checkout-err { color: var(--orange); font-size: 0.8rem; font-weight: 600; margin-top: 12px; }
         .checkout-err:empty { display: none; }
-        .btn-whatsapp:disabled, .btn-checkout:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+        .btn-checkout:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+        .signin-box .btn-google { padding: 14px; font-size: 0.95rem; }
 
         /* ORDER PLACED */
         .success-card { grid-column: 1 / -1; background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 44px 24px; text-align: center; max-width: 560px; margin: 0 auto; width: 100%; }
@@ -202,7 +194,7 @@
         .mf-page-head h1 .item-count { font-family: var(--sans); font-size: 0.85rem; vertical-align: middle; margin-left: 8px; }
         .cart-wrapper { padding-top: 10px; }
     </style>
-    <link rel="stylesheet" href="css/site.css?v=5">
+    <link rel="stylesheet" href="css/site.css?v=6">
     <link rel="stylesheet" href="css/motion.css?v=3">
 </head>
 <body data-no-drawer>
@@ -258,14 +250,11 @@
         <div class="checkout-err" id="checkoutErr"></div>
 
         <!-- Checkout -->
-        <button class="btn-checkout" id="checkoutBtn" onclick="placeOrder('UPI')">
+        <button class="btn-checkout" id="checkoutBtn" onclick="placeOrder()" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/></svg>
             Pay with UPI
         </button>
-        <button class="btn-whatsapp" id="payLaterBtn" onclick="placeOrder('PAY_LATER')">
-            Place Order, Pay Later
-        </button>
-        <p class="secure-note">
+        <p class="secure-note" id="secureNote" hidden>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
             Prices are confirmed by our store at checkout
         </p>
@@ -276,12 +265,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="js/config.js?v=3"></script>
-<script src="js/store.js?v=5"></script>
-<script src="js/layout.js?v=5"></script>
-<script src="js/upi-pay.js?v=4"></script>
+<script src="js/store.js?v=6"></script>
+<script src="js/layout.js?v=6"></script>
+<script src="js/upi-pay.js?v=5"></script>
 <script>
-const FALLBACK_WA_NUMBER = "917207021603";
-
 let quote = null;          // latest server-calculated totals
 let appliedCoupon = '';
 let quoteSeq = 0;
@@ -353,7 +340,6 @@ function updateSummary(){
 
     const canOrder = cart.length > 0 && !!q;
     document.getElementById('checkoutBtn').disabled = !canOrder;
-    document.getElementById('payLaterBtn').disabled = !canOrder;
 }
 
 async function refreshQuote(){
@@ -410,8 +396,11 @@ function applyCoupon(){
 
 // ── Sign-in state ──
 async function renderSignIn(){
+    // Signed out: only the Google button. Signed in: delivery details + Pay with UPI.
     document.getElementById('signedOutBox').hidden = !!session;
     document.getElementById('signedInBox').hidden = !session;
+    document.getElementById('checkoutBtn').hidden = !session;
+    document.getElementById('secureNote').hidden = !session;
     if(!session) return;
     document.getElementById('signedEmail').textContent = session.user.email;
 
@@ -432,7 +421,7 @@ function normalizePhone(p){
 }
 
 // ── Place order ──
-async function placeOrder(method){
+async function placeOrder(){
     if(!getCart().length) return;
     if(!sb){ setErr(NOT_CONNECTED_MSG); return; }
     if(!session){ signInWithGoogle('cart.html'); return; }
@@ -446,18 +435,18 @@ async function placeOrder(method){
     if(address.length < 10){ setErr('Please enter your complete delivery address.'); return; }
     setErr('');
 
-    const btns = [document.getElementById('checkoutBtn'), document.getElementById('payLaterBtn')];
-    btns.forEach(b => b.disabled = true);
+    const btn = document.getElementById('checkoutBtn');
+    btn.disabled = true;
     const { data, error } = await sb.rpc('place_order', {
         p_items: cartPayload(),
         p_coupon: appliedCoupon || null,
         p_name: name,
         p_phone: phone,
         p_address: address,
-        p_payment_method: method,
+        p_payment_method: 'UPI',
         p_expected_total: quote.total
     });
-    btns.forEach(b => b.disabled = false);
+    btn.disabled = false;
 
     if(error){ setErr(errMsg(error)); refreshQuote(); return; }
 
@@ -465,54 +454,19 @@ async function placeOrder(method){
     refreshBadge();
     const order = { ...data, name, phone, address };
 
-    if(method === 'UPI'){
-        showSuccess(order, 'UPI', null); // page behind the popup
-        openUpiPay({
-            orderNo: data.order_no,
-            amount: data.total,
-            onPaid: (utr) => showSuccess(order, 'UPI', utr)
-        });
-    } else {
-        showSuccess(order, 'PAY_LATER', null);
-    }
+    showSuccess(order, null); // page behind the popup
+    openUpiPay({
+        orderNo: data.order_no,
+        amount: data.total,
+        onPaid: (utr) => showSuccess(order, utr)
+    });
 }
 
-function whatsappText(order, method, utr){
-    const items = order.lines.map(l => ` - ${l.product_name} (${l.variant_label}) x ${l.qty} = Rs.${l.line_total}`).join('\n');
-    let pay;
-    if(method === 'UPI') pay = utr ? `Payment: UPI, UTR ${utr}` : 'Payment: UPI (not paid yet)';
-    else pay = 'Payment: Pay later (please share payment details)';
-    return `*NEW ORDER ${order.order_no} - MANYAM FOODS*
---------------------------
-Name: ${order.name}
-Phone: ${order.phone}
-Address: ${order.address}
-
-Items:
-${items}
-
-Subtotal: Rs.${order.subtotal}${order.discount > 0 ? '\nDiscount: -Rs.' + order.discount : ''}
-Delivery: ${order.delivery_fee > 0 ? 'Rs.' + order.delivery_fee : 'FREE'}
-*Total: Rs.${order.total}*
-${pay}`;
-}
-
-async function showSuccess(order, method, utr){
-    let wa = FALLBACK_WA_NUMBER;
-    try { wa = (await getSettings()).whatsapp_number || wa; } catch(e){}
-    const waUrl = 'https://wa.me/' + wa + '?text=' + encodeURIComponent(whatsappText(order, method, utr));
-
-    let title, note;
-    if(method === 'UPI' && utr){
-        title = 'Payment submitted!';
-        note = `We'll verify your UPI payment (UTR ${esc(utr)}) and confirm your order shortly. You can track it anytime in My Orders.`;
-    } else if(method === 'UPI'){
-        title = 'Order saved, payment pending';
-        note = `Your order is reserved. Finish the UPI payment from <strong>My Orders → Pay now</strong> so we can ship it.`;
-    } else {
-        title = 'Order placed!';
-        note = `We'll contact you on WhatsApp with payment details. You can track your order anytime in My Orders.`;
-    }
+function showSuccess(order, utr){
+    const title = utr ? 'Payment submitted!' : 'Order saved, payment pending';
+    const note = utr
+        ? `We'll verify your UPI payment (UTR ${esc(utr)}) and confirm your order shortly. You can track it anytime in My Orders.`
+        : `Your order is saved. Finish the UPI payment from <strong>My Orders → Pay now</strong> so we can ship it.`;
 
     document.getElementById('cartWrapper').innerHTML = `
         <div class="success-card">
@@ -521,8 +475,8 @@ async function showSuccess(order, method, utr){
             <div class="order-no">Order <strong>${esc(order.order_no)}</strong> · ${rupees(order.total)}</div>
             <p class="note">${note}</p>
             <div class="success-actions">
-                <a class="btn-whatsapp" href="${waUrl}" target="_blank" rel="noopener">Send Order Details on WhatsApp</a>
-                <a class="btn-outline" href="orders.html">Track in My Orders</a>
+                <a class="btn-checkout" href="orders.html" style="text-decoration:none">Track in My Orders</a>
+                <a class="btn-outline" href="products.html">Continue shopping</a>
             </div>
         </div>`;
     document.getElementById('itemCountBadge').textContent = '0 items';

@@ -13,13 +13,26 @@
         html { overflow-x: clip; }
         body { line-height: 1.6; }
         .shop-bar { position: sticky; top: var(--top-h, 106px); z-index: 50; background: rgba(251, 246, 236, 0.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-        .shop-bar-inner { max-width: 1240px; margin: 0 auto; padding: 12px clamp(16px, 4vw, 40px); display: flex; align-items: center; gap: 16px; }
+        .shop-bar-inner { max-width: 1240px; margin: 0 auto; padding: 12px clamp(16px, 4vw, 40px); display: flex; align-items: center; gap: 14px; }
         .shop-bar .mf-pills { flex: 1; min-width: 0; }
+        .shop-search { position: relative; display: flex; align-items: center; width: 260px; flex-shrink: 0; }
+        .shop-search svg { position: absolute; left: 14px; width: 17px; height: 17px; color: var(--muted); pointer-events: none; }
+        .shop-search input { width: 100%; padding: 11px 38px 11px 40px; border-radius: 50px; border: 1.5px solid var(--line); background: white; font: 500 0.88rem/1.2 var(--sans); color: var(--ink); outline: none; transition: border-color 200ms ease; }
+        .shop-search input:focus { border-color: var(--ink); }
+        .shop-search input::-webkit-search-cancel-button { display: none; }
+        .shop-search button { position: absolute; right: 6px; width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--cream-2); color: var(--ink); cursor: pointer; font-size: 0.8rem; }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 50px 10px; color: var(--muted); }
+        .no-results h3 { font: 600 1.4rem/1.2 var(--serif); color: var(--ink); margin-bottom: 8px; }
+        .no-results .mf-btn { margin-top: 18px; }
         .result-count { font-size: 0.8rem; color: var(--muted); font-weight: 600; white-space: nowrap; }
         .shop-body { max-width: 1240px; margin: 0 auto; padding: 28px clamp(16px, 4vw, 40px) clamp(60px, 8vw, 100px); }
+        @media (max-width: 768px) {
+            .shop-bar-inner { flex-wrap: wrap; gap: 10px; }
+            .shop-search { width: 100%; order: -1; }
+        }
         @media (max-width: 520px) { .result-count { display: none; } }
     </style>
-    <link rel="stylesheet" href="css/site.css?v=5">
+    <link rel="stylesheet" href="css/site.css?v=6">
     <link rel="stylesheet" href="css/motion.css?v=3">
 </head>
 <body>
@@ -32,6 +45,11 @@
 
 <div class="shop-bar">
     <div class="shop-bar-inner">
+        <label class="shop-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+            <input type="search" id="searchInput" placeholder="Search ragi, ghee, chilli…" aria-label="Search products" autocomplete="off" enterkeyhint="search">
+            <button type="button" id="searchClear" aria-label="Clear search" hidden>✕</button>
+        </label>
         <div class="mf-pills" role="group" aria-label="Filter by category">
             <button class="mf-pill active" data-cat="all">All</button>
             <button class="mf-pill" data-cat="powders">Powders</button>
@@ -52,48 +70,106 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="js/config.js?v=3"></script>
-<script src="js/store.js?v=5"></script>
-<script src="js/layout.js?v=5"></script>
+<script src="js/store.js?v=6"></script>
+<script src="js/layout.js?v=6"></script>
 <script>
 const CARD_CLASSES = { imgWrap: 'prod-img-wrap', badge: 'prod-badge', info: 'prod-info',
                        name: 'prod-name', desc: 'prod-desc', price: 'prod-price' };
 const grid = document.getElementById('productsGrid');
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
 let allProducts = [];
+let state = { cat: 'all', q: '' };
 
 // keep the category bar just under the sticky header
 const setTop = () => document.documentElement.style.setProperty('--top-h', document.getElementById('siteTop').offsetHeight + 'px');
 setTop(); addEventListener('resize', setTop);
 
-function render(cat, animate){
-    const list = cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat);
-    grid.innerHTML = list.length
-        ? list.map(p => productCardHTML(p, CARD_CLASSES)).join('')
-        : '<div class="grid-msg">New products in this category are coming soon.</div>';
+const pillLabel = cat => document.querySelector(`.mf-pill[data-cat="${cat}"]`)?.textContent || '';
+
+// every word typed must appear in the product's name, description, category or sizes
+function matches(p, q){
+    if(!q) return true;
+    const hay = [p.name, p.description, p.category, pillLabel(p.category), ...p.variants.map(v => v.label)].join(' ').toLowerCase();
+    return q.toLowerCase().split(/\s+/).filter(Boolean).every(w => hay.includes(w));
+}
+
+function render(animate){
+    const { cat, q } = state;
+    const list = allProducts.filter(p => (cat === 'all' || p.category === cat) && matches(p, q));
+    if(list.length){
+        grid.innerHTML = list.map(p => productCardHTML(p, CARD_CLASSES)).join('');
+    } else if(q){
+        const elsewhere = cat !== 'all' && allProducts.some(p => matches(p, q));
+        grid.innerHTML = `<div class="no-results"><h3>No products match “${esc(q)}”</h3>
+            <p>${elsewhere ? `Nothing in ${esc(pillLabel(cat))}, but there are matches in other categories.` : 'Try another word, like “millet” or “ghee”.'}</p>
+            ${elsewhere ? '<button class="mf-btn dark" onclick="selectCat(\'all\')">Search all categories</button>'
+                        : '<button class="mf-btn ghost" onclick="clearSearch()">Clear search</button>'}</div>`;
+    } else {
+        grid.innerHTML = '<div class="grid-msg">New products in this category are coming soon.</div>';
+    }
     document.getElementById('resultCount').textContent = list.length + ' product' + (list.length !== 1 ? 's' : '');
     document.querySelectorAll('.mf-pill').forEach(b => {
         b.classList.toggle('active', b.dataset.cat === cat);
         b.setAttribute('aria-pressed', String(b.dataset.cat === cat));
     });
+    searchClear.hidden = !q;
     if(animate) animateCards([...grid.querySelectorAll('.product-card')]);
 }
 
-document.querySelectorAll('.mf-pill').forEach(btn => btn.addEventListener('click', () => {
-    if(btn.classList.contains('active')) return;
-    const cat = btn.dataset.cat;
-    history.replaceState(null, '', cat === 'all' ? 'products.html' : 'products.html?cat=' + cat);
-    render(cat, true);
-    btn.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+function syncUrl(){
+    const p = new URLSearchParams();
+    if(state.cat !== 'all') p.set('cat', state.cat);
+    if(state.q) p.set('q', state.q);
+    history.replaceState(null, '', 'products.html' + (p.toString() ? '?' + p : ''));
+}
+
+function selectCat(cat){
+    state.cat = cat;
+    syncUrl();
+    render(true);
+    document.querySelector(`.mf-pill[data-cat="${cat}"]`)?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
     // if the shopper has scrolled down, bring the new results into view
     const headH = document.querySelector('.mf-page-head').offsetHeight;
     if(scrollY > headH) scrollTo({ top: headH, behavior: 'smooth' });
+}
+
+function clearSearch(){
+    searchInput.value = '';
+    state.q = '';
+    syncUrl();
+    render(true);
+    searchInput.focus();
+}
+
+document.querySelectorAll('.mf-pill').forEach(btn => btn.addEventListener('click', () => {
+    if(!btn.classList.contains('active')) selectCat(btn.dataset.cat);
 }));
+
+let searchTimer;
+searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+        state.q = searchInput.value.trim();
+        syncUrl();
+        render(false);
+    }, 150);
+});
+searchInput.addEventListener('keydown', e => { if(e.key === 'Escape' && searchInput.value) clearSearch(); });
+searchClear.addEventListener('click', clearSearch);
 
 (async function(){
     try {
         allProducts = await fetchProducts();
-        const wanted = new URLSearchParams(location.search).get('cat');
-        const valid = [...document.querySelectorAll('.mf-pill')].some(b => b.dataset.cat === wanted);
-        render(valid ? wanted : 'all', true);
+        // a category with no products on the site (all hidden in admin) disappears
+        const cats = categoriesOf(allProducts);
+        document.querySelectorAll('.mf-pill').forEach(b => { if(b.dataset.cat !== 'all') b.hidden = !cats.has(b.dataset.cat); });
+        const params = new URLSearchParams(location.search);
+        const wanted = params.get('cat');
+        state.cat = wanted && cats.has(wanted) ? wanted : 'all';
+        state.q = (params.get('q') || '').trim();
+        searchInput.value = state.q;
+        render(true);
     } catch(e){
         grid.innerHTML = `<div class="grid-msg">${esc(errMsg(e))}</div>`;
     }

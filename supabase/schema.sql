@@ -1,7 +1,7 @@
 -- =====================================================================
 -- Manyam Foods: database schema
 -- Run this once in Supabase: Dashboard → SQL Editor → New query → paste → Run.
--- Then run seed.sql.
+-- Then run seed.sql, then every file in supabase/migrations/ in order.
 -- =====================================================================
 
 -- ---------- Admins ----------

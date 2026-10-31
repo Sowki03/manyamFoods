@@ -24,6 +24,7 @@ The website is plain HTML. Customer accounts, products, orders and the admin pan
 1. Open `supabase/seed.sql` and replace `REPLACE_WITH_ADMIN_EMAIL@gmail.com` with the Google account(s) that will manage the shop.
 2. Supabase → **SQL Editor** → **New query** → paste all of `supabase/schema.sql` → **Run**.
 3. New query → paste all of `supabase/seed.sql` → **Run**.
+4. Then run each file in `supabase/migrations/` in number order (e.g. `002_…sql`).
 
 ## 3. Connect the website
 

@@ -52,7 +52,14 @@
     }));
 
     const productsReady = fetchProducts()
-        .then(list => { allProducts = list; showCategory('best', false); return [...grid.querySelectorAll('.product-card')]; })
+        .then(list => {
+            allProducts = list;
+            // a category with no products on the site (all hidden in admin) loses its tile
+            const cats = categoriesOf(list);
+            document.querySelectorAll('.cat').forEach(b => { if(b.dataset.cat !== 'best') b.hidden = !cats.has(b.dataset.cat); });
+            showCategory('best', false);
+            return [...grid.querySelectorAll('.product-card')];
+        })
         .catch(e => { grid.innerHTML = `<div class="grid-msg">${esc(errMsg(e))}</div>`; return []; });
 
     if(!hasGsap) return;
